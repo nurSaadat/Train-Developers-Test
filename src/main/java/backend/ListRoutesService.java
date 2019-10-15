@@ -12,6 +12,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime; 
 
@@ -22,24 +25,40 @@ public class ListRoutesService {
     
     private List<List<String>> routes = new CopyOnWriteArrayList<>();
     
-    public ListRoutesService() {
-    	
-        for (int i = 0; i < 5; i++) {
-        	
-        	routes.add(new CopyOnWriteArrayList<String>());
-        	routes.get(i).add(Integer.toString(i));
-        	routes.get(i).add("0" + Integer.toString(i) + "-10-2019");
-        	routes.get(i).add("1" + Integer.toString(i) + "-10-2019");
-        	routes.get(i).add("0" + Integer.toString(i) + ":00");
-        	routes.get(i).add("1" + Integer.toString(i) + ":00");
-        	routes.get(i).add("1250");
-        	routes.get(i).add("In transit");
-        	routes.get(i).add("AST");
-        	routes.get(i).add("ALM"); 
+    public ListRoutesService() throws SQLException{
 
-        }
+		MySQLConnector db = new MySQLConnector(3306, "EmployeeDB", "root", "password");
+
+		ResultSet rs = db.getData("SELECT * FROM EMPLOYEE;");
+
+		while (rs.next()) {
+			
+//			routes.add(new CopyOnWriteArrayList<String>());
+//        	routes.get(routes.size() - 1).add(rs.getString("RouteID"));
+//        	routes.get(routes.size() - 1).add(rs.getString("DateFrom"));
+//        	routes.get(routes.size() - 1).add(rs.getString("DateTo"));
+//        	routes.get(routes.size() - 1).add(rs.getString("TimeFrom"));
+//        	routes.get(routes.size() - 1).add(rs.getString("TimeTo"));
+//        	routes.get(routes.size() - 1).add(rs.getString("Distance"));
+//        	routes.get(routes.size() - 1).add(rs.getString("Status"));
+//        	routes.get(routes.size() - 1).add(rs.getString("StationFrom"));
+//        	routes.get(routes.size() - 1).add(rs.getString("StationTo"));
+			
+			routes.add(new CopyOnWriteArrayList<String>());
+        	routes.get(routes.size() - 1).add(rs.getString("FName"));
+        	routes.get(routes.size() - 1).add(rs.getString("LName"));
+        	routes.get(routes.size() - 1).add(rs.getString("SSN"));
+        	routes.get(routes.size() - 1).add(rs.getString("BDate"));
+        	routes.get(routes.size() - 1).add(rs.getString("Address"));
+        	routes.get(routes.size() - 1).add(rs.getString("Gender"));
+        	routes.get(routes.size() - 1).add(rs.getString("Salary"));
+        	routes.get(routes.size() - 1).add(rs.getString("DNumber"));
+        	routes.get(routes.size() - 1).add(rs.getString("SupervisorSSN"));
+			
+		}
         
         Collections.reverse(routes);
+        db.closeConnection();
         
     }
     
