@@ -27,33 +27,22 @@ public class ListRoutesService {
     
     public ListRoutesService() throws SQLException{
 
-		MySQLConnector db = new MySQLConnector(3306, "EmployeeDB", "root", "password");
+		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
 
-		ResultSet rs = db.getData("SELECT * FROM EMPLOYEE;");
+		ResultSet rs = db.getData("SELECT * FROM ROUTES;");
 
 		while (rs.next()) {
 			
-//			routes.add(new CopyOnWriteArrayList<String>());
-//        	routes.get(routes.size() - 1).add(rs.getString("RouteID"));
-//        	routes.get(routes.size() - 1).add(rs.getString("DateFrom"));
-//        	routes.get(routes.size() - 1).add(rs.getString("DateTo"));
-//        	routes.get(routes.size() - 1).add(rs.getString("TimeFrom"));
-//        	routes.get(routes.size() - 1).add(rs.getString("TimeTo"));
-//        	routes.get(routes.size() - 1).add(rs.getString("Distance"));
-//        	routes.get(routes.size() - 1).add(rs.getString("Status"));
-//        	routes.get(routes.size() - 1).add(rs.getString("StationFrom"));
-//        	routes.get(routes.size() - 1).add(rs.getString("StationTo"));
-			
 			routes.add(new CopyOnWriteArrayList<String>());
-        	routes.get(routes.size() - 1).add(rs.getString("FName"));
-        	routes.get(routes.size() - 1).add(rs.getString("LName"));
-        	routes.get(routes.size() - 1).add(rs.getString("SSN"));
-        	routes.get(routes.size() - 1).add(rs.getString("BDate"));
-        	routes.get(routes.size() - 1).add(rs.getString("Address"));
-        	routes.get(routes.size() - 1).add(rs.getString("Gender"));
-        	routes.get(routes.size() - 1).add(rs.getString("Salary"));
-        	routes.get(routes.size() - 1).add(rs.getString("DNumber"));
-        	routes.get(routes.size() - 1).add(rs.getString("SupervisorSSN"));
+			routes.get(routes.size() - 1).add(rs.getString("RouteID"));
+			routes.get(routes.size() - 1).add(rs.getString("DateFrom"));
+			routes.get(routes.size() - 1).add(rs.getString("DateTo"));
+			routes.get(routes.size() - 1).add(rs.getString("TimeFrom"));
+			routes.get(routes.size() - 1).add(rs.getString("TimeTo"));
+			routes.get(routes.size() - 1).add(rs.getString("Distance"));
+			routes.get(routes.size() - 1).add(rs.getString("Status"));
+			routes.get(routes.size() - 1).add(rs.getString("StationFrom"));
+			routes.get(routes.size() - 1).add(rs.getString("StationTo"));
 			
 		}
         
