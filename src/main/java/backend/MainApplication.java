@@ -1,5 +1,6 @@
 package backend;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ public class MainApplication extends Application {
     private Set<Object> singletons = new HashSet<Object>();
     private Set<Class<?>> empty = new HashSet<Class<?>>();
     
-    public MainApplication() throws SQLException {
+    public MainApplication() throws SQLException, ClassNotFoundException {
         
         singletons.add(new ListRoutesService());
         
