@@ -27,24 +27,24 @@ public class ListRoutesService {
     
     public ListRoutesService() throws SQLException{
 
-		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
+	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
 
-		ResultSet rs = db.getData("SELECT * FROM ROUTES;");
+	ResultSet rs = db.getData("SELECT * FROM ROUTES;");
 
-		while (rs.next()) {
-			
-			routes.add(new CopyOnWriteArrayList<String>());
-			routes.get(routes.size() - 1).add(rs.getString("RouteID"));
-			routes.get(routes.size() - 1).add(rs.getString("DateFrom"));
-			routes.get(routes.size() - 1).add(rs.getString("DateTo"));
-			routes.get(routes.size() - 1).add(rs.getString("TimeFrom"));
-			routes.get(routes.size() - 1).add(rs.getString("TimeTo"));
-			routes.get(routes.size() - 1).add(rs.getString("Distance"));
-			routes.get(routes.size() - 1).add(rs.getString("Status"));
-			routes.get(routes.size() - 1).add(rs.getString("StationFrom"));
-			routes.get(routes.size() - 1).add(rs.getString("StationTo"));
-			
-		}
+	while (rs.next()) {
+
+		routes.add(new CopyOnWriteArrayList<String>());
+		routes.get(routes.size() - 1).add(rs.getString("RouteID"));
+		routes.get(routes.size() - 1).add(rs.getString("DateFrom"));
+		routes.get(routes.size() - 1).add(rs.getString("DateTo"));
+		routes.get(routes.size() - 1).add(rs.getString("TimeFrom"));
+		routes.get(routes.size() - 1).add(rs.getString("TimeTo"));
+		routes.get(routes.size() - 1).add(rs.getString("Distance"));
+		routes.get(routes.size() - 1).add(rs.getString("Status"));
+		routes.get(routes.size() - 1).add(rs.getString("StationFrom"));
+		routes.get(routes.size() - 1).add(rs.getString("StationTo"));
+
+	}
         
         Collections.reverse(routes);
         db.closeConnection();
@@ -53,17 +53,19 @@ public class ListRoutesService {
     
     @GET
     public Response getList() {
+	    
         Gson gson = new Gson();
-        
         return Response.ok(gson.toJson(routes)).build();
+	    
     }
     
     @GET
     @Path("{id: [0-9]+}")
     public Response getListItem(@PathParam("id") String id) {
+	    
         int i = Integer.parseInt(id);
-        
         return Response.ok(routes.get(i)).build();
+	    
     }
     
     @POST
@@ -86,6 +88,7 @@ public class ListRoutesService {
     @DELETE
     @Path("{id: [0-9]+}")
     public Response clearItem(@PathParam("id") String id) {
+	    
     	int i = Integer.parseInt(id);
     	routes.remove(i);
         return Response.ok(routes).build();
