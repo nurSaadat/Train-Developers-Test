@@ -25,11 +25,11 @@ public class ListRoutesService {
     
     private List<List<String>> routes = new CopyOnWriteArrayList<>();
     
-    public ListRoutesService() throws SQLException{
+    public ListRoutesService() throws SQLException, ClassNotFoundException {
 
 	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
 
-	ResultSet rs = db.getData("SELECT * FROM ROUTES;");
+	ResultSet rs = db.getData("SELECT * FROM Route;");
 
 	while (rs.next()) {
 
