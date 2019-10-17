@@ -13,10 +13,12 @@ public class MySQLConnector {
 	 * @param username - used to log into the database
 	 * @param password - used to log into the database
 	 * @throws SQLException
+	 * @throws ClassNotFoundException 
 	 */
-	public MySQLConnector(int port, String schema, String username, String password) throws SQLException {
+	public MySQLConnector(int port, String schema, String username, String password) throws SQLException, ClassNotFoundException {
 		
-		con = DriverManager.getConnection("jdbc:mysql://localhost:" + port +"/" + schema, username, password); 
+		Class.forName("com.mysql.jdbc.Driver");  
+		con = DriverManager.getConnection("jdbc:mysql://localhost:" + port +"/" + schema + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", username, password); 
 		stmt = con.createStatement();
 		
 	}
