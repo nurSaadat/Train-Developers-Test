@@ -1,14 +1,7 @@
-/**
- * 
- */
 package backend;
 
 import java.sql.*;
 
-/**
- * @author vallre
- *
- */
 public class MySQLConnector {
 	
 	protected Connection con;
@@ -25,6 +18,7 @@ public class MySQLConnector {
 		
 		con = DriverManager.getConnection("jdbc:mysql://localhost:" + port +"/" + schema, username, password); 
 		stmt = con.createStatement();
+		
 	}
 
 	/**
@@ -35,6 +29,7 @@ public class MySQLConnector {
 	public ResultSet getData(String selectStatement) throws SQLException {
 		
 		return stmt.executeQuery(selectStatement);
+		
 	}
 	
 	/**
@@ -45,7 +40,8 @@ public class MySQLConnector {
 	 */
 	public ResultSet getData(String select, String from) throws SQLException {
 		
-		return stmt.executeQuery("select " + select + " from " + from);
+		return stmt.executeQuery("SELECT " + select + " FROM " + from);
+		
 	}
 	
 	/**
@@ -57,16 +53,18 @@ public class MySQLConnector {
 	 */
 	public ResultSet getData(String select, String from, String where) throws SQLException {
 		
-		return stmt.executeQuery("select " + select + " from " + from + " where " + where);
+		return stmt.executeQuery("SELECT " + select + " FROM " + from + " WHERE " + where);
+		
 	}
 
 	/**
 	 * @param updateStatement - write any valid SQL update statement here (e.g. update EMPLOYEE set FName = 'Anne2' where FName = 'Anne')
 	 * @throws SQLException
 	 */
-	public void updateData(String updateStatement) throws SQLException{
+	public void updateData(String updateStatement) throws SQLException {
 		
 		stmt.executeUpdate(updateStatement);
+		
 	}
 	
 	/**
@@ -75,18 +73,20 @@ public class MySQLConnector {
 	 * @param where - where portion of a query (e.g. FName = 'Anne')
 	 * @throws SQLException
 	 */
-	public void updateData(String update, String set, String where) throws SQLException{
+	public void updateData(String update, String set, String where) throws SQLException {
 		
-		stmt.executeUpdate("update " + update + " set " + set + " where " + where);
+		stmt.executeUpdate("UPDATE " + update + " SET " + set + " WHERE " + where);
+		
 	}
 	
 	/**
 	 * Do not forget to close the connection with your database when you are done using it!
 	 * @throws SQLException
 	 */
-	public void closeConnection() throws SQLException{ 
+	public void closeConnection() throws SQLException { 
 	
 		con.close(); 
+		
 	}
 
 }
