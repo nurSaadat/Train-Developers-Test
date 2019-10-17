@@ -7,24 +7,28 @@
     <script src="scripts/jquery.min.js"></script>
 
     <title>Simple OSM GPX Track</title>
-
-    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-
-    <script src="https://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script>
+    
     <script type="text/javascript">
-
         var map; //complex object of type OpenLayers.Map
         var route;
         function drawRoute(str){
-            route = new OpenLayers.Layer.Vector("Astana Almaty Route", {
-                strategies: [new OpenLayers.Strategy.Fixed()],
-                protocol: new OpenLayers.Protocol.HTTP({
-                    url: ""+str+"",
-                    format: new OpenLayers.Format.GPX()
+            route = new ol.layer.Vector({
+                title: 'added Layer',
+                source: new ol.source.Vector({
+                    projection: 'EPSG:3857',
+                    url: "" + str + "",
+                    format: new ol.format.GeoJSON()
                 }),
-                style: {strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
-                projection: new OpenLayers.Projection("EPSG:4326")
+                style: new ol.style.Style({
+
+                    stroke: new ol.style.Stroke({
+                        color: "green",
+                        width: 5
+                    })
+                })
             });
             map.addLayer(route);
         }
@@ -40,7 +44,7 @@
                 var to = $(this).find("td").eq(8).html();
 
                 //alert('from ' + from + 'to' + to)
-                String: routeName = from + "-" + to + ".gpx";
+                String: routeName = from + "-" + to + ".geojson";
                 if (route) {
                     window.map.removeLayer(route);
                 }
@@ -59,49 +63,23 @@
         }
 
         function init() {
-            map = new OpenLayers.Map ("map", {
-                controls:[
-                    new OpenLayers.Control.Navigation({mouseWheelOptions: {interval: 500}}),
-                    new OpenLayers.Control.PanZoomBar(),
-                    new OpenLayers.Control.LayerSwitcher(),
-                    new OpenLayers.Control.Attribution()],
-                maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-                maxResolution: 156543.0399,
-                numZoomLevels: 19,
-                units: 'm',
-                projection: new OpenLayers.Projection("EPSG:900913"),
-                displayProjection: new OpenLayers.Projection("EPSG:4326")
-            } );
-
-            // Define the map layer
-            // Here we use a predefined layer that will be kept up to date with URL changes
-            layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-            map.addLayer(layerMapnik);
-            layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
-            map.addLayer(layerCycleMap);
-            layerMarkers = new OpenLayers.Layer.Markers("Markers");
-            map.addLayer(layerMarkers);
-            //getRoutes();
-
-            // Add a Layer with Marker
-            var size = new OpenLayers.Size(21, 25);
-            var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-            var icon = new OpenLayers.Icon('https://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
-            layerMarkers.addMarker(new OpenLayers.Marker(lonLat,icon));
-
-            // Start position for the map (hardcoded here for simplicity,
-            // but maybe you want to get this from the URL params)
-            var lat=48.1742;
-            var lon=68.449074;
-            var zoom=5;
-            var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-            map.setCenter(lonLat, zoom);
-
+            map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([66.9237, 48.0196]),
+                    zoom: 5
+                })
+            });
         }
+        
         $(document).ready(function () {
             getRoutes();
             init();
-
         });
 
     </script>
