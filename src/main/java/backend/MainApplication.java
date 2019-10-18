@@ -16,6 +16,7 @@ public class MainApplication extends Application {
     public MainApplication() throws SQLException, ClassNotFoundException {
         
         singletons.add(new ListRoutesService());
+        singletons.add(new MySQLConnector(3306, "mydb", "user", "8264"));
         
     }
     
