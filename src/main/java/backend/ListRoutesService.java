@@ -15,9 +15,6 @@ import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime; 
-
 import com.google.gson.Gson;
 
 @Path("/routes")
