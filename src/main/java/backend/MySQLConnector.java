@@ -24,7 +24,7 @@ public class MySQLConnector {
 	}
 
 	/**
-	 * @param selectStatement - write any valid SQL select statement here (e.g. select * from EMPLOYEE)
+	 * @param selectStatement - write any valid SQL select statement here. The template is 'SELECT field1, field2,...fieldN FROM table_name1, table_name2... [WHERE Clause] [OFFSET M ] [LIMIT N]' (e.g. select * from EMPLOYEE)
 	 * @return ResultSet - returns a table for a given query; Use ResultSet.next() and ResultSet.get{DATATYPE}(int Column), where the DATATYPE is the datatype of a variable with its column number Column  
 	 * @throws SQLException
 	 */
@@ -60,7 +60,7 @@ public class MySQLConnector {
 	}
 
 	/**
-	 * @param updateStatement - write any valid SQL update statement here (e.g. update EMPLOYEE set FName = 'Anne2' where FName = 'Anne')
+	 * @param updateStatement - write any valid SQL update statement here. The template is 'UPDATE `table_name` SET `column_name` = `new_value' [WHERE condition]' (e.g. update EMPLOYEE set FName = 'Anne2' where FName = 'Anne')  
 	 * @throws SQLException
 	 */
 	public void updateData(String updateStatement) throws SQLException {
@@ -79,6 +79,24 @@ public class MySQLConnector {
 		
 		stmt.executeUpdate("UPDATE " + update + " SET " + set + " WHERE " + where);
 		
+	}
+	
+	/**
+	 * @param insertStatement - write any valid SQL insert statement here. The template is 'INSERT INTO `table_name`(column_1,column_2,...) VALUES (value_1,value_2,...)' (e.g. insert into EMPLOYEE values ('name', 'surname', 1, '1999-05-13', 'address', 'M', 123, 1, NULL))  
+	 * @throws SQLException
+	 */
+	public void insertData(String insertStatement) throws SQLException {
+		
+		stmt.executeUpdate(insertStatement);
+	}
+	
+	/**
+	 * @param deleteStatement - write any valid SQL delete statement here. the template is 'DELETE FROM `table_name` [WHERE condition]' (e.g. Delete from EMPLOYEE where FName = 'name')  
+	 * @throws SQLException
+	 */
+	public void deleteData(String deleteStatement) throws SQLException {
+		
+		stmt.executeUpdate(deleteStatement);
 	}
 	
 	/**
