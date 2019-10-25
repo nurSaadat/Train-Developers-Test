@@ -20,7 +20,7 @@ public class LogInService {
 	@POST
     public Response login(@FormParam("data") List<String> data) throws SQLException, ClassNotFoundException {
 		
-		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
+		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 			
 		if (data.get(0).length() == 0 || data.get(1).length() == 0) {
 			
