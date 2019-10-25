@@ -13,7 +13,7 @@ public class BookTicketService {
 
     @POST
     public Response book(@FormParam("data") List<String> data) throws SQLException, ClassNotFoundException {
-        MySQLConnector db = new MySQLConnector(3306, "mydb", "root", "password");
+        MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).length() == 0 && i != 0) {
