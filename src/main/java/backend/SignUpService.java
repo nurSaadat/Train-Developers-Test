@@ -20,7 +20,7 @@ public class SignUpService {
 	@POST
     public Response register(@FormParam("data") List<String> data) throws SQLException, ClassNotFoundException {
 		
-		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
+		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 		
 		for (int i = 0; i < data.size(); i++) {
 			
