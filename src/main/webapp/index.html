@@ -47,13 +47,34 @@ function clearItem(id) {
 		}
 	});
 	
+}**/
+
+function logIn(email, pass) {
+	$.ajax({
+		url : 'services/login',
+		type : "POST",
+		dataType : "json; charset=utf-8",
+		username : email,
+		password : pass,
+		processData : false,
+		contentType : "json",
+		success : function(r) {
+			console.log("Successfully logged in!");
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	        alert(xhr.status);
+	        alert(xhr.responseText);
+	    }
+	});
 }
 
-$(document).ready(function () { 
+$(document).ready(function () {
 	
-    getListItems();
+	$("#send-item").on('click', function () {
+        logIn(document.getElementById('user-email').value, document.getElementById('user-password').value);
+    });
     
-});**/
+});
 
 	</script>
 </head>
@@ -70,7 +91,7 @@ $(document).ready(function () {
 	<br>
 	<input type="text" id="user-email" placeholder="Email">
 	<br>
-	<input type="text" id="user-password" placeholder="Password">
+	<input type="password" id="user-password" placeholder="Password">
 	<br>
 	<br>
 	<button id="send-item" type="button" >Log In</button>
