@@ -24,7 +24,7 @@ public class ListRoutesService {
     
     public ListRoutesService() throws SQLException, ClassNotFoundException {
 
-	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "root", "password");
+	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
 	ResultSet rs = db.getData("SELECT * FROM Route;");
 
