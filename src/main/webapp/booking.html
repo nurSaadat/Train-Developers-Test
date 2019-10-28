@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Booking</title>
+    <link rel = "stylesheet" href = "startPageStyle.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+<h2>Ticket Booking</h2>
+
+<label for="stationFrom">From</label>
+<input type="text" id="stationFrom" required>
+<br>
+<label for="stationTo">To</label>
+<input type="text" id="stationTo" required>
+<br>
+<label for="dateFrom">Departure Date</label>
+<input type="date" id="dateFrom" required>
+<br>
+
+<div class="addPass">
+    <div class="newPass">
+        <label>Class</label>
+        <select name="class">
+            <option value="class1">Class 1</option>
+            <option value="class2">Class 2</option>
+            <option value="class3">Class 3</option>
+        </select>
+        <br>
+
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" required>
+        <br>
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" required>
+        <br>
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" required>
+        <br>
+        <label>Gender</label>
+        <input type="radio" name="gender" id="male" checked>
+        <label for="male">Male</label>
+        <span class="check"></span>
+        <input type="radio" name="gender" id="female">
+        <label for="female">Female</label>
+        <span class="check"></span>
+        <br>
+        <label>Citizenship</label>
+        <select name="country">
+            <option value="Kazakhstan">Kazakhstan</option>
+            <option value="Russia">Russia</option>
+            <option value="Other">Other</option>
+        </select>
+        <br>
+        <label>Document Type</label>
+        <select name="doctype">
+            <option value="passport">Passport</option>
+            <option value="IDcard">ID Card</option>
+        </select>
+        <br>
+        <label>Tariff</label>
+        <select name="tariff">
+            <option value="regular">Regular</option>
+            <option value="retired">Retired</option>
+            <option value="student">Student</option>
+            <option value="child">Child</option>
+        </select>
+        <br>
+        <label for="docID">Document ID</label>
+        <input type="text" id="docID" required>
+        <br>
+        <label for="telephone">Phone Number</label>
+        <input type="number" id="telephone" required>
+        <br>
+        <button class="remove-pass-btn">Remove a Passenger</button>
+    </div>
+</div>
+<button class="add-pass-btn">Add a Passenger</button>
+<button id="book" type="button">Book a ticket</button>
+
+<script type="text/javascript">
+    $(document).on("click", ".add-pass-btn", function() {
+        var passForm = $(".newPass").eq(0).clone().show();
+        $(".addPass").append(passForm);
+    });
+
+    $(document).on("click", ".remove-pass-btn", function() {
+       var index = $(".remove-pass-btn").index(this);
+       console.log(index);
+       $(".newPass").eq(index).remove();
+    });
+</script>
+
+</body>
+</html>
