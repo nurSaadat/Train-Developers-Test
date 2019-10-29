@@ -7,19 +7,32 @@
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="scripts/jquery.min.js"></script>
 	<script type="text/javascript">
+	
+function validate(email, password){
+	if (email == ""){
+		alert("Please fill out your email");
+	}
+	if (password == ""){
+		alert("Please fill out your password");
+	}
+}
 
-function logIn(email, pass){
-	$.post("services/login", {username: email, password: pass}, function(r) {
+function logIn(){
+	var email = document.getElementById('user-email').value;
+	var password = document.getElementById('user-password').value;
+	
+	validate(email, password);
+	
+	$.post("services/login", {username: email, password: password}, function(r) {
 		console.log(r);
     }).fail(function(r) {
 		console.log(r.responseText);
     });
 }
 
-$(document).ready(function () {
-	
-	$("#send-item").on('click', function () {
-        logIn(document.getElementById('user-email').value, document.getElementById('user-password').value);
+$(document).ready(function () {	
+	$("#log-in").on('click', function () {
+        logIn();
     });
 	$("#logout").on('click', function (r) {
 		$.post("services/logout", {}, function(r){
@@ -42,24 +55,24 @@ $(document).ready(function () {
 	</p>
 	<a href="routes.html">See routes for today</a>
 	<br>
-	<a href="booking.html">Book a ticket</a>
+	<a href="user/booking.html">Book a ticket</a>
 	<br>
-	<a href="user/booking2.html">Book a ticket2</a>
-	<br>
-	<input type="text" id="user-email" placeholder="Email">
-	<br>
-	<input type="password" id="user-password" placeholder="Password">
-	<br>
-	<br>
-	<button id="send-item" type="button" >Log In</button>
-	<br>
+	<form>
+		<input type="text" id="user-email" placeholder="Email">
+		<br>
+		<input type="password" id="user-password" placeholder="Password">
+		<br>
+		<br>
+		<button id="log-in" type="button" >Log In</button>
+		<br>
+	</form>
 	<button id="logout" type="button" >Log Out</button>
 	<br>
 	Don't have an account?&nbsp;<a href="signup.html">Sign up</a>
 	
 	<h4>Recent News</h4>
 	<p>
-	Lorem ipsum
+	Done by Valeriy Novossyolov :)
 	</p>
 	<p>
 	Lorem ipsum

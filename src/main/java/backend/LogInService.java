@@ -44,7 +44,13 @@ public class LogInService {
 				
 				HttpSession session = request.getSession(true);
 				
-				session.setAttribute("type", "user");
+				if (email.matches(".@traindev.kz")) {
+					session.setAttribute("type", "user");
+				}
+				else {
+					session.setAttribute("type", "user");
+				}
+						
 				session.setAttribute("email", email);
 				//setting session to expiry in 30 mins
 				session.setMaxInactiveInterval(30*60);
