@@ -20,6 +20,7 @@ public class MainApplication extends Application {
         singletons.add(new LogInService());
         singletons.add(new AuthenticationFilter());
         singletons.add(new LogOutService());
+        singletons.add(new SignUpService());
         
     }
     

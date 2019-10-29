@@ -8,11 +8,15 @@
 	<script src="scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 	
+function goToProfile(){
+	window.location.href = "user/regular_profile.html";
+}
+	
 function validate(email, password){
 	if (email == ""){
 		alert("Please fill out your email");
 	}
-	if (password == ""){
+	else if (password == ""){
 		alert("Please fill out your password");
 	}
 }
@@ -25,6 +29,7 @@ function logIn(){
 	
 	$.post("services/login", {username: email, password: password}, function(r) {
 		console.log(r);
+		goToProfile();
     }).fail(function(r) {
 		console.log(r.responseText);
     });
@@ -34,6 +39,7 @@ $(document).ready(function () {
 	$("#log-in").on('click', function () {
         logIn();
     });
+	
 	$("#logout").on('click', function (r) {
 		$.post("services/logout", {}, function(r){
 			console.log(r);
@@ -69,6 +75,7 @@ $(document).ready(function () {
 	<button id="logout" type="button" >Log Out</button>
 	<br>
 	Don't have an account?&nbsp;<a href="signup.html">Sign up</a>
+	<a id="profile" href="#">Go to profile</a>
 	
 	<h4>Recent News</h4>
 	<p>
