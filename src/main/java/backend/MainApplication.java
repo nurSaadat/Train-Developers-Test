@@ -17,6 +17,9 @@ public class MainApplication extends Application {
         
         singletons.add(new ListRoutesService());
         singletons.add(new MySQLConnector(3306, "RailwayStation", "user", "Password123!"));
+        singletons.add(new LogInService());
+        singletons.add(new AuthenticationFilter());
+        singletons.add(new LogOutService());
         
     }
     

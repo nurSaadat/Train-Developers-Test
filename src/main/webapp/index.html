@@ -8,70 +8,26 @@
 	<script src="scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 
-/**function validate(text) {
-	  var re = /[^A-Za-z0-9\s]+/;
-	  return re.test(text);
-}
-
-function sendListItem() {
-    var listItem = $("#texttosend").val();
-    
-    if (!validate(listItem) && listItem.length != 0 && listItem.length < 50) {
-    
-	    $.post("services/items", { newEntry: listItem}, function() {
-	        getListItems();
-	    });
-    
-	}
-}
-
-function clearList() {
-	$.ajax({
-		url : 'services/items',
-		dataType : 'json',
-		type : "DELETE",
-		success : function(r) {
-			updateList(r);
-		}
-	});
-}
-
-function clearItem(id) {
-	
-	$.ajax({
-		url : 'services/items/' + id,
-		dataType : 'json',
-		type : "DELETE",
-		success : function(r) {
-			updateList(r);
-		}
-	});
-	
-}**/
-
-function logIn(email, pass) {
-	$.ajax({
-		url : 'services/login',
-		type : "POST",
-		dataType : "json; charset=utf-8",
-		username : email,
-		password : pass,
-		processData : false,
-		contentType : "json",
-		success : function(r) {
-			console.log("Successfully logged in!");
-		},
-		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
-	        alert(xhr.responseText);
-	    }
-	});
+function logIn(email, pass){
+	$.post("services/login", {username: email, password: pass}, function(r) {
+		console.log(r);
+    }).fail(function(r) {
+		console.log(r.responseText);
+    });
 }
 
 $(document).ready(function () {
 	
 	$("#send-item").on('click', function () {
         logIn(document.getElementById('user-email').value, document.getElementById('user-password').value);
+    });
+	$("#logout").on('click', function (r) {
+		$.post("services/logout", {}, function(r){
+			console.log(r);
+		}).fail(function(r) {
+			alert("Error!");
+	    });
+		
     });
     
 });
@@ -88,6 +44,7 @@ $(document).ready(function () {
 	<br>
 	<a href="booking.html">Book a ticket</a>
 	<br>
+	<a href="user/booking2.html">Book a ticket2</a>
 	<br>
 	<input type="text" id="user-email" placeholder="Email">
 	<br>
@@ -96,6 +53,7 @@ $(document).ready(function () {
 	<br>
 	<button id="send-item" type="button" >Log In</button>
 	<br>
+	<button id="logout" type="button" >Log Out</button>
 	<br>
 	Don't have an account?&nbsp;<a href="signup.html">Sign up</a>
 	
