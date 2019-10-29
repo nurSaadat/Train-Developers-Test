@@ -21,6 +21,7 @@ public class MainApplication extends Application {
         singletons.add(new AuthenticationFilter());
         singletons.add(new LogOutService());
         singletons.add(new SignUpService());
+        singletons.add(new ListTicketsService());
         
     }
     
