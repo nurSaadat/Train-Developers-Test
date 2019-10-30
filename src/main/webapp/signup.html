@@ -6,6 +6,49 @@
     <link rel = "stylesheet" href = "startPageStyle.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+    
+function validate(email, fname, lname, password){
+	
+	if (email == "") {
+		alert("Please, fill out your email.");
+	} else if (fname == "") {
+		alert("Please, fill out your first name.");
+	} else if (lname == "") {
+		alert("Please, fill out your last name.");
+	} else if (password == "") {
+		alert("Please, fill out your password.");
+	}
+
+}
+    
+function signUp(){
+	
+	var email = document.getElementById('email').value;
+	var fname = document.getElementById('fname').value;
+	var lname = document.getElementById('lname').value;
+	var password = document.getElementById('password').value;
+	
+	validate(email, fname, lname, password);
+	
+	$.post("services/signup", {email: email, fname: fname, lname: lname, password: password}, function(r) {
+		console.log(r);
+		window.location.href = "index.html";
+	}).fail(function(r) {
+		alert(r.responseText);
+	});
+	
+}
+
+$(document).ready(function () {	
+	
+	$("#signup").on('click', function () {
+        signUp();
+    });
+    
+});
+
+</script>
 
 </head>
 <body>
@@ -13,17 +56,17 @@
 <h2>Create Profile</h2>
 
 <label for="email">Email</label>
-<input type="text" id="email">
+<input type="text" id="email" placeholder="Email">
 <br>
 <label for="fname">First Name</label>
-<input type="text" id="fname">
+<input type="text" id="fname" placeholder="First Name">
 <br>
 <label for="lname">Last Name</label>
-<input type="text" id="lname">
+<input type="text" id="lname" placeholder = "Last Name">
 <br>
 <form>
 <label for="password">Password</label>
-<input type="password" id="password">
+<input type="password" id="password" placeholder="Password">
 <br>
 <button id="signup" type="button">Sign Up</button>
 </form>
