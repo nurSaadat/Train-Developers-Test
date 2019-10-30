@@ -42,13 +42,15 @@
         <label for="dob">Date of Birth</label>
         <input type="date" id="dob" required>
         <br>
-        <label>Gender</label>
-        <input type="radio" name="gender" id="male" checked>
-        <label for="male">Male</label>
-        <span class="check"></span>
-        <input type="radio" name="gender" id="female">
-        <label for="female">Female</label>
-        <span class="check"></span>
+        <form>
+            <label>Gender</label>
+            <input type="radio" name="gender" id="male" checked>
+            <label for="male">Male</label>
+            <span class="check"></span>
+            <input type="radio" name="gender" id="female">
+            <label for="female">Female</label>
+            <span class="check"></span>
+        </form>
         <br>
         <label>Citizenship</label>
         <select name="country">
@@ -81,7 +83,7 @@
     </div>
 </div>
 <button class="add-pass-btn">Add a Passenger</button>
-<button id="book" type="button">Book a ticket</button>
+<button id="book" type="button" onclick="window.location.href='payment.html'">Book a ticket</button>
 
 <script type="text/javascript">
     $(document).on("click", ".add-pass-btn", function() {
@@ -92,7 +94,7 @@
     $(document).on("click", ".remove-pass-btn", function() {
        var index = $(".remove-pass-btn").index(this);
        console.log(index);
-       $(".newPass").eq(index).remove();
+       if ($(".newPass").length>1) {$(".newPass").eq(index).remove()}
     });
 </script>
 
