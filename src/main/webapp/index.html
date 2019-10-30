@@ -54,9 +54,11 @@ $(document).ready(function () {
 		}).fail(function(r) {
 			alert("Error!");
 	    });
-		
     });
-    
+	
+	$("#profile-button").on('click', function () {
+		goToProfile();
+    });
 });
 
 	</script>

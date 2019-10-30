@@ -23,6 +23,7 @@ public class MainApplication extends Application {
         singletons.add(new SignUpService());
         singletons.add(new ListTicketsService());
         singletons.add(new CheckLogInService());
+        singletons.add(new ProfileInfoService());
         
     }
     
