@@ -11,27 +11,16 @@
 function goToProfile(){
 	window.location.href = "user/regular_profile.html";
 }
-	
-function validate(email, password){
-	if (email == ""){
-		alert("Please fill out your email");
-	}
-	else if (password == ""){
-		alert("Please fill out your password");
-	}
-}
 
 function logIn(){
 	var email = document.getElementById('user-email').value;
 	var password = document.getElementById('user-password').value;
 	
-	validate(email, password);
-	
 	$.post("services/login", {username: email, password: password}, function(r) {
 		console.log(r);
 		goToProfile();
     }).fail(function(r) {
-    	alert(r);
+    	alert(r.responseText);
 		console.log(r.responseText);
     });
 }
@@ -45,6 +34,7 @@ $(document).ready(function () {
 	$("#logout").on('click', function (r) {
 		$.post("services/logout", {}, function(r){
 			console.log(r);
+			window.location.href = "index.html";
 		}).fail(function(r) {
 			alert("Error!");
 	    });

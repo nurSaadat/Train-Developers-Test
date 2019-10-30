@@ -26,7 +26,7 @@ public class LogInService {
 			
 		if (email == null || pass == null || email.compareTo("") == 0 || pass.compareTo("") == 0) {
 			
-			return Response.serverError().entity("Error! One of the fields is empty!").build();
+			return Response.serverError().entity("Error! Some field is empty!").build();
 			
 		}
 			
