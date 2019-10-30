@@ -3,9 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Make a Payment</title>
-    <link rel = "stylesheet" href = "../startPageStyle.css">
+    <link rel = "stylesheet" href = "startPageStyle.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        function validate(cardName, cardNumber, cvv){
+
+            if (cardName == "") {
+                alert("Please, fill out Cardholder's Name.");
+            } else if (cardNumber == "") {
+                alert("Please, fill out Card Number.");
+            } else if (cvv == "") {
+                alert("Please, fill out CVV/CVC.");
+            }
+        }
+
+        function pay(){
+
+            var cardName = document.getElementById('cardName').value;
+            var cardNumber = document.getElementById('cardNumber').value;
+            var expMonth = document.getElementById('expMonth').value;
+            var expYear = document.getElementById('expYear').value;
+            var cvv = document.getElementById('cvv').value;
+
+            validate(cardName, cardNumber, cvv);
+
+            $.post("services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
+                console.log(r);
+                // redirect
+                window.location.href = "index.html";
+            }).fail(function(r) {
+                alert(r.responseText);
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#pay").on('click', function () {
+                pay();
+            });
+
+        });
+
+    </script>
+
 </head>
 <body>
 
@@ -46,7 +88,7 @@
 <label for="cvv">CVV/CVC</label>
 <input type="text" id="cvv" required>
 <br>
-<button id="pay" type="button">Submit</button>
+<button id="pay">Submit</button>
 
 </body>
 </html>
