@@ -44,7 +44,7 @@
                 var to = $(this).find("td").eq(8).html();
 
                 //alert('from ' + from + 'to' + to)
-                String: routeName = from + "-" + to + ".geojson";
+                String: routeName = "geojson/" + from + "-" + to + ".geojson";
                 if (route) {
                     window.map.removeLayer(route);
                 }
