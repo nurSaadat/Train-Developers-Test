@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Payment</title>
+    <link rel = "stylesheet" href = "startPageStyle.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<h2>Make a Payment</h2>
+
+<label for="cardName">Cardholder's Name</label>
+<input type="text" id="cardName" required>
+<br>
+<label for="cardNumber">Card Number</label>
+<input type="text" id="cardNumber" required>
+<br>
+<label for="cardNumber">Exp Month</label>
+<select name="expMonth">
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+</select>
+<label for="year">Exp Year</label>
+<select name="year" id="year">
+    <option value="2019">2019</option>
+    <option value="2020">2020</option>
+    <option value="2021">2021</option>
+    <option value="2022">2022</option>
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+</select>
+<br>
+<label for="cvv">CVV/CVC</label>
+<input type="text" id="cvv" required>
+<br>
+<button id="pay" type="button">Submit</button>
+
+</body>
+</html>
