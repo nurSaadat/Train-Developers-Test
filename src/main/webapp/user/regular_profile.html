@@ -3,18 +3,33 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" href = "startPageStyle.css">
+	<link rel = "stylesheet" href = "../startPageStyle.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 	
+	function getInfo() {
+		
+        $.get('../services/accInfo', {}, function(r) {
+            update(r);
+        }, 'json');
+    }
+	
+	function update(items) {
+		
+		$("#first-name").append("Your first name: " + items[0]);
+		$("#last-name").append("Your last name: " + items[1]);
+		$("#email").append("Your email: " + items[2]);
+    }
+	
 	$(document).ready(function () {	
 		
+		getInfo();
+		
 		$("#ticket-history").on('click', function (r) {
-			window.location.href = "ticket_history.html";
 			
+			window.location.href = "ticket_history.html";
 	    });
-	    
 	});
 	
 	</script>
@@ -26,14 +41,11 @@
 	<br>
 	<a href="booking.html">Buy Ticket</a>
 	<br>
-	<button id="logout" type="button" >Log Out</button>
-	<br>
 	<h3>Personal profile</h3>
 	<br>
 	<div id="first-name"></div>
 	<div id="last-name"></div>
 	<div id="email"></div>
-	<div id="id"></div>
 	<br>
 	<button id="password-change">Change password</button>
 	<br>
