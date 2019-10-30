@@ -17,7 +17,7 @@ public class SignUpService {
 	private static final String EMAIL_PATTERN = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{6,40})";
 	private static final String FNAME_PATTERN = "[A-Z][a-z]*";
-	private static final String LNAME_PATTERN = "[A-Z]+([ '-][a-zA-Z]+)*";
+	private static final String LNAME_PATTERN = "[A-Z]+[a-z]*";
 	
 	@POST
     public Response register(@FormParam("email") String email, @FormParam("fname") String fname, @FormParam("lname") String lname, @FormParam("password") String password) throws SQLException, ClassNotFoundException {
@@ -66,7 +66,7 @@ public class SignUpService {
 			
 		}
 		
-		db.insertData("INSERT INTO User (Email, FName, LName, Password) VALUES (" + email + ", " + fname + ", " + lname + ", " + password + ");");
+		db.insertData("INSERT INTO User (Email, FName, LName, Password) VALUES (\"" + email + "\", \"" + fname + "\", \"" + lname + "\", \"" + password + "\");");
     	
         return Response.ok().build();
         

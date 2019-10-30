@@ -33,6 +33,7 @@ function signUp(){
 	
 	$.post("services/signup", {email: email, fname: fname, lname: lname, password: password}, function(r) {
 		console.log(r);
+		// redirect
 		window.location.href = "index.html";
 	}).fail(function(r) {
 		alert(r.responseText);

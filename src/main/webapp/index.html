@@ -31,6 +31,7 @@ function logIn(){
 		console.log(r);
 		goToProfile();
     }).fail(function(r) {
+    	alert(r);
 		console.log(r.responseText);
     });
 }
