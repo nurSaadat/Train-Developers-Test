@@ -28,6 +28,9 @@ public class MainApplication extends Application {
         singletons.add(new PaymentService());
         singletons.add(new ListTicketsService());
         singletons.add(new ListSeatsService());
+        singletons.add(new ListOrdersService());
+        singletons.add(new BookTicketService());
+        singletons.add(new ListPassengersService());
     }
     
     @Override

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Booking</title>
+    <link rel = "stylesheet" href = "../startPageStyle.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type = "text/javascript">
+        var routeId, dateFrom, dateTo, from, to, seat, carriage, dist, ticketPrice, totalPrice, trainId, email;
+        var passenger = [];
+        var ticket = [];
+        var order = [];
+
+        function getInfo() {
+
+            $.get('../services/accInfo', {}, function(r) {
+               email = r[2];
+            }, 'json');
+        }
+
+        // function update(items) {
+        //
+        //     $("#first-name").append("First name: " + items[0]);
+        //     $("#last-name").append("Last name: " + items[1]);
+        //     $("#email").append("Email: " + items[2]);
+        // }
+
+        function validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth){
+
+            if (doctype == "" || doctype == null ) {
+                alert("Please, choose your document type.");
+                return false;
+            } else if (tariff == "" || tariff == null) {
+                alert("Please, choose tariff.");
+                return false;
+            } else if (docId == "" || docId == null ) {
+                alert("Please, fill out your document ID.");
+                return false;
+            } else if (PFname == "" || PFname == null) {
+                alert("Please, fill out your first name.");
+                return false;
+            } else if (PLname == "" || PLname == null) {
+                alert("Please, fill out your last name.");
+                return false;
+            } else if (phoneNum == "" || phoneNum == null) {
+                alert("Please, fill out your phone number.");
+                return false;
+            }else if (citizenship== "" || citizenship== null) {
+                alert("Please, choose your country.");
+                return false;
+            }else if (gender == "" || gender == null) {
+                alert("Please, fill out your gender.");
+                return false;
+            }else if (dateOfBirth == "" || dateOfBirth == null) {
+                alert("Please, fill out your date of birth.");
+                return false;
+            } return true;
+        }
+
+        function validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to) {
+            if (dateFrom == "" || dateFrom== null ) {
+                alert("Please, choose a route.");
+                return false;
+            }else if (dateTo == "" || dateTo == null) {
+                alert("Please, choose a route.");
+                return false;
+            }else if (ticketPrice == "" || ticketPrice == null) {
+                alert("Please, choose a seat.");
+                return false;
+            }else if (routeId== "" || routeId == null) {
+                alert("Please, choose a route.");
+                return false;
+            }else if (trainId== "" || trainId == null) {
+                alert("Please, choose a route.");
+                return false;
+            }else if (seat== "" || seat == null) {
+                alert("Please, choose a route.");
+                return false;
+            }else if (carriage== "" || carriage == null) {
+                alert("Please, choose a seat.");
+                return false;
+            }else if (from== "" || from == null) {
+                alert("Please, choose a departure station.");
+                return false;
+            }else if (to == "" || to == null) {
+                alert("Please, choose an arrival station.");
+                return false;
+            } return true;
+        }
+
+        function validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email){
+            if (numOfpassengers == "" || numOfpassengers == null ) {
+                alert("Please, choose a number of passengers.");
+                return false;
+            }else if (bookingDate == "" || bookingDate == null) {
+                alert("Error");
+                return false;
+            }else if (bookingTime== "" || bookingTime == null) {
+                alert("Error");
+                return false;
+            }else if (payment== "" || payment == null) {
+                alert("Please, choose a payment type.");
+                return false;
+            }else if (totalPrice== "" || totalPrice == null) {
+                alert("Error");
+                return false;
+            } else if (email== "" || email== null) {
+                alert("Error");
+                return false;
+            }return true;
+        }
+
+        function createPassenger(){
+            var doctype = document.getElementById('doctype').value;
+            var tariff = document.getElementById('tariff').value;
+            var docId = document.getElementById('docID').value;
+            var PFname = document.getElementById('fname').value;
+            var PLname = document.getElementById('lname').value;
+            var phoneNum = document.getElementById('telephone').value;
+            var citizenship = document.getElementById('country').value;
+            var gender = document.getElementById('gender').value;
+            var dateOfBirth = document.getElementById('dob').value;
+
+            if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
+                passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
+                console.log(passenger);
+                localStorage.setItem("passenger", JSON.stringify(passenger));
+                localStorage.setItem("ticket", JSON.stringify(ticket));
+                localStorage.setItem("order", JSON.stringify(order));
+                window.location.href='payment.html';
+            }
+        }
+
+        function createTicket(){
+            if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
+                ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
+                console.log(ticket);
+                createPassenger();
+            }
+        }
+
+        function createOrder(){
+            var numOfpassengers = document.getElementById('numOfpassengers').value;
+            var payment = document.getElementById('payment').value;
+            var today = new Date();
+            var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            totalPrice = ticketPrice; /////!!!!!!! change when more than one passenger!!!!!!
+            getInfo();
+            if(validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email)){
+                order = [numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email];
+                console.log(order);
+                createTicket();
+            }
+
+        }
+
+        function showRoutes(items) {
+            items.forEach(function (e) {
+
+                if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() == e[1])){
+                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                }
+            }) ;
+            if ($('#routes-table tr').length == 1) {
+                alert("No routes found!")
+            }
+            $("#routes-table tr > td > button").on('click', function () {
+                from = $(this).closest('tr').find("td").eq(7).html();
+                to = $(this).closest('tr').find("td").eq(8).html();
+                routeId = $(this).closest('tr').find("td").eq(0).html();
+                dateFrom = $(this).closest('tr').find("td").eq(1).html();
+                dateTo = $(this).closest('tr').find("td").eq(2).html();
+                dist = $(this).closest('tr').find("td").eq(5).html();
+                console.log(from, to, routeId, dateFrom, dateTo)
+                postSeats();
+                
+            });
+
+        }
+        function showSeats(items) {
+            items.forEach(function (e) {
+                var price = parseFloat(e[4]) + parseFloat(dist) * 200;
+                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                trainId = e[5];
+            });
+
+            // var millisecondsToWait = 500;
+            // setTimeout(function() {
+            //     if ($('#seats-table tr').length == 1) {
+            //         alert("No seats found!")
+            //     }
+            // }, millisecondsToWait);
+
+
+
+            $("#seats-table tr > td > button").on('click', function () {
+                seat = $(this).closest('tr').find("td").eq(0).html();
+                carriage = $(this).closest('tr').find("td").eq(2).html();
+                ticketPrice = $(this).closest('tr').find("td").eq(4).html();
+                console.log(seat, trainId, carriage, ticketPrice);
+                $( "div.seat" ).text( "Your seat is " + seat + ", in carriage " + carriage + ", price: " + ticketPrice );
+            });
+
+        }
+
+        function getRoutes() {
+            $.ajax({
+                url : '../services/routes',
+                dataType : 'json',
+                success : function(r) {
+                    showRoutes(r);
+                }
+            });
+        }
+
+        function getSeats() {
+            $.ajax({
+                url : '../services/seats',
+                dataType : 'json',
+                success : function(r) {
+                    showSeats(r);
+                }
+            });
+        }
+
+        function postSeats(){
+            $.post("../services/seats", {RouteID: routeId}, function(r) {
+                console.log(r);
+                getSeats();
+
+            }).fail(function(r) {
+                alert(r);
+                console.log(r.responseText);
+            });
+        }
+
+
+        $(document).on("click", ".find-routes", function() {
+            getRoutes();
+        });
+
+        $(document).on("click", ".add-pass-btn", function() {
+            var passForm = $(".newPass").eq(0).clone().show();
+            $(".addPass").append(passForm);
+        });
+
+        $(document).on("click", ".remove-pass-btn", function() {
+            var index = $(".remove-pass-btn").index(this);
+            console.log(index);
+            if ($(".newPass").length>1) {$(".newPass").eq(index).remove()}
+        });
+
+        $(document).on("click", ".book", function() {
+            createOrder();
+        });
+
+    </script>
+</head>
+
+<body>
+
+<h2>Ticket Booking</h2>
+
+<h2>Routes</h2>
+<table id="routes-table">
+    <tr>
+        <th>RouteID</th>
+        <th>DateFrom</th>
+        <th>DateTo</th>
+        <th>TimeFrom</th>
+        <th>TimeTo</th>
+        <th>Distance (in km)</th>
+        <th>Status</th>
+        <th>StationFrom</th>
+        <th>StationTo</th>
+        <th></th>
+    </tr>
+</table>
+
+<select id="stationFrom">
+    <option value="AST">Astana</option>
+    <option value="ALM">Almaty</option>
+    <option value="SEM">Semey</option>
+    <option value="ATB">Aktobe</option>
+    <option value="PET">Petropavlovsk</option>
+    <option value="KSH">Kokshetau</option>
+</select>
+
+<select id="stationTo">
+    <option value="AST">Astana</option>
+    <option value="ALM">Almaty</option>
+    <option value="SEM">Semey</option>
+    <option value="ATB">Aktobe</option>
+    <option value="PET">Petropavlovsk</option>
+    <option value="KSH">Kokshetau</option>
+</select>
+<br>
+<label for="dateFrom">Departure Date</label>
+<input type="date" id="dateFrom" required>
+<br>
+<button class="find-routes"> Find Routes</button>
+<br><br><br>
+<table id="seats-table">
+    <tr>
+        <th>SeatNumber</th>
+        <th>Status</th>
+        <th>Carriage Number</th>
+        <th>Class</th>
+        <th>Price</th>
+    </tr>
+</table>
+<div class="seat"></div>
+<label> Number of passengers </label>>
+<input type="number" id = "numOfpassengers" required>
+<div class="addPass">
+    <div class="newPass">
+
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" required>
+        <br>
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" required>
+        <br>
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" required>
+        <br>
+        <label>Gender</label>
+        <select id="gender">
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+        </select>
+        <br>
+        <label>Citizenship</label>
+        <select id="country">
+            <option value="Kazakhstan">Kazakhstan</option>
+            <option value="Russia">Russia</option>
+            <option value="Other">Other</option>
+        </select>
+        <br>
+        <label>Document Type</label>
+        <select id="doctype">
+            <option value="passport">Passport</option>
+            <option value="IDcard">ID Card</option>
+        </select>
+        <br>
+        <label>Tariff</label>
+        <select id="tariff">
+            <option value="regular">Regular</option>
+            <option value="retired">Retired</option>
+            <option value="student">Student</option>
+            <option value="child">Child</option>
+        </select>
+        <br>
+        <label>Payment Type</label>
+        <select id="payment">
+            <option value="BankCard">Bank card</option>
+            <option value="OnlineWallet">Online wallet</option>
+            <option value="Other">Other</option>
+        </select>
+        <br>
+        <label for="docID">Document ID</label>
+        <input type="text" id="docID" required>
+        <br>
+        <label for="telephone">Phone Number</label>
+        <input type="text" id="telephone" required>
+        <br>
+        <button class="remove-pass-btn">Remove a Passenger</button>
+    </div>
+</div>
+<button class="add-pass-btn">Add a Passenger</button>
+<button class="book" type="button">Book a ticket</button>
+
+
+
+</body>
+</html>

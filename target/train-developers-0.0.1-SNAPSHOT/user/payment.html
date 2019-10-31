@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Payment</title>
+    <link rel = "stylesheet" href = "../startPageStyle.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        var passenger = JSON.parse(localStorage.getItem("passenger"));
+        var ticket = JSON.parse(localStorage.getItem("ticket"));
+        var order = JSON.parse(localStorage.getItem("order"));
+        var OrderID;
+        console.log(passenger, ticket, order);
+
+        function validate(cardName, cardNumber, cvv){
+
+            if (cardName == "") {
+                alert("Please, fill out Cardholder's Name.");
+            } else if (cardNumber == "") {
+                alert("Please, fill out Card Number.");
+            } else if (cvv == "") {
+                alert("Please, fill out CVV/CVC.");
+            }
+        }
+
+
+        function postOrder(){
+
+            $.post("../services/orders", {NumberOfPassengers : order[0], BookingDate : order[1], BookingTime: order[2], PaymentType: order[3], TotalPrice: order[4], UserEmail: order[5]}, function(r) {
+                console.log(r);
+                OrderID = r[0];
+                postTicket();
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        function postTicket() {
+            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: OrderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[9]}, function(r) {
+                console.log(r);
+                TicketID = r[0];
+                postPassenger();
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        function postPassenger() {
+            $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: OrderID, TicketID: TicketID}, function(r) {
+                console.log(r);
+                // redirect
+                window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        function pay(){
+
+            var cardName = document.getElementById('cardName').value;
+            var cardNumber = document.getElementById('cardNumber').value;
+            var expMonth = document.getElementById('expMonth').value;
+            var expYear = document.getElementById('expYear').value;
+            var cvv = document.getElementById('cvv').value;
+
+            validate(cardName, cardNumber, cvv);
+
+            $.post("../services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
+                console.log(r);
+
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        $(document).ready(function () {
+
+            $("#pay").on('click', function () {
+                pay();
+                postOrder();
+            });
+
+        });
+
+    </script>
+
+</head>
+<body>
+
+<h2>Make a Payment</h2>
+
+<label for="cardName">Cardholder's Name</label>
+<input type="text" id="cardName" required>
+<br>
+<label for="cardNumber">Card Number</label>
+<input type="text" id="cardNumber" required>
+<br>
+<label for="cardNumber">Exp Month</label>
+<select name="expMonth" id="expMonth">
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+</select>
+<label for="expYear">Exp Year</label>
+<select name="expYear" id="expYear">
+    <option value="2019">2019</option>
+    <option value="2020">2020</option>
+    <option value="2021">2021</option>
+    <option value="2022">2022</option>
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+</select>
+<br>
+<label for="cvv">CVV/CVC</label>
+<input type="password" id="cvv" required>
+<br>
+<button id="pay">Submit</button>
+
+</body>
+</html>

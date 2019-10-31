@@ -13,63 +13,62 @@ public class ListPassengersService {
     private static final String FNAME_PATTERN = "[A-Z][a-z]*";
     private static final String LNAME_PATTERN = "[A-Z]+([ '-][a-zA-Z]+)*";
     private static final String DOCUMENTID_PATTERN = "^[0-9]{9}";
-    private static final String PHONENUMBER_PATTERN = "^[8]{1}[0-9]{10}";
+    private static final String PHONENUMBER_PATTERN = "^[0-9]{11}";
+    private static final String DOB_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
 
     @POST
-    public Response book(@FormParam("data") List<String> data) throws SQLException, ClassNotFoundException {
+    public Response register(@FormParam("DocumentType") String DocumentType, @FormParam("Tariff") String Tariff, @FormParam("DocumentID") String DocumentID, @FormParam("FName") String FName,@FormParam("LName") String LName, @FormParam("PhoneNumber") String PhoneNumber, @FormParam("Citizenship") String Citizenship, @FormParam("Gender") String Gender, @FormParam("DateOfBirth") String DateOfBirth, @FormParam("OrderID") String OrderID, @FormParam("TicketID") String TicketID ) throws SQLException, ClassNotFoundException {
+
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).length() == 0 && i != 0) {
+        if (DocumentType== null || Tariff== null || DocumentID == null ||  FName == null || LName == null || PhoneNumber == null || Citizenship == null || Gender == null || DateOfBirth == null || OrderID == null || TicketID== null) {
 
-                return Response.serverError().entity("Error! One of the fields is empty!").build();
-
-            }
-            if (i == 0) {
-
-                ResultSet rs = db.getData("SELECT MAX(PassengerID) FROM Passenger;");
-                rs.next();
-                if (rs.getInt( 1) == 0) {
-                    data.set(0, "1");
-                } else{
-                    int newId = rs.getInt( 1) + 1;
-                    data.set(0, Integer.toString(newId) );
-                }
-            }
-            if (i == 3) {
-
-                if (!data.get(3).matches(DOCUMENTID_PATTERN)) {
-                    return Response.serverError().entity("Error! Document number provided is invalid!").build();
-                }
-
-            }
-
-            if (i == 4) {
-
-                if (!data.get(i).matches(FNAME_PATTERN)) {
-                    return Response.serverError().entity("Error! First name provided is invalid!").build();
-                }
-
-            }
-
-            if (i == 5) {
-
-                if (!data.get(i).matches(LNAME_PATTERN)) {
-                    return Response.serverError().entity("Error! Last name provided is invalid!").build();
-                }
-
-            }
-
-            if (i == 6) {
-
-                if (!data.get(i).matches(PHONENUMBER_PATTERN)) {
-                    return Response.serverError().entity("Error! Phone number provided is invalid!").build();
-                }
-
-            }
+            return Response.serverError().entity("Error! One of the fields is empty!").build();
 
         }
-        db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + data.get(0) + ", " + data.get(1) + ", " + data.get(2) + ", " + data.get(3) + data.get(4) + data.get(5) + data.get(6) + data.get(7) + data.get(8) + data.get(9) + data.get(10) + data.get(11) + ");");
+
+        int PassengerID;
+        ResultSet rs = db.getData("select MAX(TicketID) from Ticket;");
+        rs.next();
+        if (rs.getInt( 1) == 0) {
+            PassengerID = 1;
+        }
+        else{
+            PassengerID = rs.getInt(1) + 1;
+        }
+
+        if (!FName.matches(FNAME_PATTERN)) {
+
+            return Response.serverError().entity("Error! First Name provided is invalid!").build();
+
+        }
+
+        if (!LName.matches(LNAME_PATTERN)) {
+
+            return Response.serverError().entity("Error! Last Name provided is invalid!").build();
+
+        }
+
+        if (!DocumentID.matches(DOCUMENTID_PATTERN)) {
+
+            return Response.serverError().entity("Error! Document ID provided is invalid! ").build();
+
+        }
+
+        if (!PhoneNumber.matches(PHONENUMBER_PATTERN)) {
+
+            return Response.serverError().entity("Error! Number provided is invalid!").build();
+
+        }
+
+        if (DateOfBirth.matches(DOB_PATTERN)) {
+
+            return Response.serverError().entity("Error! Date of birth provided is invalid!").build();
+
+        }
+
+
+        db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + PassengerID + ", " + DocumentType + ", " + Tariff + ", " + DocumentID + ", " + FName + ", " + LName + ", " + PhoneNumber + ", " + Citizenship + ", " + Gender + ", " + DateOfBirth + ", " + OrderID+ ", " + TicketID + ");");
         return Response.ok().build();
     }
 }

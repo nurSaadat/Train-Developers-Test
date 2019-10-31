@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Make a Payment</title>
-    <link rel = "stylesheet" href = "startPageStyle.css">
+    <link rel = "stylesheet" href = "../startPageStyle.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
 
     <script type="text/javascript">
+        var passenger = JSON.parse(localStorage.getItem("passenger"));
+        var ticket = JSON.parse(localStorage.getItem("ticket"));
+        var order = JSON.parse(localStorage.getItem("order"));
+        var OrderID;
+        console.log(passenger, ticket, order);
+
         function validate(cardName, cardNumber, cvv){
 
             if (cardName == "") {
@@ -17,6 +23,42 @@
             } else if (cvv == "") {
                 alert("Please, fill out CVV/CVC.");
             }
+        }
+
+
+        function postOrder(){
+
+            $.post("../services/orders", {NumberOfPassengers : order[0], BookingDate : order[1], BookingTime: order[2], PaymentType: order[3], TotalPrice: order[4], UserEmail: order[5]}, function(r) {
+                console.log(r);
+                OrderID = r[0];
+                postTicket();
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        function postTicket() {
+            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: OrderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[9]}, function(r) {
+                console.log(r);
+                TicketID = r[0];
+                postPassenger();
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
+        }
+
+        function postPassenger() {
+            $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: OrderID, TicketID: TicketID}, function(r) {
+                console.log(r);
+                // redirect
+                window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText);
+            });
         }
 
         function pay(){
@@ -31,8 +73,9 @@
 
             $.post("../services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
                 console.log(r);
+
                 // redirect
-                window.location.href = "../index.html";
+                //window.location.href = "../index.html";
             }).fail(function(r) {
                 console.log(r.responseText);
             });
@@ -42,6 +85,7 @@
 
             $("#pay").on('click', function () {
                 pay();
+                postOrder();
             });
 
         });
