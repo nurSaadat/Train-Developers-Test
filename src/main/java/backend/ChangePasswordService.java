@@ -44,6 +44,7 @@ public class ChangePasswordService {
 			}
 			
 			db.updateData("UPDATE User SET Password='" + newPass + "' WHERE Email='" + email + "';");
+			db.closeConnection();
 					
 			return Response.ok("Password is successfully updated").build();
 			

@@ -10,9 +10,9 @@ import javax.ws.rs.core.Response;
 @Path("/payment")
 public class PaymentService {
 
-    private static final String NAME_PATTERN = "[A-Z][a-z]*";
-    private static final String NUMBER_PATTERN = "([0-9].{16})";
-    private static final String CVV_PATTERN = "([0-9].{3})";
+    private static final String NAME_PATTERN = "[A-Z]+ [A-Z]+";
+    private static final String NUMBER_PATTERN = "([0-9]){16}";
+    private static final String CVV_PATTERN = "([0-9]){3}";
 
     @POST
     public Response doPay(@FormParam("cardName") String cardName, @FormParam("cardNumber") String cardNumber, @FormParam("expMonth") String expMonth, @FormParam("expYear") String expYear, @FormParam("cvv") String cvv) throws SQLException, ClassNotFoundException {

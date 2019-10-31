@@ -62,6 +62,8 @@ public class LogInService {
 			}
 		}
 		
+		db.closeConnection();
+		
 		return Response.serverError().entity("Error! Email address is not present in the database!").build();
         
     }

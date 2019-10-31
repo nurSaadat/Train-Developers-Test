@@ -34,6 +34,7 @@ public class BookTicketService {
             }
         }
         db.insertData("INSERT INTO Ticket (TicketID, DepartureDate, ArrivingDate, Price, OrderID, RouteID, TrainID, SeatNumber, CarriageNumber, ScheduleFromID, ScheduleToID) VALUES (" + data.get(0) + ", " + data.get(1) + ", " + data.get(2) + ", " + data.get(3) + data.get(4) + data.get(5) + data.get(6) + data.get(7) + data.get(8) + data.get(9) + data.get(10) + ");");
+        db.closeConnection();
         return Response.ok().build();
     }
 }

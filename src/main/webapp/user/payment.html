@@ -29,12 +29,12 @@
 
             validate(cardName, cardNumber, cvv);
 
-            $.post("services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
+            $.post("../services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
                 console.log(r);
                 // redirect
-                window.location.href = "index.html";
+                window.location.href = "../index.html";
             }).fail(function(r) {
-                alert(r.responseText);
+                console.log(r.responseText);
             });
         }
 
@@ -86,7 +86,7 @@
 </select>
 <br>
 <label for="cvv">CVV/CVC</label>
-<input type="text" id="cvv" required>
+<input type="password" id="cvv" required>
 <br>
 <button id="pay">Submit</button>
 

@@ -70,6 +70,7 @@ public class ListPassengersService {
 
         }
         db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + data.get(0) + ", " + data.get(1) + ", " + data.get(2) + ", " + data.get(3) + data.get(4) + data.get(5) + data.get(6) + data.get(7) + data.get(8) + data.get(9) + data.get(10) + data.get(11) + ");");
+        db.closeConnection();
         return Response.ok().build();
     }
 }

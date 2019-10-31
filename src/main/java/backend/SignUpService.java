@@ -67,7 +67,7 @@ public class SignUpService {
 		}
 		
 		db.insertData("INSERT INTO User (Email, FName, LName, Password) VALUES (\"" + email + "\", \"" + fname + "\", \"" + lname + "\", \"" + password + "\");");
-    	
+    	db.closeConnection();
         return Response.ok().build();
         
     }

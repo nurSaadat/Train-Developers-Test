@@ -25,6 +25,7 @@ public class MainApplication extends Application {
         singletons.add(new CheckLogInService());
         singletons.add(new ProfileInfoService());
         singletons.add(new ChangePasswordService());
+        singletons.add(new PaymentService());
         
     }
     
