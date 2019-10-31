@@ -47,12 +47,13 @@
             validate(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth);
             var passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
             console.log(passenger);
-
+            window.location.href='payment.html';
         }
 
         function createTicket(){
-            var ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
+            var ticket = [dateFrom, dateTo, ticketPrice, rootId, trainId,  seat, carriage, from, to];
             console.log(ticket);
+            createPassenger();
         }
 
         function createOrder(){
@@ -64,6 +65,7 @@
             totalPrice = ticketPrice; /////!!!!!!! change when more than one passenger!!!!!!
             var order = [numOfpassengers, bookingDate, bookingTime, payment,  totalPrice];
             console.log(order);
+            createTicket();
         }
 
         function showRoutes(items) {
@@ -164,9 +166,6 @@
 
         $(document).on("click", ".book", function() {
             createOrder();
-            createTicket();
-            createPassenger();
-            window.location.href='payment.html';
         });
 
     </script>
