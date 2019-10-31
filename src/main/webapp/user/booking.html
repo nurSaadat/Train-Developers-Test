@@ -85,7 +85,7 @@
                 dist = $(this).closest('tr').find("td").eq(5).html();
                 console.log(from, to, rootId, dateFrom, dateTo)
                 postSeats();
-                getSeats();
+                
             });
 
         }
@@ -138,6 +138,7 @@
         function postSeats(){
             $.post("../services/seats", {RouteID: rootId}, function(r) {
                 console.log(r);
+                getSeats();
 
             }).fail(function(r) {
                 alert(r);
