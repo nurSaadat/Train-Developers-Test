@@ -27,6 +27,7 @@ public class MainApplication extends Application {
         singletons.add(new ChangePasswordService());
         singletons.add(new PaymentService());
         singletons.add(new ListTicketsService());
+        singletons.add(new ListSeatsService());
     }
     
     @Override
