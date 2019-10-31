@@ -15,17 +15,19 @@ import javax.ws.rs.core.Response;
 @Path("/seats")
 public class ListSeatsService {
 
-    private List<List<String>> seats;
+    private List<List<String>> seats = new CopyOnWriteArrayList<>();
 
     @POST
     public Response ListSeats(@FormParam("RouteID") String RouteID) throws SQLException, ClassNotFoundException {
-        seats = new CopyOnWriteArrayList<>();
+    	
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
         ResultSet rs = db.getData("select S.Number, S.Status, C.CarriageNumber, Cl.Name, Cl.Price, T.TrainID\n" +
                 "from Seat S, Carriage C, Train T, ScheduleHasTrain SHT, Class Cl\n" +
                 "where S.CarriageID = C.CarriageNumber and C.TrainID = T.TrainID and T.TrainID = SHT.TrainID and SHT.RouteID = '1' and C.Class_Name = Cl.Name; ");
-
+        
+        seats.clear();
+        
         while (rs.next()) {
             seats.add(new CopyOnWriteArrayList<String>());
             seats.get(seats.size() - 1).add(rs.getString("Number"));
