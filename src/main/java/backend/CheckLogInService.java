@@ -8,9 +8,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @Path("/checkin")
-public class CheckLogInService {
-	
-	
+public class CheckLogInService {	
 	@GET
     public Response checkin(@Context HttpServletRequest request) {
 		
