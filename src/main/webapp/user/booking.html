@@ -136,7 +136,8 @@
 
         function createOrder(){
         	getInfo();
-            var numOfpassengers = document.getElementById('numOfpassengers').value;
+            var numOfpassengers = 1;
+            	// document.getElementById('numOfpassengers').value;
             var payment = document.getElementById('payment').value;
             var today = new Date();
             var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -232,7 +233,7 @@
 
 $(document).ready(function () {	
 
-        ("#find-routes").on("click", function() {
+        $("#find-routes").on("click", function() {
             getRoutes();
         });
 
@@ -248,7 +249,7 @@ $(document).ready(function () {
         }); 
 */
 
-        ("#book").on("click", function() {
+        $("#book").on("click", function() {
             createOrder();
         });
 });  
@@ -297,7 +298,7 @@ $(document).ready(function () {
 <label for="dateFrom">Departure Date</label>
 <input type="date" id="dateFrom" required>
 <br>
-<button class="find-routes"> Find Routes</button>
+<button id="find-routes"> Find Routes</button>
 <br><br><br>
 <table id="seats-table">
     <tr>
@@ -369,7 +370,7 @@ $(document).ready(function () {
     </div>
 </div>
 <button class="add-pass-btn" style="visibility:hidden">Add a Passenger</button>
-<button class="book" type="button">Book a ticket</button>
+<button id="book" type="button">Book a ticket</button>
 
 
 
