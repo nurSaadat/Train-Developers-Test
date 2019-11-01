@@ -13,8 +13,8 @@ public class ListOrdersService {
     private static final String EMAIL_PATTERN = "[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]";
     private static final String NUMBEROFPASS_PATTERN = "[1|2|3|4|5]";
     private static final String TOTALPRICE_PATTERN = "[0-9]+";
-    private static final String BOOKINGDATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
-    private static final String BOOKINGTIME_PATTERN = "\\d{2}:\\d{2}:\\d{2}";
+    private static final String BOOKINGDATE_PATTERN = "([0-9]*)-([0-9]*)-([0-9]*)}";
+    private static final String BOOKINGTIME_PATTERN = ".";
 
     @POST
 
@@ -48,23 +48,23 @@ public class ListOrdersService {
 
         }
 
-        if (!TotalPrice.matches(TOTALPRICE_PATTERN )) {
+        if (!TotalPrice.matches(TOTALPRICE_PATTERN)) {
 
             return Response.serverError().entity("Error! Total price provided is invalid!").build();
 
         }
 
-        if (BookingDate.matches(BOOKINGDATE_PATTERN )) {
-
-            return Response.serverError().entity("Error! Booking date provided is invalid!").build();
-
-        }
+//        if (!BookingDate.matches(BOOKINGDATE_PATTERN)) {
+//
+//            return Response.serverError().entity("Error! Booking date provided is invalid!").build();
+//
+//        }
         
-        if (BookingTime.matches(BOOKINGTIME_PATTERN )) {
-
-            return Response.serverError().entity("Error! Booking time provided is invalid!").build();
-
-        }
+//        if (!BookingTime.matches(BOOKINGTIME_PATTERN)) {
+//
+//            return Response.serverError().entity("Error! Booking time provided is invalid!").build();
+//
+//        }
 
         db.insertData("INSERT INTO `Order` (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
         return Response.ok().build();
