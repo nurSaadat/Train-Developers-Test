@@ -10,15 +10,15 @@ import java.util.List;
 
 @Path("/orders")
 public class ListOrdersService {
-    private static final String EMAIL_PATTERN = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+    private static final String EMAIL_PATTERN = "[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]";
     private static final String NUMBEROFPASS_PATTERN = "[1|2|3|4|5]";
-    private static final String TOTALPRICE_PATTERN = "[0-9]{11}";
-    private static final String BOOKINGDATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
-    private static final String BOOKINGTIME_PATTERN = "^(?:(?:([01]?\\d|2[0-3]):)?([0-5]?\\d):)?([0-5]?\\d)$";
+    private static final String TOTALPRICE_PATTERN = "[0-9]+";
+    private static final String BOOKINGDATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+    private static final String BOOKINGTIME_PATTERN = "\\d{2}:\\d{2}:\\d{2}";
 
     @POST
 
-    public Response register(@FormParam("NumberOfPassengers") String NumberOfPassengers, @FormParam("BookingDate") String BookingDate, @FormParam("BookingTime") String BookingTime, @FormParam("PaymentType") String PaymentType,@FormParam("TotalPrice") String TotalPrice, @FormParam("Email") String Email) throws SQLException, ClassNotFoundException {
+    public Response register(@FormParam("NumberOfPassengers") String NumberOfPassengers, @FormParam("BookingDate") String BookingDate, @FormParam("BookingTime") String BookingTime, @FormParam("PaymentType") String PaymentType,@FormParam("TotalPrice") String TotalPrice, @FormParam("UserEmail") String Email) throws SQLException, ClassNotFoundException {
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
         if (NumberOfPassengers == null || BookingDate== null || BookingTime == null || PaymentType == null || TotalPrice == null || Email == null) {
@@ -59,14 +59,14 @@ public class ListOrdersService {
             return Response.serverError().entity("Error! Booking date provided is invalid!").build();
 
         }
-
+        
         if (BookingTime.matches(BOOKINGTIME_PATTERN )) {
 
             return Response.serverError().entity("Error! Booking time provided is invalid!").build();
 
         }
 
-        db.insertData("INSERT INTO Order (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", " + BookingDate +", " + BookingTime +", " + PaymentType +", " + TotalPrice +", " + Email + ");");
+        db.insertData("INSERT INTO `Order` (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
         return Response.ok().build();
     }
 }

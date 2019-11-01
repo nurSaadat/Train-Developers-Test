@@ -10,9 +10,9 @@ import java.util.List;
 
 @Path("/book")
 public class BookTicketService {
-    private static final String DEPARTUREDATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
-    private static final String ARRIVINGDATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
-    private static final String PRICE_PATTERN = "[0-9]{11}";
+    private static final String DEPARTUREDATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+    private static final String ARRIVINGDATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+    private static final String PRICE_PATTERN = "[0-9]*";
 
     @POST
     public Response register(@FormParam("DepartureDate") String DepartureDate, @FormParam("ArrivingDate") String ArrivingDate, @FormParam("Price") String Price, @FormParam("OrderID") String OrderID, @FormParam("RouteID") String RouteID, @FormParam("TrainID") String TrainID, @FormParam("SeatNumber") String SeatNumber, @FormParam("CarriageNumber") String CarriageNumber,  @FormParam("ScheduleFromID") String ScheduleFromID,  @FormParam("ScheduleToID") String ScheduleToID ) throws SQLException, ClassNotFoundException {
@@ -20,7 +20,7 @@ public class BookTicketService {
 
         if (DepartureDate == null || ArrivingDate== null || Price== null || RouteID == null || TrainID == null || SeatNumber == null|| CarriageNumber == null || ScheduleFromID == null || ScheduleToID == null ) {
 
-            return Response.serverError().entity("Error! One of the fields is empty!").build();
+            return Response.serverError().entity("Error! One of the fields is empty! book").build();
 
         }
 
@@ -34,25 +34,47 @@ public class BookTicketService {
             TicketID = rs.getInt(1) + 1;
         }
 
-        if (!Price.matches(PRICE_PATTERN )) {
+        if (!Price.matches(PRICE_PATTERN)) {
 
             return Response.serverError().entity("Error! Price provided is invalid!").build();
 
         }
 
-        if (DepartureDate.matches(DEPARTUREDATE_PATTERN )) {
+        if (!DepartureDate.matches(DEPARTUREDATE_PATTERN)) {
 
             return Response.serverError().entity("Error! Departure date provided is invalid!").build();
 
         }
 
-        if (ArrivingDate.matches(ARRIVINGDATE_PATTERN)) {
+        if (!ArrivingDate.matches(ARRIVINGDATE_PATTERN)) {
 
             return Response.serverError().entity("Error! Arriving date provided is invalid!").build();
 
         }
 
-        db.insertData("INSERT INTO Ticket (TicketID, DepartureDate, ArrivingDate, Price, OrderID, RouteID, TrainID, SeatNumber, CarriageNumber, ScheduleFromID, ScheduleToID) VALUES (" + TicketID + ", " + DepartureDate + ", " + ArrivingDate + ", " +Price + ", " + OrderID + ", " +RouteID + ", " + TrainID + ", " + SeatNumber + ", " + CarriageNumber + ", " + ScheduleFromID + ", " + ScheduleToID+ ");");
+        db.insertData("INSERT INTO `Ticket` ("
+        		+ "TicketID, "
+        		+ "DepartureDate, "
+        		+ "ArrivingDate, "
+        		+ "Price, "
+        		+ "OrderID, "
+        		+ "RouteID, "
+        		+ "TrainID, "
+        		+ "SeatNumber, "
+        		+ "CarriageNumber, "
+        		+ "ScheduleFromID, "
+        		+ "ScheduleToID) VALUES (" 
+        		+ TicketID + ", '" 
+        		+ DepartureDate + "', '" 
+        		+ ArrivingDate + "', " 
+        		+ Price + ", " 
+        		+ OrderID + ", " 
+        		+ RouteID + ", " 
+        		+ TrainID + ", " 
+        		+ SeatNumber + ", " 
+        		+ CarriageNumber + ", " 
+        		+ ScheduleFromID + ", " 
+        		+ ScheduleToID+ ");");
         db.closeConnection();
         return Response.ok().build();
     }
