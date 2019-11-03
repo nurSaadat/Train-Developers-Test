@@ -73,9 +73,9 @@ public class BookTicketService {
         		+ TrainID + ", " 
         		+ SeatNumber + ", " 
         		+ CarriageNumber + ", " 
-        		+ ScheduleFromID + ", " 
-        		+ ScheduleToID+ ");");
+        		+ 1 + ", " 
+        		+ 2+ ");");
         db.closeConnection();
-        return Response.ok().build();
+        return Response.ok(TicketID).build();
     }
 }
