@@ -11,10 +11,10 @@ import java.util.List;
 @Path("/passengers")
 public class ListPassengersService {
     private static final String FNAME_PATTERN = "[A-Z][a-z]*";
-    private static final String LNAME_PATTERN = "[A-Z]+([ '-][a-zA-Z]+)*";
-    private static final String DOCUMENTID_PATTERN = "^[0-9]{9}";
-    private static final String PHONENUMBER_PATTERN = "^[0-9]{11}";
-    private static final String DOB_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
+    private static final String LNAME_PATTERN = "[A-Z][a-z]*";
+    private static final String DOCUMENTID_PATTERN = "[0-9]*";
+    private static final String PHONENUMBER_PATTERN = "[0-9]*";
+    private static final String DOB_PATTERN = ".";
 
     @POST
     public Response register(@FormParam("DocumentType") String DocumentType, @FormParam("Tariff") String Tariff, @FormParam("DocumentID") String DocumentID, @FormParam("FName") String FName,@FormParam("LName") String LName, @FormParam("PhoneNumber") String PhoneNumber, @FormParam("Citizenship") String Citizenship, @FormParam("Gender") String Gender, @FormParam("DateOfBirth") String DateOfBirth, @FormParam("OrderID") String OrderID, @FormParam("TicketID") String TicketID ) throws SQLException, ClassNotFoundException {
@@ -66,9 +66,16 @@ public class ListPassengersService {
             return Response.serverError().entity("Error! Date of birth provided is invalid!").build();
 
         }
+        
+        String gender1 = "";
+        
+        if(Gender.compareTo("Male") == 0)
+        	gender1 = "M";
+        if(Gender.compareTo("Female") == 0)
+        	gender1 = "F";
 
 
-        db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + PassengerID + ", " + DocumentType + ", " + Tariff + ", " + DocumentID + ", " + FName + ", " + LName + ", " + PhoneNumber + ", " + Citizenship + ", " + Gender + ", " + DateOfBirth + ", " + OrderID+ ", " + TicketID + ");");
+        db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + PassengerID + ", '" + DocumentType + "', '" + Tariff + "', " + DocumentID + ", '" + FName + "', '" + LName + "', " + PhoneNumber + ", '" + Citizenship + "', '" + gender1 + "', '" + DateOfBirth + "', " + OrderID+ ", " + TicketID + ");");
         return Response.ok().build();
     }
 }

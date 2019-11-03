@@ -67,6 +67,6 @@ public class ListOrdersService {
 //        }
 
         db.insertData("INSERT INTO `Order` (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
-        return Response.ok().build();
+        return Response.ok(OrderID).build();
     }
 }
