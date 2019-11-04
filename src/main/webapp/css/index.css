@@ -1,0 +1,22 @@
+@import "base.css";
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    text-align: center;
+    font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
+    border-bottom: 2px solid black;
+}
+
+.box1 {
+    border-right: 2px solid black;
+    padding: 30px;
+}
+
+.box2 {
+    padding: 30px;
+}
+
+.box3 {
+    text-align: center;
+}

@@ -1,0 +1,8 @@
+@import "base.css";
+
+.box1 {
+    text-align: center;
+    border: 2px solid black;
+    font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
+    padding: 30px;
+}
