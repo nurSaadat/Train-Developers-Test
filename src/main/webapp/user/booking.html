@@ -12,14 +12,6 @@
         var ticket = [];
         var order = [];
 
-        function getInfo() {
-			
-            $.get('../services/accInfo', {}, function(r) {
-               email = r[2];
-               console.log(email);
-            }, 'json');
-        }
-
         function validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth){
 
             if (doctype == "" || doctype == null ) {
@@ -135,20 +127,25 @@
         }
 
         function createOrder(){
-        	getInfo();
-            var numOfpassengers = 1;
-            	// document.getElementById('numOfpassengers').value;
-            var payment = document.getElementById('payment').value;
-            var today = new Date();
-            var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-            var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            totalPrice = ticketPrice; /////!!!!!!! change when more than one passenger!!!!!!            
-            if(validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email)){
-                order = [numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email];
-                console.log(order);
-                createTicket();
-            }
-
+			var getInfo = $.get('../services/accInfo', {}, function(r) {
+	               email = r[2];
+	               console.log(email);
+	            }, 'json');
+        	getInfo.then(function() {
+        		
+        		var numOfpassengers = 1;
+            		// document.getElementById('numOfpassengers').value;
+            	var payment = document.getElementById('payment').value;
+            	var today = new Date();
+            	var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            	var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            	totalPrice = ticketPrice; /////!!!!!!! change when more than one passenger!!!!!!            
+            	if(validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email)){
+                	order = [numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email];
+                	console.log(order);
+                	createTicket();
+                	}
+        	});
         }
 
         function showRoutes(items) {
@@ -177,8 +174,7 @@
         function showSeats(items) {
             items.forEach(function (e) {
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
-                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
-                trainId = e[5];
+                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
 
             // var millisecondsToWait = 500;
@@ -194,6 +190,7 @@
                 seat = $(this).closest('tr').find("td").eq(0).html();
                 carriage = $(this).closest('tr').find("td").eq(2).html();
                 ticketPrice = $(this).closest('tr').find("td").eq(4).html();
+                trainId = $(this).closest('tr').find("td").eq(5).html();
                 console.log(seat, trainId, carriage, ticketPrice);
                 $( "div.seat" ).text( "Your seat is " + seat + ", in carriage " + carriage + ", price: " + ticketPrice );
             });
@@ -307,6 +304,8 @@ $(document).ready(function () {
         <th>Carriage Number</th>
         <th>Class</th>
         <th>Price</th>
+        <th>Train Number</th>
+        <th></th>
     </tr>
 </table>
 <div class="seat"></div>

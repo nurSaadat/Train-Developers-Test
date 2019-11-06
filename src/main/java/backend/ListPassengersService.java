@@ -27,16 +27,6 @@ public class ListPassengersService {
 
         }
 
-        int PassengerID;
-        ResultSet rs = db.getData("select MAX(TicketID) from Ticket;");
-        rs.next();
-        if (rs.getInt( 1) == 0) {
-            PassengerID = 1;
-        }
-        else{
-            PassengerID = rs.getInt(1) + 1;
-        }
-
         if (!FName.matches(FNAME_PATTERN)) {
 
             return Response.serverError().entity("Error! First Name provided is invalid!").build();
@@ -75,7 +65,7 @@ public class ListPassengersService {
         	gender1 = "F";
 
 
-        db.insertData("INSERT INTO Passenger (PassengerID, DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES (" + PassengerID + ", '" + DocumentType + "', '" + Tariff + "', " + DocumentID + ", '" + FName + "', '" + LName + "', " + PhoneNumber + ", '" + Citizenship + "', '" + gender1 + "', '" + DateOfBirth + "', " + OrderID+ ", " + TicketID + ");");
+        db.insertData("INSERT INTO Passenger ( DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES ( '" + DocumentType + "', '" + Tariff + "', " + DocumentID + ", '" + FName + "', '" + LName + "', " + PhoneNumber + ", '" + Citizenship + "', '" + gender1 + "', '" + DateOfBirth + "', " + OrderID+ ", " + TicketID + ");");
         return Response.ok().build();
     }
 }
