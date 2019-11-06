@@ -13,8 +13,8 @@ public class ListPassengersService {
     private static final String FNAME_PATTERN = "[A-Z][a-z]*";
     private static final String LNAME_PATTERN = "[A-Z][a-z]*";
     private static final String DOCUMENTID_PATTERN = "[0-9]*";
-    private static final String PHONENUMBER_PATTERN = "[0-9]*";
-    private static final String DOB_PATTERN = ".";
+    private static final String PHONENUMBER_PATTERN = "[0-9]{11}";
+    private static final String DOB_PATTERN = "[0-9]{4}-[0-9]+-[0-9]+";
 
     @POST
     public Response register(@FormParam("DocumentType") String DocumentType, @FormParam("Tariff") String Tariff, @FormParam("DocumentID") String DocumentID, @FormParam("FName") String FName,@FormParam("LName") String LName, @FormParam("PhoneNumber") String PhoneNumber, @FormParam("Citizenship") String Citizenship, @FormParam("Gender") String Gender, @FormParam("DateOfBirth") String DateOfBirth, @FormParam("OrderID") String OrderID, @FormParam("TicketID") String TicketID ) throws SQLException, ClassNotFoundException {
