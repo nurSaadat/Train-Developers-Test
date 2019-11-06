@@ -11,10 +11,10 @@ import java.util.List;
 @Path("/orders")
 public class ListOrdersService {
     private static final String EMAIL_PATTERN = "[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]";
-    private static final String NUMBEROFPASS_PATTERN = "[0-5]";
+    private static final String NUMBEROFPASS_PATTERN = "[1|2|3|4|5]";
     private static final String TOTALPRICE_PATTERN = "[0-9]+";
-    private static final String BOOKINGDATE_PATTERN = "[0-9]{4}-[0-9]*-[0-9]*";
-    private static final String BOOKINGTIME_PATTERN = "[0-9]+:[0-9]+:[0-9]+";
+    private static final String BOOKINGDATE_PATTERN = "([0-9]*)-([0-9]*)-([0-9]*)}";
+    private static final String BOOKINGTIME_PATTERN = ".";
 
     @POST
 

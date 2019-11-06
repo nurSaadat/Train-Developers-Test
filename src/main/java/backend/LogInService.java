@@ -16,7 +16,7 @@ public class LogInService {
 	private static final String EMAIL_PATTERN = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
 	private static final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{6,40})";
 	private static final String FNAME_PATTERN = "[A-Z][a-z]*";
-	private static final String LNAME_PATTERN = "[A-Z][a-z]*";
+	private static final String LNAME_PATTERN = "[A-Z]+([ '-][a-zA-Z]+)*";
 	
 	@Context private HttpServletRequest request;
 	@POST

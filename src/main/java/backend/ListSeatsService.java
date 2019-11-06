@@ -22,9 +22,9 @@ public class ListSeatsService {
     	
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        ResultSet rs = db.getData("select S.Number, S.Status, C.CarriageNumber, Cl.Name, Cl.Price, T.TrainID\n" +
-                "from Seat S, Carriage C, Train T, ScheduleHasTrain SHT, Class Cl\n" +
-                "where S.CarriageID = C.CarriageNumber and C.TrainID = T.TrainID and T.TrainID = SHT.TrainID and SHT.RouteID = '1' and C.Class_Name = Cl.Name; ");
+        ResultSet rs = db.getData("select distinct S.Number, S.Status, C.CarriageNumber, Cl.ClassName, Cl.Price, T.TrainID\r\n" + 
+        		"from Seat S, Carriage C, Train T, ScheduleHasTrain SHT, Class Cl\r\n" + 
+        		"where S.CarriageID = C.CarriageNumber and C.TrainID = T.TrainID and T.TrainID = SHT.TrainID and SHT.RouteID = '" + RouteID + "' and C.Class = Cl.ClassName;");
         
         seats.clear();
         
@@ -33,7 +33,7 @@ public class ListSeatsService {
             seats.get(seats.size() - 1).add(rs.getString("Number"));
             seats.get(seats.size() - 1).add(rs.getString("Status"));
             seats.get(seats.size() - 1).add(rs.getString("CarriageNumber"));
-            seats.get(seats.size() - 1).add(rs.getString("Name"));
+            seats.get(seats.size() - 1).add(rs.getString("ClassName"));
             seats.get(seats.size() - 1).add(rs.getString("Price"));
             seats.get(seats.size() - 1).add(rs.getString("TrainID"));
 
