@@ -34,32 +34,41 @@ public class LogInService {
 		
 		while (rs.next()) {
 			
-			if (rs.getString("Email").toLowerCase().compareTo(email.toLowerCase()) == 0 || rs.getString("Password").compareTo(pass) == 0) {
+			if (rs.getString("Email").toLowerCase().compareTo(email.toLowerCase()) == 0) {
 				
-				HttpSession oldSession = request.getSession(false);
+				if (rs.getString("Password").compareTo(pass) == 0) {
 				
-		        if (oldSession != null) 
-		        	oldSession.invalidate();
-				
-				HttpSession session = request.getSession(true);
-				
-				// checking user type
-				if (email.matches(".@traindev.kz")) {
-					session.setAttribute("type", "user");
+					HttpSession oldSession = request.getSession(false);
+					
+			        if (oldSession != null) 
+			        	oldSession.invalidate();
+					
+					HttpSession session = request.getSession(true);
+					
+					// checking user type
+					if (email.matches(".@traindev.kz")) {
+						session.setAttribute("type", "user");
+					}
+					else {
+						session.setAttribute("type", "user");
+					}
+					
+					// set email as an attribute						
+					session.setAttribute("email", email);
+					
+					//setting session to expiry in 30 mins
+					session.setMaxInactiveInterval(30*60);
+					
+			        return Response.ok().build();
+		        
 				}
-				else {
-					session.setAttribute("type", "user");
-				}
 				
-				// set email as an attribute						
-				session.setAttribute("email", email);
+				db.closeConnection();
 				
-				//setting session to expiry in 30 mins
-				session.setMaxInactiveInterval(30*60);
-				
-		        return Response.ok().build();
+				return Response.serverError().entity("Error! Wrong password!").build();
 				
 			}
+			
 		}
 		
 		db.closeConnection();
