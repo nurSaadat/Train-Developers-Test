@@ -29,35 +29,47 @@
         function postOrder(){
 
             $.post("../services/orders", {NumberOfPassengers : order[0], BookingDate : order[1], BookingTime: order[2], PaymentType: order[3], TotalPrice: order[4], UserEmail: order[5]}, function(r) {
-                console.log(r);
+                console.log("success" + r + " orders");
                 OrderID = r[0];
                 postTicket();
                 // redirect
                 //window.location.href = "../index.html";
             }).fail(function(r) {
-                console.log(r.responseText);
+                console.log("fail" + r.responseText + " orders");
             });
         }
 
         function postTicket() {
-            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: OrderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[9]}, function(r) {
-                console.log(r);
+            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: OrderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[8]}, function(r) {
+                console.log(r + " book");
                 TicketID = r[0];
                 postPassenger();
                 // redirect
                 //window.location.href = "../index.html";
             }).fail(function(r) {
-                console.log(r.responseText);
+                console.log(r.responseText + " book");
             });
         }
 
         function postPassenger() {
             $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: OrderID, TicketID: TicketID}, function(r) {
-                console.log(r);
+                console.log(r + " passengers");
+                updateSeatStatus();
+                // redirect
+                //window.location.href = "../index.html";
+
+            }).fail(function(r) {
+                console.log(r.responseText + " passengers");
+            });
+        }
+
+        function updateSeatStatus(){
+            $.post("../services/seats", {seatNum : ticket[5], carriageID : ticket[6]}, function(r) {
+                console.log("success" + r + " seat");
                 // redirect
                 window.location.href = "../index.html";
             }).fail(function(r) {
-                console.log(r.responseText);
+                console.log("fail" + r.responseText + " seat");
             });
         }
 
@@ -72,12 +84,12 @@
             validate(cardName, cardNumber, cvv);
 
             $.post("../services/payment", {cardName: cardName, cardNumber: cardNumber, expMonth: expMonth, expYear: expYear, cvv: cvv}, function(r) {
-                console.log(r);
+                console.log("succ" + r + " payment");
 
                 // redirect
                 //window.location.href = "../index.html";
             }).fail(function(r) {
-                console.log(r.responseText);
+                console.log(r.responseText + " payment");
             });
         }
 

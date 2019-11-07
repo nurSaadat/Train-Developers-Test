@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @Path("/seats")
@@ -42,5 +45,22 @@ public class ListSeatsService {
         Gson gson = new Gson();
         return Response.ok(gson.toJson(seats)).build();
 
+    }
+
+    @POST
+    public Response updateSeat(@FormParam("seatNum") String seatNum, @FormParam("carriageID") String carriageID) throws SQLException, ClassNotFoundException {
+
+        MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
+        if (seatNum== null || carriageID== null) {
+
+            return Response.serverError().entity("Error! One of the fields is empty!").build();
+
+        }
+
+        db.updateData("update Seat\n" +
+                "set Status = 'Reserved'\n" +
+                "where Number = " + seatNum + " and CarriageID = " + carriageID + ";");
+
+        return Response.ok().build();
     }
 }
