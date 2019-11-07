@@ -216,13 +216,6 @@
         }
 
         function getSeats() {
-            /* $.ajax({
-                url : '../services/seats',
-                dataType : 'json',
-                success : function(r) {
-                    showSeats(r);
-                }
-            }); */
             $.get("../services/seats?RouteID=" + routeId, function(r) {
             	
                 console.log(r);
@@ -233,17 +226,6 @@
                 console.log(r.responseText);
             });
         }
-
-        /* function postSeats(){
-            $.post("../services/seats", {RouteID: routeId}, function(r) {
-                console.log(r);
-                getSeats();
-
-            }).fail(function(r) {
-                alert("Error on post seats");
-                console.log(r.responseText);
-            });
-        } */
 
 $(document).ready(function () {	
 
