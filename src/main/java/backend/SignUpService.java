@@ -2,13 +2,9 @@ package backend;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @Path("/signup")

@@ -17,8 +17,8 @@ public class MainApplication extends Application {
         
         singletons.add(new ListRoutesService());
         singletons.add(new MySQLConnector(3306, "RailwayStation", "user", "Password123!"));
-        singletons.add(new LogInService());
         singletons.add(new AuthenticationFilter());
+        singletons.add(new LogInService());
         singletons.add(new LogOutService());
         singletons.add(new SignUpService());
         singletons.add(new ListTicketsService());
@@ -26,11 +26,10 @@ public class MainApplication extends Application {
         singletons.add(new ProfileInfoService());
         singletons.add(new ChangePasswordService());
         singletons.add(new PaymentService());
-        singletons.add(new ListTicketsService());
         singletons.add(new ListSeatsService());
-        singletons.add(new ListOrdersService());
+        singletons.add(new BookOrdersService());
         singletons.add(new BookTicketService());
-        singletons.add(new ListPassengersService());
+        singletons.add(new BookPassengersService());
     }
     
     @Override

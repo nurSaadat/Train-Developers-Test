@@ -34,9 +34,15 @@
         }
 
         function update(items) {
+        	
+        	$("#routes-table").find("tr:gt(0)").remove();
+        	
             items.forEach(function (e) {
-                $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td></tr>");
-
+            	
+            	if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
+                    
+            		$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td></tr>");
+                	}
                 });
             $("#routes-table tr").on('click', function () {
 
@@ -78,8 +84,12 @@
         }
         
         $(document).ready(function () {
-            getRoutes();
+        	
             init();
+            
+            $("#find-routes").on("click", function() {
+                getRoutes();
+            });
         });
 
     </script>
@@ -88,6 +98,9 @@
 <body>
 <div>
     <h2>Routes</h2>
+    <br>
+	<a href="index.html">Main Page</a>
+	<br><br><br>
     <table id="routes-table">
         <tr>
             <th>RouteID</th>
@@ -102,6 +115,32 @@
         </tr>
     </table>
 </div>
+<select id="stationFrom">
+    <option value="AST">Astana</option>
+    <option value="ALM">Almaty</option>
+    <option value="SEM">Semey</option>
+    <option value="ATB">Aktobe</option>
+    <option value="PET">Petropavlovsk</option>
+    <option value="KSH">Kokshetau</option>
+</select>
+
+<select id="stationTo">
+    <option value="AST">Astana</option>
+    <option value="ALM">Almaty</option>
+    <option value="SEM">Semey</option>
+    <option value="ATB">Aktobe</option>
+    <option value="PET">Petropavlovsk</option>
+    <option value="KSH">Kokshetau</option>
+</select>
+<br>
+<label for="dateFrom">Departure Date from</label>
+<input type="date" id="dateFrom" required>
+<br>
+<label for="dateTo">Departure Date to</label>
+<input type="date" id="dateTo" required>
+<br>
+<button id="find-routes"> Find Routes</button>
+<br><br><br>
 <div style="width:80%; height:90%" id="map"></div>
 
 </body>

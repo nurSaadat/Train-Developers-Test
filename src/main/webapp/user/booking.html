@@ -149,12 +149,15 @@
         }
 
         function showRoutes(items) {
+        	
+        	$("#routes-table").find("tr:gt(0)").remove();
+        	
             items.forEach(function (e) {
 
                 if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() == e[1])){
                     $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\""+ e[0]+"\">Select</button></td></tr>");
                 }
-            }) ;
+            });
             if ($('#routes-table tr').length == 1) {
                 alert("No routes found!")
             }
@@ -166,13 +169,18 @@
                 dateTo = $(this).closest('tr').find("td").eq(2).html();
                 dist = $(this).closest('tr').find("td").eq(5).html();
                 console.log(from, to, routeId, dateFrom, dateTo)
-                postSeats();
+                getSeats();
                 
             });
 
         }
+        
         function showSeats(items) {
+        	
+        	$("#seats-table").find("tr:gt(0)").remove();
+        	
             items.forEach(function (e) {
+            	
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
                 $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
@@ -208,16 +216,25 @@
         }
 
         function getSeats() {
-            $.ajax({
+            /* $.ajax({
                 url : '../services/seats',
                 dataType : 'json',
                 success : function(r) {
                     showSeats(r);
                 }
+            }); */
+            $.get("../services/seats?RouteID=" + routeId, function(r) {
+            	
+                console.log(r);
+                showSeats(r);
+            },'json').fail(function(r) {
+            	
+                alert("Error on post seats");
+                console.log(r.responseText);
             });
         }
 
-        function postSeats(){
+        /* function postSeats(){
             $.post("../services/seats", {RouteID: routeId}, function(r) {
                 console.log(r);
                 getSeats();
@@ -226,7 +243,7 @@
                 alert("Error on post seats");
                 console.log(r.responseText);
             });
-        }
+        } */
 
 $(document).ready(function () {	
 
