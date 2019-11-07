@@ -6,7 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/book")
 public class BookTicketService {
@@ -15,19 +14,19 @@ public class BookTicketService {
     private static final String PRICE_PATTERN = "[0-9]+";
 
     @POST
-    public Response register(@FormParam("DepartureDate") String DepartureDate, @FormParam("ArrivingDate") String ArrivingDate, @FormParam("Price") String Price, @FormParam("OrderID") String OrderID, @FormParam("RouteID") String RouteID, @FormParam("TrainID") String TrainID, @FormParam("SeatNumber") String SeatNumber, @FormParam("CarriageNumber") String CarriageNumber,  @FormParam("ScheduleFromID") String ScheduleFromID,  @FormParam("ScheduleToID") String ScheduleToID ) throws SQLException, ClassNotFoundException {
+    public Response register(@FormParam("DepartureDate") String DepartureDate, @FormParam("ArrivingDate") String ArrivingDate, @FormParam("Price") String Price, @FormParam("OrderID") String OrderID, @FormParam("RouteID") String RouteID, @FormParam("TrainID") String TrainID, @FormParam("SeatNumber") String SeatNumber, @FormParam("CarriageNumber") String CarriageNumber ) throws SQLException, ClassNotFoundException {
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        if (DepartureDate == null || ArrivingDate== null || Price== null || RouteID == null || TrainID == null || SeatNumber == null|| CarriageNumber == null || ScheduleFromID == null || ScheduleToID == null ) {
+        if (DepartureDate == null || ArrivingDate== null || Price== null || RouteID == null || TrainID == null || SeatNumber == null|| CarriageNumber == null ) {
 
             return Response.serverError().entity("Error! One of the fields is empty! book").build();
 
         }
 
         int TicketID;
-        ResultSet rs = db.getData("select MAX(TicketID) from Ticket;");
+        ResultSet rs = db.getData("select MAX(TicketID) from Ticket where OrderID = " + OrderID + ";");
         rs.next();
-        if (rs.getInt( 1) == 0) {
+        if (rs.getInt(1) == 0) {
             TicketID = 1;
         }
         else{
@@ -51,7 +50,15 @@ public class BookTicketService {
             return Response.serverError().entity("Error! Arriving date provided is invalid!").build();
 
         }
+        
+        rs = db.getData("select SD.ScheduleID, SA.ScheduleID\r\n" + 
+        		"from Schedule SD, Schedule SA, Route R\r\n" + 
+        		"where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom and R.RouteID = " + RouteID + ";");
 
+        rs.next();
+        int ScheduleFromID = rs.getInt(1);
+        int ScheduleToID = rs.getInt(2);
+        
         db.insertData("INSERT INTO `Ticket` ("
         		+ "TicketID, "
         		+ "DepartureDate, "
@@ -73,8 +80,8 @@ public class BookTicketService {
         		+ TrainID + ", " 
         		+ SeatNumber + ", " 
         		+ CarriageNumber + ", " 
-        		+ 1 + ", " 
-        		+ 2+ ");");
+        		+ ScheduleFromID + ", " 
+        		+ ScheduleToID + ");");
         db.closeConnection();
         return Response.ok(TicketID).build();
     }

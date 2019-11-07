@@ -4,17 +4,15 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/passengers")
-public class ListPassengersService {
+public class BookPassengersService {
     private static final String FNAME_PATTERN = "[A-Z][a-z]*";
     private static final String LNAME_PATTERN = "[A-Z][a-z]*";
     private static final String DOCUMENTID_PATTERN = "[0-9]*";
-    private static final String PHONENUMBER_PATTERN = "[0-9]{11}";
-    private static final String DOB_PATTERN = "[0-9]{4}-[0-9]+-[0-9]+";
+    private static final String PHONENUMBER_PATTERN = "[0-9]{10}";
+    private static final String DOB_PATTERN = "[0-9]{4}+-[0-9]+-[0-9]+";
 
     @POST
     public Response register(@FormParam("DocumentType") String DocumentType, @FormParam("Tariff") String Tariff, @FormParam("DocumentID") String DocumentID, @FormParam("FName") String FName,@FormParam("LName") String LName, @FormParam("PhoneNumber") String PhoneNumber, @FormParam("Citizenship") String Citizenship, @FormParam("Gender") String Gender, @FormParam("DateOfBirth") String DateOfBirth, @FormParam("OrderID") String OrderID, @FormParam("TicketID") String TicketID ) throws SQLException, ClassNotFoundException {
@@ -50,10 +48,10 @@ public class ListPassengersService {
             return Response.serverError().entity("Error! Number provided is invalid!").build();
 
         }
+        
+        if (!DateOfBirth.matches(DOB_PATTERN)) {
 
-        if (DateOfBirth.matches(DOB_PATTERN)) {
-
-            return Response.serverError().entity("Error! Date of birth provided is invalid!").build();
+            return Response.serverError().entity("Error! Date of birth provided is invalid!" + DateOfBirth).build();
 
         }
         
@@ -69,4 +67,3 @@ public class ListPassengersService {
         return Response.ok().build();
     }
 }
-

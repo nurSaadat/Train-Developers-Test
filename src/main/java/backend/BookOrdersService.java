@@ -6,14 +6,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 @Path("/orders")
-public class ListOrdersService {
+public class BookOrdersService {
     private static final String EMAIL_PATTERN = "[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]";
     private static final String NUMBEROFPASS_PATTERN = "[0-5]";
     private static final String TOTALPRICE_PATTERN = "[0-9]+";
-    private static final String BOOKINGDATE_PATTERN = "[0-9]{4}-[0-9]*-[0-9]*";
+    private static final String BOOKINGDATE_PATTERN = "[0-9]{4}-[0-9]+-[0-9]+";
     private static final String BOOKINGTIME_PATTERN = "[0-9]+:[0-9]+:[0-9]+";
 
     @POST
@@ -54,17 +53,17 @@ public class ListOrdersService {
 
         }
 
-//        if (!BookingDate.matches(BOOKINGDATE_PATTERN)) {
-//
-//            return Response.serverError().entity("Error! Booking date provided is invalid!").build();
-//
-//        }
+        if (!BookingDate.matches(BOOKINGDATE_PATTERN)) {
+
+            return Response.serverError().entity("Error! Booking date provided is invalid!").build();
+
+        }
         
-//        if (!BookingTime.matches(BOOKINGTIME_PATTERN)) {
-//
-//            return Response.serverError().entity("Error! Booking time provided is invalid!").build();
-//
-//        }
+        if (!BookingTime.matches(BOOKINGTIME_PATTERN)) {
+
+            return Response.serverError().entity("Error! Booking time provided is invalid!").build();
+
+        }
 
         db.insertData("INSERT INTO `Order` (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
         return Response.ok(OrderID).build();
