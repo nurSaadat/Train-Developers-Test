@@ -23,8 +23,8 @@ function checkIn(){
     });
 }
 	
-function goToProfile(){
-	window.location.href = "user/regular_profile.html";
+function goToProfile(r){
+	window.location.href = r + "/regular_profile.html";
 }
 
 function logIn(){
@@ -32,8 +32,7 @@ function logIn(){
 	var password = document.getElementById('user-password').value;
 	
 	$.post("services/login", {username: email, password: password}, function(r) {
-		console.log("Error Log in");
-		goToProfile();
+		goToProfile(r);
     }).fail(function(r) {
     	alert(r.responseText);
 		console.log("Fail Log in");
