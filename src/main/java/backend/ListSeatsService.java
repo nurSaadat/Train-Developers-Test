@@ -6,10 +6,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 @Path("/seats")
@@ -23,8 +20,10 @@ public class ListSeatsService {
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
         ResultSet rs = db.getData("select distinct S.Number, S.Status, C.CarriageNumber, Cl.ClassName, Cl.Price, T.TrainID\r\n" + 
-        		"from Seat S, Carriage C, Train T, ScheduleHasTrain SHT, Class Cl\r\n" + 
-        		"where S.CarriageID = C.CarriageNumber and C.TrainID = T.TrainID and T.TrainID = SHT.TrainID and SHT.RouteID = '" + RouteID + "' and C.Class = Cl.ClassName;");
+        		"from (Seat S, Carriage C, Train T, ScheduleHasTrain SHT, Class Cl) left outer join Ticket TI on TI.CarriageNumber = C.CarriageNumber and TI.RouteID = SHT.RouteID and TI.SeatNumber = S.Number\r\n" + 
+        		"where S.CarriageID = C.CarriageNumber and C.TrainID = T.TrainID and T.TrainID = SHT.TrainID and SHT.RouteID = " + RouteID + " and C.Class = Cl.ClassName and (TI.TicketID is NULL or (TI.TicketID is not NULL and (TI.TicketID, TI.OrderID) in (select CT.TicketID, CT.OrderID\r\n" + 
+        				"                                                                                                                                                                            from CancelledTicket CT\r\n" + 
+        				"                                                                                                                                                                            )));");
         
         seats.clear();
         
@@ -45,22 +44,5 @@ public class ListSeatsService {
         Gson gson = new Gson();
         return Response.ok(gson.toJson(seats)).build();
 
-    }
-
-    @POST
-    public Response updateSeat(@FormParam("seatNum") String seatNum, @FormParam("carriageID") String carriageID) throws SQLException, ClassNotFoundException {
-
-        MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
-        if (seatNum== null || carriageID== null) {
-
-            return Response.serverError().entity("Error! One of the fields is empty!").build();
-
-        }
-
-        db.updateData("update Seat\n" +
-                "set Status = 'Reserved'\n" +
-                "where Number = " + seatNum + " and CarriageID = " + carriageID + ";");
-
-        return Response.ok().build();
     }
 }
