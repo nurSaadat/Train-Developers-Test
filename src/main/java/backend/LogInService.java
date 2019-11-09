@@ -39,11 +39,32 @@ public class LogInService {
 				HttpSession session = request.getSession(true);
 				
 				// checking user type
-				if (email.matches(".@traindev.kz")) {
+				if (email.matches(".@td.kz")) {
+						
+					ResultSet td = db.getData("SELECT Position FROM Employee WHERE Email = '" + email + "';");
+
+					while (td.next()) {
+
+						if (td.getString("Position").toLowerCase().compareTo("agent") == 0) {
+
+							session.setAttribute("type", "agent");
+
+						} else if (td.getString("Position").toLowerCase().compareTo("manager") == 0) {
+
+							session.setAttribute("type", "manager");
+
+						} else {
+
+							session.setAttribute("type", "user");
+
+						}
+
+					}
+
+				} else {
+
 					session.setAttribute("type", "user");
-				}
-				else {
-					session.setAttribute("type", "user");
+
 				}
 				
 				// set email as an attribute						
@@ -52,7 +73,7 @@ public class LogInService {
 				//setting session to expiry in 30 mins
 				session.setMaxInactiveInterval(30*60);
 				
-		        return Response.ok().build();
+		        return Response.ok(session.getAttribute("type")).build();
 				
 			}
 		}
