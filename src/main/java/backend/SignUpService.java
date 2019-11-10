@@ -28,7 +28,7 @@ public class SignUpService {
 				
 		ResultSet rs = db.getData("SELECT Email FROM User WHERE Email = '" + email + "';");
 		
-		while (rs.next()) {
+		if (rs.next()) {
 			
 			if (rs.getString("Email").toLowerCase().compareTo(email.toLowerCase()) == 0) {
 				

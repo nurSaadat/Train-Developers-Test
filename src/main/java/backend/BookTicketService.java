@@ -23,16 +23,6 @@ public class BookTicketService {
 
         }
 
-        int TicketID;
-        ResultSet rs = db.getData("select MAX(TicketID) from Ticket where OrderID = " + OrderID + ";");
-        rs.next();
-        if (rs.getInt(1) == 0) {
-            TicketID = 1;
-        }
-        else{
-            TicketID = rs.getInt(1) + 1;
-        }
-
         if (!Price.matches(PRICE_PATTERN)) {
 
             return Response.serverError().entity("Error! Price provided is invalid!").build();
@@ -51,7 +41,7 @@ public class BookTicketService {
 
         }
         
-        rs = db.getData("select SD.ScheduleID, SA.ScheduleID\r\n" + 
+        ResultSet rs = db.getData("select SD.ScheduleID, SA.ScheduleID\r\n" + 
         		"from Schedule SD, Schedule SA, Route R\r\n" + 
         		"where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom and R.RouteID = " + RouteID + ";");
 
@@ -60,7 +50,6 @@ public class BookTicketService {
         int ScheduleToID = rs.getInt(2);
         
         db.insertData("INSERT INTO `Ticket` ("
-        		+ "TicketID, "
         		+ "DepartureDate, "
         		+ "ArrivingDate, "
         		+ "Price, "
@@ -70,8 +59,7 @@ public class BookTicketService {
         		+ "SeatNumber, "
         		+ "CarriageNumber, "
         		+ "ScheduleFromID, "
-        		+ "ScheduleToID) VALUES (" 
-        		+ TicketID + ", '" 
+        		+ "ScheduleToID) VALUES ('" 
         		+ DepartureDate + "', '" 
         		+ ArrivingDate + "', " 
         		+ Price + ", " 
@@ -82,7 +70,11 @@ public class BookTicketService {
         		+ CarriageNumber + ", " 
         		+ ScheduleFromID + ", " 
         		+ ScheduleToID + ");");
+        
+        rs = db.getData("select MAX(TicketID) from Ticket where OrderID = " + OrderID + ";");
+        rs.next();
+        
         db.closeConnection();
-        return Response.ok(TicketID).build();
+        return Response.ok(rs.getInt(1)).build();
     }
 }
