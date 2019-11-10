@@ -25,15 +25,6 @@ public class BookOrdersService {
             return Response.serverError().entity("Error! One of the fields is empty!").build();
 
         }
-        int OrderID;
-        ResultSet rs = db.getData("select MAX(OrderID) from `RailwayStation`.`Order`;");
-        rs.next();
-        if (rs.getInt( 1) == 0) {
-            OrderID = 1;
-        }
-        else{
-                OrderID = rs.getInt(1) + 1;
-            }
 
         if (!Email.matches(EMAIL_PATTERN)) {
 
@@ -65,7 +56,11 @@ public class BookOrdersService {
 
         }
 
-        db.insertData("INSERT INTO `Order` (OrderID, NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" +  OrderID +", " + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
-        return Response.ok(OrderID).build();
+        db.insertData("INSERT INTO `Order` (NumberOfPassengers, BookingDate, BookingTime, PaymentType, TotalPrice, UserEmail) VALUES (" + NumberOfPassengers +", '" + BookingDate +"', '" + BookingTime +"', '" + PaymentType +"', " + TotalPrice +", '" + Email + "');");
+        
+        ResultSet rs = db.getData("select MAX(OrderID) from `RailwayStation`.`Order`;");
+        rs.next(); 
+        
+        return Response.ok(rs.getInt(1)).build();
     }
 }

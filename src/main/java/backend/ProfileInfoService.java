@@ -32,11 +32,14 @@ public class ProfileInfoService {
     				+ "FROM `User`  "
     				+ "WHERE Email = '" + email + "' ;");
     		
-    		while(rs.next()) {
+    		if(rs.next()) {
     			
     			info.add(rs.getString("Fname"));
     			info.add(rs.getString("Lname"));
     			info.add(rs.getString("Email"));
+    		} else {
+    			
+    			return Response.serverError().entity("Error! Email does not exist in the database!").build();
     		}
         	
     		db.closeConnection();

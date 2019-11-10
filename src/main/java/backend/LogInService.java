@@ -27,7 +27,7 @@ public class LogInService {
 			
 		ResultSet rs = db.getData("SELECT Email, Password FROM User WHERE Email = '" + email + "';");
 		
-		while (rs.next()) {
+		if(rs.next()) {
 			
 			if (rs.getString("Email").compareTo(email) == 0 && rs.getString("Password").compareTo(pass) == 0) {
 				
@@ -38,13 +38,13 @@ public class LogInService {
 				
 				HttpSession session = request.getSession(true);
 				
-				// checking user type
-				if (email.matches(".@td.kz")) {
+				ResultSet td = db.getData("SELECT Position FROM Employee WHERE Email = '" + email + "';");
+				
+				if(td.next()) {
+					
+					// checking user type
+					if (email.matches(".@td.kz")) {
 						
-					ResultSet td = db.getData("SELECT Position FROM Employee WHERE Email = '" + email + "';");
-
-					while (td.next()) {
-
 						if (td.getString("Position").toLowerCase().compareTo("agent") == 0) {
 
 							session.setAttribute("type", "agent");
@@ -53,19 +53,28 @@ public class LogInService {
 
 							session.setAttribute("type", "manager");
 
-						} else {
+						}else {
 
 							session.setAttribute("type", "user");
 
 						}
 
-					}
+					}else if(td.getString("Position").toLowerCase().compareTo("admin") == 0){
+						
+						session.setAttribute("type", "admin");
+						
+					} else {
 
+						session.setAttribute("type", "user");
+
+					}
 				} else {
 
 					session.setAttribute("type", "user");
 
 				}
+				
+				
 				
 				// set email as an attribute						
 				session.setAttribute("email", email);
@@ -73,10 +82,14 @@ public class LogInService {
 				//setting session to expiry in 30 mins
 				session.setMaxInactiveInterval(30*60);
 				
+				db.closeConnection();
+				
 		        return Response.ok(session.getAttribute("type")).build();
 				
 			}
 		}
+		
+		
 		
 		db.closeConnection();
 		

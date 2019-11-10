@@ -64,6 +64,7 @@ public class BookPassengersService {
 
 
         db.insertData("INSERT INTO Passenger ( DocumentType, Tariff, DocumentID, FName, LName, PhoneNumber, Citizenship, Gender, DateOfBirth, OrderID, TicketID) VALUES ( '" + DocumentType + "', '" + Tariff + "', " + DocumentID + ", '" + FName + "', '" + LName + "', " + PhoneNumber + ", '" + Citizenship + "', '" + gender1 + "', '" + DateOfBirth + "', " + OrderID+ ", " + TicketID + ");");
+        db.closeConnection();
         return Response.ok().build();
     }
 }

@@ -32,24 +32,30 @@ public class ChangePasswordService {
 			}
 			
 			ResultSet rs = db.getData("SELECT Password FROM User WHERE Email = '" + email + "';");
-			rs.next();
-			passwordFromDB = rs.getString("Password");    			
-			
-			if (passwordFromDB.compareTo(oldPass) != 0) {				
-				return Response.serverError().entity("Error! Old password don't match").build();				
+			if(rs.next()) {
+				
+				passwordFromDB = rs.getString("Password");    			
+				
+				if (passwordFromDB.compareTo(oldPass) != 0) {				
+					return Response.serverError().entity("Error! Old password don't match").build();				
+				}
+				
+				if (!newPass.matches(PASSWORD_PATTERN)) {				
+					return Response.serverError().entity("Error! Password should have between 6 and 40 characters. It should contain at least 1 digit, 1 lowercase and 1 uppercase character! Allowed symbols, from which at least 1 should be present: @#$%!").build();
+				}
+				
+				db.updateData("UPDATE User SET Password='" + newPass + "' WHERE Email='" + email + "';");
+				db.closeConnection();
+						
+				return Response.ok("Password is successfully updated").build();
+			} else {
+				
+				return Response.serverError().entity("Error! Email does not exist in the database!").build();
 			}
 			
-			if (!newPass.matches(PASSWORD_PATTERN)) {				
-				return Response.serverError().entity("Error! Password should have between 6 and 40 characters. It should contain at least 1 digit, 1 lowercase and 1 uppercase character! Allowed symbols, from which at least 1 should be present: @#$%!").build();
-			}
-			
-			db.updateData("UPDATE User SET Password='" + newPass + "' WHERE Email='" + email + "';");
-			db.closeConnection();
-					
-			return Response.ok("Password is successfully updated").build();
 			
 		}		
 		
-		return Response.ok("No user session opened").build();
+		return Response.serverError().entity("No user session opened").build();
 	}
 }
