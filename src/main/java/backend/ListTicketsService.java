@@ -28,7 +28,7 @@ public class ListTicketsService {
 		
 		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-		ResultSet rs = db.getData("select T.TicketID, T.DepartureDate, SD.DepartureTime, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName, \" \", P.LName) as `Name`\n" + 
+		ResultSet rs = db.getData("select T.TicketID, O.OrderID, T.DepartureDate, SD.DepartureTime, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName, \" \", P.LName) as `Name`\n" +
 				"from `User` U, `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA\n" + 
 				"where U.Email = '" + email + "' and O.UserEmail = U.Email and T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID;");
 
@@ -36,6 +36,7 @@ public class ListTicketsService {
 
 			tickets.add(new CopyOnWriteArrayList<String>());
 			tickets.get(tickets.size() - 1).add(rs.getString("TicketID"));
+			tickets.get(tickets.size() - 1).add(rs.getString("OrderID"));
 			tickets.get(tickets.size() - 1).add(rs.getString("DepartureDate"));
 			tickets.get(tickets.size() - 1).add(rs.getString("DepartureTime"));
 			tickets.get(tickets.size() - 1).add(rs.getString("ArrivalDate"));

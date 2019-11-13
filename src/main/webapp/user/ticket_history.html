@@ -16,7 +16,7 @@
 	
 	function update(items) {
         items.forEach(function (e) {
-            $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td></tr>");
+            $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td></tr>");
             });
     }
 	
@@ -36,6 +36,7 @@
     <table id="ticket-table">
         <tr>
             <th>Ticket ID</th>
+            <th>Order ID</th>
             <th>Departure Date</th>
             <th>Departure Time</th>
             <th>Arrival Date</th>
