@@ -74,7 +74,9 @@ public class BookTicketService {
         rs = db.getData("select MAX(TicketID) from Ticket where OrderID = " + OrderID + ";");
         rs.next();
         
+        int ticketID = rs.getInt(1);
+        
         db.closeConnection();
-        return Response.ok(rs.getInt(1)).build();
+        return Response.ok(ticketID).build();
     }
 }

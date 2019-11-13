@@ -61,6 +61,10 @@ public class BookOrdersService {
         ResultSet rs = db.getData("select MAX(OrderID) from `RailwayStation`.`Order`;");
         rs.next(); 
         
-        return Response.ok(rs.getInt(1)).build();
+        int orderID = rs.getInt(1);
+        
+        db.closeConnection();
+        
+        return Response.ok(orderID).build();
     }
 }
