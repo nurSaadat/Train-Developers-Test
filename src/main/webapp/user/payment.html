@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Make a Payment</title>
-    <link rel = "stylesheet" href = "../startPageStyle.css">
+    <link rel = "stylesheet" href = "../css/base.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
 
@@ -54,7 +54,7 @@
         function postPassenger() {
             $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: OrderID, TicketID: TicketID}, function(r) {
                 console.log(r + " passengers");
-                
+
                 // redirect
                 window.location.href = "../index.html";
 
@@ -97,6 +97,12 @@
 </head>
 <body>
 
+<div class="header">
+    <div><img src="../css/main_logo.jpg" height="65px"/></div>
+    <div><h2>TRAIN DEVELOPERS</h2></div>
+    <div><a href="../index.html">Main Page</a></div>
+</div>
+
 <h2>Make a Payment</h2>
 
 <label for="cardName">Cardholder's Name</label>
@@ -135,6 +141,15 @@
 <input type="password" id="cvv" required>
 <br>
 <button id="pay">Submit</button>
+
+<div class="contact">
+    <h3>CONTACT US</h3>
+    <div class="contactUs">
+        <div><p>email: support@train.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
 
 </body>
 </html>
