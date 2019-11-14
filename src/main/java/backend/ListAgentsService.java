@@ -22,12 +22,12 @@ public class ListAgentsService {
     	List<List<String>> agents = new CopyOnWriteArrayList<>();
     	
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
-
-        ResultSet rs = db.getData("select U.Email, U.FName, U.LName\n" + 
-        		"from User U\n" + 
-        		"where U.Email like \"%@td.kz\" and U.Email not in (\n" + 
-        		"	select E.Email\n" + 
-        		"    from Employee E);");
+    	
+    	ResultSet rs = db.getData("SELECT U.Email, U.FName, U.LName "
+    			+ "FROM User AS U "
+    			+ "WHERE U.Email LIKE \"%@td.kz\" AND U.Email NOT IN "
+    			+ "(SELECT E.Email "
+    			+ "FROM Employee AS E);");
         
         while (rs.next()) {
         	
@@ -35,6 +35,7 @@ public class ListAgentsService {
         	agents.get(agents.size() - 1).add(rs.getString("Email"));
         	agents.get(agents.size() - 1).add(rs.getString("FName"));
         	agents.get(agents.size() - 1).add(rs.getString("LName"));
+        	
         }
 
         Collections.reverse(agents);

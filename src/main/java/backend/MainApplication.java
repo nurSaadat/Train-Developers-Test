@@ -34,6 +34,7 @@ public class MainApplication extends Application {
         singletons.add(new BookTicketService());
         singletons.add(new BookPassengersService());
         singletons.add(new ListAgentsService());
+        singletons.add(new WorkerProfileInfoService());
     }
     
     @Override

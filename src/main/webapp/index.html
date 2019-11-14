@@ -24,10 +24,21 @@ function checkIn(){
 }
 	
 function goToProfile(r){
-	window.location.href = r + "/regular_profile.html";
+	
+	if (r == 'user') {
+		
+		window.location.href = "user/regular_profile.html";
+		
+	} else {
+		
+		window.location.href = "worker/worker_profile.html";
+		
+	}
+	
 }
 
 function logIn(){
+	
 	var email = document.getElementById('user-email').value;
 	var password = document.getElementById('user-password').value;
 	
@@ -37,6 +48,7 @@ function logIn(){
     	alert(r.responseText);
 		console.log("Fail Log in");
     });
+	
 }
 
 $(document).ready(function () {	
@@ -59,6 +71,7 @@ $(document).ready(function () {
 	$("#profile-button").on('click', function () {
 		goToProfile();
     });
+	
 });
 
 	</script>
