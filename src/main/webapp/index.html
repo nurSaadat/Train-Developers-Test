@@ -54,6 +54,10 @@
 		$(document).ready(function () {
 
 			checkIn();
+			
+			$("#main-page").on('click', function () {
+				window.location.href = "index.html";
+			});
 
 			$("#log-in-button").on('click', function () {
 				logIn();
@@ -77,18 +81,21 @@
 	</script>
 </head>
 <body>
-<div class="header">
-	<h1>Train Developers</h1>	
-</div>
-
-<div><a href="index.html">Main Page</a></div>
-	<div><button id="profile-button" type="button" style="visibility:hidden">Go to profile</button></div>
-	<div><button id="log-out-button" type="button" style="visibility:hidden">Log Out</button></div>
-
+	<div class="header">
+		<h1>Train Developers</h1>	
+	</div>
+	<div class="nav">
+		<ul>
+			<li id="main-page">Main Page</li>
+			<li id="profile-button" style="visibility:hidden">Go to profile</li>
+			<li id="log-out-button" style="visibility:hidden">Log Out</li>
+		</ul>
+	</div>
+	
+	
+			
 <div class="wrapper">
 	<div class="box1">
-		<p>Ranked as "the best website to provide ticket reservation services".
-		</p>
 		<a href="routes.html">See routes for today</a>
 		<br>
 		<a href="user/booking.html" id="booking-link" style="visibility:hidden">Book a ticket</a>
@@ -126,14 +133,13 @@
 </div>
 
 
-<div class="contact">
-	<h3>CONTACT US</h3>
-	<div class="contactUs">
-		<div><p>email: support@train.kz</p></div>
-		<div><p>telephone: +77777777777</p></div>
-		<div><p>telephone: +77777777778</p></div>
+	<div class="footer">
+		<h3>Contact us</h3>
+		<div class="contact-container">
+			<p>email: support@train.kz</p>
+			<p>telephone: +77777777777</p>
+			<p>telephone: +77777777778</p>
+		</div>
 	</div>
-</div>
-
 </body>
 </html>

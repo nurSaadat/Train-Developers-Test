@@ -5,7 +5,6 @@ html, body {
 
 body {
   font-family: 'Roboto', sans-serif;
-  font-weight: 100;
 }
 
 .header {
@@ -17,28 +16,72 @@ body {
 
 .header h1 {
   color: #fff;
-  line-height: 40px; 
-  font-size: 32px;
+  line-height: 60px; 
+  font-size: 52px;
   margin-top: 0;
   margin-bottom: 20px;
-  text-transform: uppercase; 
+  padding: 70px 20px;
 }
 
-@media (min-width:850px) {
+@media (max-width:850px) {
   .header h1 {
-    font-size: 32px;
+    font-size: 44px;
   }
 }
 
-
-.contact {
-    padding: 30px;
-    border-top: 2px solid black;
-    text-align: center;
-    background-color: azure;
+.nav { 
+  background: #0057A8;
+  height: 32px; 
+  width: 100%;
 }
 
-.contactUs {
-    display: grid;
-    grid-template-columns: 33% 34% 33%;
+.nav ul {
+  height: 32px;
+  list-style: none;
+  margin: 0 auto; 
+  padding: 0 20px;
+}
+
+.nav ul li {
+  color: #fff;
+  display: inline-block; 
+  height: 32px;
+  line-height: 32px; 
+  list-style: none;
+  padding: 0 10px;
+  transition: background .5s; 
+}
+
+.nav ul li:hover {
+  background: #fff;
+  cursor: pointer; 
+  transition: background .5s;  
+  color: #0057A8;
+}
+
+.footer { 
+  background: #0057A8;
+  height: 80px; 
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.footer h3 { 
+  color: #fff;
+  font-size: 24px;
+  line-height: 32px; 
+}
+
+.footer p { 
+  color: #fff;
+  font-size: 18px;  
+  line-height: 20px;
+  margin: auto 40px;  
+  float: left;
+}
+
+@media (max-width:850px) {
+  .footer p { 
+  margin: auto 20px;  
+  }
 }
