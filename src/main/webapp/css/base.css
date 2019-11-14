@@ -1,14 +1,35 @@
-.header {
-    display: grid;
-    grid-template-columns: 10% 40% 30% 10% 10%;
-    border-bottom: 2px solid black;
-    background-color: cornflowerblue;
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
-h2 {
-    text-align: left;
-    font-family: 'DejaVu Serif', Georgia, "Times New Roman", Times, serif;
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
 }
+
+.header {
+  background-image: url(res/train_header.jpg); 
+  background-size: cover;
+  height: 200px;
+  text-align: left; 
+}
+
+.header h1 {
+  color: #fff;
+  line-height: 40px; 
+  font-size: 32px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-transform: uppercase; 
+}
+
+@media (min-width:850px) {
+  .header h1 {
+    font-size: 32px;
+  }
+}
+
 
 .contact {
     padding: 30px;
