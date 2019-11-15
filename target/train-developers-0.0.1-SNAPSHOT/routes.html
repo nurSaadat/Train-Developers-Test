@@ -2,15 +2,15 @@
 <head>
     <meta charset="UTF-8">
     <title>TrainDevelopers | Main page</title>
-    <link rel = "stylesheet" href = "startPageStyle.css">
+    <link rel = "stylesheet" type="text/css" href = "css/routes.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="scripts/jquery.min.js"></script>
 
     <title>Simple OSM GPX Track</title>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/css/ol.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.0.1/build/ol.js"></script>
-    
+
     <script type="text/javascript">
         var map; //complex object of type OpenLayers.Map
         var route;
@@ -34,16 +34,16 @@
         }
 
         function update(items) {
-        	
-        	$("#routes-table").find("tr:gt(0)").remove();
-        	
+
+            $("#routes-table").find("tr:gt(0)").remove();
+
             items.forEach(function (e) {
-            	
-            	if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
-                    
-            		$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td></tr>");
-                	}
-                });
+
+                if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
+
+                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td></tr>");
+                }
+            });
             $("#routes-table tr").on('click', function () {
 
                 var from = $(this).find("td").eq(7).html();
@@ -82,11 +82,11 @@
                 })
             });
         }
-        
+
         $(document).ready(function () {
-        	
+
             init();
-            
+
             $("#find-routes").on("click", function() {
                 getRoutes();
             });
@@ -96,11 +96,15 @@
 
 </head>
 <body>
+<div class="header">
+    <div><img src="css/main_logo.jpg" height="65px"/></div>
+    <div><h2>TRAIN DEVELOPERS</h2></div>
+    <div><a href="index.html">Main Page</a></div>
+</div>
 <div>
     <h2>Routes</h2>
-    <br>
-	<a href="index.html">Main Page</a>
-	<br><br><br>
+    <a href="index.html">Main Page</a>
+    <br><br><br>
     <table id="routes-table">
         <tr>
             <th>RouteID</th>
@@ -142,6 +146,15 @@
 <button id="find-routes"> Find Routes</button>
 <br><br><br>
 <div style="width:80%; height:90%" id="map"></div>
+
+<div class="contact">
+    <h3>CONTACT US</h3>
+    <div class="contactUs">
+        <div><p>email: support@train.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
 
 </body>
 </html>

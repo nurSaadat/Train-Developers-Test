@@ -3,102 +3,143 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" href = "startPageStyle.css">
+	<link rel = "stylesheet" type="text/css" href = "css/main_page.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="scripts/jquery.min.js"></script>
 	<script type="text/javascript">
-	
-function checkIn(){
-	$.get("services/checkin", {}, function(r){
-		console.log(r);
-		if (r == "logged in") {
-			$("#log-out-button").css("visibility", "visible");
-			$("#booking-link").css("visibility", "visible");
-			$("#sign-up").css("visibility", "hidden");
-			$("#log-in-form").css("visibility", "hidden");
-			$("#profile-button").css("visibility", "visible");
-		} 
-	}).fail(function(r) {
-		alert("Error! Checkin");
-    });
-}
-	
-function goToProfile(r){
-	window.location.href = r + "/regular_profile.html";
-}
 
-function logIn(){
-	var email = document.getElementById('user-email').value;
-	var password = document.getElementById('user-password').value;
-	
-	$.post("services/login", {username: email, password: password}, function(r) {
-		goToProfile(r);
-    }).fail(function(r) {
-    	alert(r.responseText);
-		console.log("Fail Log in");
-    });
-}
+		function checkIn(){
+			$.get("services/checkin", {}, function(r){
+				console.log(r);
+				if (r == "logged in") {
+					$("#log-out-button").css("visibility", "visible");
+					$("#booking-link").css("visibility", "visible");
+					$("#sign-up").css("visibility", "hidden");
+					$("#log-in-form").css("visibility", "hidden");
+					$("#profile-button").css("visibility", "visible");
+				}
+			}).fail(function(r) {
+				alert("Error! Checkin");
+			});
+		}
 
-$(document).ready(function () {	
-	
-	checkIn();
-	
-	$("#log-in-button").on('click', function () {
-        logIn();
-    });
-	
-	$("#log-out-button").on('click', function (r) {
-		$.post("services/logout", {}, function(r){
-			console.log(r);
-			window.location.href = "index.html";
-		}).fail(function(r) {
-			alert("Error log out");
-	    });
-    });
-	
-	$("#profile-button").on('click', function () {
-		goToProfile();
-    });
-});
+		function goToProfile(r){
+
+			if (r == 'user') {
+
+				window.location.href = "user/regular_profile.html";
+
+			} else {
+
+				window.location.href = "worker/worker_profile.html";
+
+			}
+
+		}
+
+		function logIn(){
+
+			var email = document.getElementById('user-email').value;
+			var password = document.getElementById('user-password').value;
+
+			$.post("services/login", {username: email, password: password}, function(r) {
+				goToProfile(r);
+			}).fail(function(r) {
+				alert(r.responseText);
+				console.log("Fail Log in");
+			});
+
+		}
+
+		$(document).ready(function () {
+
+			checkIn();
+			
+			$("#main-page").on('click', function () {
+				window.location.href = "index.html";
+			});
+
+			$("#log-in-button").on('click', function () {
+				logIn();
+			});
+
+			$("#log-out-button").on('click', function (r) {
+				$.post("services/logout", {}, function(r){
+					console.log(r);
+					window.location.href = "index.html";
+				}).fail(function(r) {
+					alert("Error log out");
+				});
+			});
+
+			$("#profile-button").on('click', function () {
+				goToProfile();
+			});
+
+		});
 
 	</script>
 </head>
 <body>
-	<h2>TrainDevelopers</h2>
-
-	<p style="font-style: italic">
-	Ranked as "the best website to provide ticket reservation services".
-	</p>
-	<a href="routes.html">See routes for today</a>
-	<br>
-	<a href="user/booking.html" id="booking-link" style="visibility:hidden">Book a ticket</a>
-	<br>
-	<form id="log-in-form">
-		<input type="text" id="user-email" placeholder="Email">
-		<br>
-		<input type="password" id="user-password" placeholder="Password">
-		<br>
-		<br>
-		<button id="log-in-button" type="button" >Log In</button>
-		<br>
-	</form>
-	<button id="log-out-button" type="button" style="visibility:hidden">Log Out</button>
-	<br>
-	<div id="sign-up">
-		Don't have an account?&nbsp;<a href="signup.html" id="sign-up-link">Sign up</a>
+<!-- Header -->
+	<div class="header">
+		<h1>Train Developers</h1>	
 	</div>
-	<button id="profile-button" type="button" style="visibility:hidden">Go to profile</button>
 	
-	<h4>Recent News</h4>
-	<p>
-	Done by Train Developers
-	</p>
-	<p>
-	Lorem ipsum
-	</p>
-	<p>
-	Lorem ipsum
-	</p>
+<!-- Menu bar -->
+	<div class="nav">
+		<ul>
+			<li id="main-page">Main Page</li>
+			<li id="profile-button" style="visibility:hidden">Go to profile</li>
+			<li id="log-out-button" style="visibility:hidden">Log Out</li>
+		</ul>
+	</div>
+		
+<!-- Blocks -->			
+	<div class="wrapper">
+		<div class="box1">
+			<article class="item">
+				<header>
+					<a href="routes.html"><img src="css/res/route_map.jpg"/></a>
+					<h3>See routes</h3>
+				</header>
+			</article>		
+		</div>
 
+		<div class="box2">
+			<div class="form-background">		
+				<a href="user/booking.html" id="booking-link" style="visibility:hidden">Book a ticket</a>
+				<form id="log-in-form">
+					<input type="text" id="user-email" placeholder="Email">
+					<input type="password" id="user-password" placeholder="Password">
+					<button id="log-in-button" type="button">Log In</button>
+				</form>
+				<div id="sign-up" class="sign-up-link">
+					Don't have an account?&nbsp;<a href="signup.html" id="sign-up-link">Sign up</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- News box -->
+
+
+	<div class="box3">
+		<div class="news_box">
+			<h4>Recent News</h4>
+			<p>Done by Train Developers</p>
+			<p>Lorem ipsum</p>
+			<p>Lorem ipsum</p>
+		</div>
+	</div>
+	
+<!-- Contacts -->
+	<div class="footer">
+		<h3>Contact us</h3>
+		<div class="contact-container">
+			<p>email: train.dev@nu.edu.kz</p>
+			<p>telephone: +77777777777</p>
+			<p>telephone: +77777777778</p>
+		</div>
+	</div>
 </body>
 </html>

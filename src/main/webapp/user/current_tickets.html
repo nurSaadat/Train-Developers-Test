@@ -10,19 +10,52 @@
 
         function getTickets() {
             $.get('../services/tickets', {}, function(r) {
-                update(r);
+                showTickets(r);
             }, 'json');
         }
 
-        function update(items) {
+
+
+        function showTickets(items) {
+
+            $("#ticket-table").find("tr:gt(0)").remove();
+
             items.forEach(function (e) {
-                var ticketDate = new Date(e[2]);
+                curentOrderID = e[1];
+                curentTicketID = e[0];
+                var ticketDate = new Date(e[3]);
                 var today = new Date();
                 if (ticketDate > today){
-                    $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td><button> Edit </button></td ><td><button> Cancel </button></td></tr>");
+                    $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td>" + e[12] + "</td><td>" + e[13] + "</td><td><button> Edit </button class = \"edit-t\"></td ><td><button class = \"cancel-t\"> Cancel </button></td></tr>");
                 }
             });
 
+            $("#ticket-table tr > td:eq(14) > button").on('click', function () {
+                orderID = $(this).closest('tr').find("td").eq(1).html();
+                ticketID = $(this).closest('tr').find("td").eq(0).html();
+                IDs = [orderID, ticketID];
+                console.log(IDs);
+                localStorage.setItem("IDs", JSON.stringify(IDs));
+                window.location.href = 'ticket_editing.html';
+            });
+
+            $("#ticket-table tr > td:eq(15) > button").on('click', function () {
+                orderID = $(this).closest('tr').find("td").eq(1).html();
+                ticketID = $(this).closest('tr').find("td").eq(0).html();
+                confirmCancelling = confirm("Are you sure?");
+                if (confirmCancelling == true){
+                    cancel();
+                }
+            });
+
+        }
+
+        function cancel(){
+            $.post("../services/cancel", {OrderID : orderID, TicketID: ticketID}, function(r) {
+                console.log("success" + r + " cancel");
+            }).fail(function(r) {
+                console.log("fail" + r.responseText + " cancel");
+            });
         }
 
         $(document).ready(function () {
@@ -47,8 +80,10 @@
         <tr>
             <th>Ticket ID</th>
             <th>Order ID</th>
+            <th>From</th>
             <th>Departure Date</th>
             <th>Departure Time</th>
+            <th>To</th>
             <th>Arrival Date</th>
             <th>Arrival Time</th>
             <th>Price</th>

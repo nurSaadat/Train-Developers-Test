@@ -3,12 +3,70 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" href = "startPageStyle.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/base.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 	
+	function getInfo() {
+		
+        $.get('../services/workerAccInfo', {}, function(r) {
+            update(r);
+        }, 'json');
+        
+    }
+	
+	function update(items) {
+		
+		$("#first-name").append("First name: " + items[0]);
+		$("#last-name").append("Last name: " + items[1]);
+		$("#email").append("Email: " + items[2]);
+		$("#position").append("Position: " + items[3]);
+		
+		if (items[8] == 'M') {
+			
+			$("#gender").append("Gender: " + "Male");
+			
+		} else {
+			
+			$("#gender").append("Gender: " + "Female");
+			
+		}
+		
+		$("#birth-date").append("Birth Date: " + items[5]);
+		$("#address").append("Home Address: " + items[6]);
+		$("#phone-number").append("Phone Number: " + items[7]);
+		$("#bank-acc-num").append("Bank Account Number: " + items[4]);
+		$("#salary").append("Salary: " + items[10]);
+		
+		if (items[3] == "Agent") {
+			
+			$("#payday").append("Pay day: " + items[9]);
+			$("#manager-name").append("Manager Name: " + items[12] + " " + items[13]);
+			$("#manager-email").append("Manager Email: " + items[11]);
+		
+			$("#manager-block").remove();
+			$("#admin-block").remove();
+			
+		} else if (items[3] == "Manager"){
+			
+			$("#payday").append("Pay day: " + items[9]);
+			
+			$("#agent-block").remove();
+			$("#admin-block").remove();
+			
+		} else {
+			
+			$("#agent-block").remove();
+			$("#manager-block").remove();
+			
+		}
+		
+    }
+	
 	$(document).ready(function () {	
+		
+		getInfo();
 		
 		$("#logout").on('click', function (r) {
 			$.post("services/logout", {}, function(r){
@@ -16,40 +74,74 @@
 			}).fail(function(r) {
 				alert("Error!");
 		    });
+	    });
+		
+		$("#manage-agents").on('click', function (r) {
+			
+			window.location.href = "manage_agents.html";
 			
 	    });
+		
+		$("#manage-routes").on('click', function (r) {
+			
+			window.location.href = "route_management.html";
+			
+	    });
+		
+		$("#manage-managers").on('click', function (r) {
+			
+			window.location.href = "manage_managers.html";
+			
+		});
 	    
 	});
 	
 	</script>
 </head>
 <body>
-	<h2>TrainDevelopers</h2>
-	<br>
-	<a href="../index.html">Main Page</a>
-	<br>
-	<a href="../user/booking.html">Buy Ticket</a>
-	<br>
-	<button id="logout" type="button" >Log Out</button>
-	<br>
-	<h3>Personal profile</h3>
-	<br>
+	<div class="header">
+		<div><img src="../css/main_logo.jpg" height="65px"/></div>
+		<div><h2>TRAIN DEVELOPERS</h2></div>
+		<div><a href="../index.html">Main Page</a></div>
+	</div>
+	<h2>Personal profile</h2>
 	<div id="first-name"></div>
 	<div id="last-name"></div>
-	<div id="id"></div>
+	<div id="email"></div>
 	<br>
 	<button id="change-password">Change Password</button>
-	<br>
-	<button id="task-history">Tasks history</button>
-	<br>
-	Position: <div id="position"></div>
-	Gender: <div id="gender"></div>
-	Birth Date<div id="birth-date"></div>
-	Address: <div id="addres"></div>
-	Phone number: <div id="phone-num"></div>
-	Email: <div id="email"></div>
-	Bank account number: <div id="bank-acc-num"></div>
-	Manager: <div id="manager-fname"></div><div id="manager-lname"></div>
-	Manager Email: <div id="manager-email"></div>
+	<br><br>
+	<div id="agent-block">
+	<button id="passenger-requests">See Passenger Requests</button>
+	<br><br>
+	</div>
+	<div id="manager-block">
+	<button id="manage-agents">Manage Agents</button>
+	<br><br>
+	<button id="manage-routes">Manage Routes</button>
+	<br><br>
+	</div>
+	<div id="admin-block">
+	<button id="manage-managers">Manage Managers</button>
+	<br><br>
+	</div>
+	<div id="position"></div>
+	<div id="gender"></div>
+	<div id="birth-date"></div>
+	<div id="address"></div>
+	<div id="phone-number"></div>
+	<div id="bank-acc-num"></div>
+	<div id="salary"></div>
+	<div id="payday"></div>
+	<div id="manager-name"></div>
+	<div id="manager-email"></div>
+	<div class="contact">
+		<h3>CONTACT US</h3>
+		<div class="contactUs">
+			<div><p>email: support@train.kz</p></div>
+			<div><p>telephone: +77777777777</p></div>
+			<div><p>telephone: +77777777778</p></div>
+		</div>
+	</div>
 </body>
 </html>

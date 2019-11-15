@@ -3,14 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticket Booking</title>
-    <link rel = "stylesheet" type="text/css" href = "../css/booking.css">
+    <link rel = "stylesheet" href = "../startPageStyle.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type = "text/javascript">
+        var IDs = JSON.parse(localStorage.getItem("IDs"));
+        var orderID = IDs[0];
+        var oldTicketID = IDs[1];
         var routeId, dateFrom, dateTo, from, to, seat, carriage, dist, ticketPrice, totalPrice, trainId, email;
         var passenger = [];
         var ticket = [];
         var order = [];
+
+        function getTickets() {
+            $.get('../services/tickets', {}, function(r) {
+                showTicket(r);
+            }, 'json');
+        }
+
+
+        function showTicket(items) {
+            items.forEach(function (e) {
+                if(e[1] == orderID && e[0] == oldTicketID){
+                    $("#stationFrom").val(e[2]);
+                    $("#stationTo").val(e[5]);
+                    $("#dateFrom").val(e[3]);
+                    oldTicket = [e[3], e[6], e[8], e[14], e[9], e[11], e[10], e[2], e[5]];
+                }
+            });
+        }
+
+        function getPassenger() {
+            $.get('../services/passengers', {}, function(r) {
+                showPassenger(r);
+            }, 'json');
+        }
+
+        function showPassenger(items){
+            items.forEach(function (e) {
+                if(e[9] == orderID && e[10] == oldTicketID){
+
+                    $("#doctype").val(e[0]);
+                    $("#tariff").val(e[1]);
+                    $("#docID").val(e[2]);
+                    $("#fname").val(e[3]);
+                    $("#lname").val(e[4]);
+                    $("#telephone").val(e[5]);
+                    $("#country").val(e[6]);
+                    if (e[7] == 'F') $("#gender").val('Female');
+                    else $("#gender").val('Male');
+                    $("#dob").val(e[8]);
+                }
+            });
+        }
 
         function validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth){
 
@@ -75,27 +120,6 @@
             } return true;
         }
 
-        function validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email){
-            if (numOfpassengers == "" || numOfpassengers == null ) {
-                alert("Please, choose a number of passengers.");
-                return false;
-            }else if (bookingDate == "" || bookingDate == null) {
-                alert("Error on booking date");
-                return false;
-            }else if (bookingTime== "" || bookingTime == null) {
-                alert("Error on booking time");
-                return false;
-            }else if (payment== "" || payment == null) {
-                alert("Please, choose a payment type.");
-                return false;
-            }else if (totalPrice== "" || totalPrice == null) {
-                alert("Error on total price");
-                return false;
-            } else if (email== "" || email== null) {
-                //alert("Error on email");
-                return false;
-            }return true;
-        }
 
         function createPassenger(){
             var doctype = document.getElementById('doctype').value;
@@ -111,47 +135,28 @@
             if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
                 passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
                 console.log(passenger);
-                localStorage.setItem("passenger", JSON.stringify(passenger));
-                localStorage.setItem("ticket", JSON.stringify(ticket));
-                localStorage.setItem("order", JSON.stringify(order));
-                window.location.href='payment.html';
+
             }
         }
 
         function createTicket(){
-            if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
-                ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
-                console.log(ticket);
-                createPassenger();
-            }
-        }
+            if (ticket.length == 0){
+                if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
+                    ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
 
-        function createOrder(){
-            var getInfo = $.get('../services/accInfo', {}, function(r) {
-                email = r[2];
-                console.log(email);
-            }, 'json');
-            getInfo.then(function() {
-
-                var numOfpassengers = 1;
-                // document.getElementById('numOfpassengers').value;
-                var payment = document.getElementById('payment').value;
-                var today = new Date();
-                var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                totalPrice = ticketPrice; /////!!!!!!! change when more than one passenger!!!!!!
-                if(validate_order(numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email)){
-                    order = [numOfpassengers, bookingDate, bookingTime, payment,  totalPrice, email];
-                    console.log(order);
-                    createTicket();
                 }
-            });
+            }
+            console.log(ticket);
+            createPassenger();
+
         }
+
+
 
         function showRoutes(items) {
-
-            $("#routes-table").find("tr:gt(0)").remove();
-
+        	
+        	$("#routes-table").find("tr:gt(0)").remove();
+        	
             items.forEach(function (e) {
 
                 if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() == e[1])){
@@ -170,17 +175,17 @@
                 dist = $(this).closest('tr').find("td").eq(5).html();
                 console.log(from, to, routeId, dateFrom, dateTo)
                 getSeats();
-
+                
             });
 
         }
-
+        
         function showSeats(items) {
-
-            $("#seats-table").find("tr:gt(0)").remove();
-
+        	
+        	$("#seats-table").find("tr:gt(0)").remove();
+        	
             items.forEach(function (e) {
-
+            	
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
                 $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
@@ -210,49 +215,86 @@
 
         function getSeats() {
             $.get("../services/seats?RouteID=" + routeId, function(r) {
-
+            	
                 console.log(r);
                 showSeats(r);
             },'json').fail(function(r) {
-
+            	
                 alert("Error on get seats");
                 console.log(r.responseText);
             });
         }
 
-        $(document).ready(function () {
+        function keepSeat(){
+            ticket = oldTicket;
+            console.log(ticket);
+            $( "div.seat" ).text( "Your seat is " + ticket[5] + ", in carriage " + ticket[6] + ", price: " + ticket[2]);
+        }
 
-            $("#find-routes").on("click", function() {
-                getRoutes();
+        function postTicket() {
+            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: orderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[8]}, function(r) {
+                console.log(r + " book");
+                newTicketID = r[0];
+                postPassenger();
+                // redirect
+                //window.location.href = "../index.html";
+            }).fail(function(r) {
+                console.log(r.responseText + " book");
             });
+        }
 
-            /*         ("#add-pass-btn").on("click", function() {
-                        var passForm = $(".newPass").eq(0).clone().show();
-                        $(".addPass").append(passForm);
-                    });
+        function postPassenger() {
+            $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: orderID, TicketID: newTicketID}, function(r) {
+                console.log(r + " passengers");
 
-                    ("#remove-pass-btn").on("click", function() {
-                        var index = $(".remove-pass-btn").index(this);
-                        console.log(index);
-                        if ($(".newPass").length>1) {$(".newPass").eq(index).remove()}
-                    });
-            */
+                // redirect
+                window.location.href = "current_tickets.html";
 
-            $("#book").on("click", function() {
-                createOrder();
+            }).fail(function(r) {
+                console.log(r.responseText + " passengers");
             });
+        }
+
+$(document).ready(function () {
+        getTickets()
+        getPassenger();
+
+
+        $("#find-routes").on("click", function() {
+            getRoutes();
         });
+
+        $("#keep-seat").on("click", function() {
+            keepSeat();
+        });
+
+        $("#edit-ticket").on("click", function() {
+            createTicket();
+        });
+
+        $("#request").on("click", function() {
+
+            postTicket();
+        });
+
+    /*         ("#add-pass-btn").on("click", function() {
+                var passForm = $(".newPass").eq(0).clone().show();
+                $(".addPass").append(passForm);
+            });
+
+            ("#remove-pass-btn").on("click", function() {
+                var index = $(".remove-pass-btn").index(this);
+                console.log(index);
+                if ($(".newPass").length>1) {$(".newPass").eq(index).remove()}
+            });
+    */
+
+});  
 
     </script>
 </head>
 
 <body>
-
-<div class="header">
-    <div><img src="../css/main_logo.jpg" height="65px"/></div>
-    <div><h2>TRAIN DEVELOPERS</h2></div>
-    <div><a href="../index.html">Main Page</a></div>
-</div>
 
 <h2>Ticket Booking</h2>
 
@@ -293,6 +335,9 @@
 <label for="dateFrom">Departure Date</label>
 <input type="date" id="dateFrom" required>
 <br>
+<br>
+<button id="keep-seat"> Keep the old seat</button>
+
 <button id="find-routes"> Find Routes</button>
 <br><br><br>
 <table id="seats-table">
@@ -306,10 +351,11 @@
         <th></th>
     </tr>
 </table>
+<br>
 <div class="seat"></div>
 <div id="passanger-number" style="visibility:hidden">
-    <label> Number of passengers </label>
-    <input type="number" id = "numOfpassengers" required>
+	<label> Number of passengers </label>
+	<input type="number" id = "numOfpassengers" required>
 </div>
 <div class="addPass">
     <div class="newPass">
@@ -366,17 +412,13 @@
         <button class="remove-pass-btn" style="visibility:hidden">Remove a Passenger</button>
     </div>
 </div>
-<button class="add-pass-btn" style="visibility:hidden">Add a Passenger</button>
-<button id="book" type="button">Book a ticket</button>
+<button id="edit-ticket" type="button">Edit Ticket</button>
+<br>
+<div class="ticket"></div>
+<br>
+<button id="request" type="button">Send a request</button>
 
-<div class="contact">
-    <h3>CONTACT US</h3>
-    <div class="contactUs">
-        <div><p>email: support@train.kz</p></div>
-        <div><p>telephone: +77777777777</p></div>
-        <div><p>telephone: +77777777778</p></div>
-    </div>
-</div>
+
 
 </body>
 </html>

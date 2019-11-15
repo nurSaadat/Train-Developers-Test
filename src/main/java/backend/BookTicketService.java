@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class BookTicketService {
     private static final String DEPARTUREDATE_PATTERN = "[0-9]{4}-[0-9]*-[0-9]*";
     private static final String ARRIVINGDATE_PATTERN = "[0-9]{4}-[0-9]*-[0-9]*";
-    private static final String PRICE_PATTERN = "[0-9]+";
+    private static final String PRICE_PATTERN = "[0-9]+\\.?[0-9]*";
 
     @POST
     public Response register(@FormParam("DepartureDate") String DepartureDate, @FormParam("ArrivingDate") String ArrivingDate, @FormParam("Price") String Price, @FormParam("OrderID") String OrderID, @FormParam("RouteID") String RouteID, @FormParam("TrainID") String TrainID, @FormParam("SeatNumber") String SeatNumber, @FormParam("CarriageNumber") String CarriageNumber ) throws SQLException, ClassNotFoundException {

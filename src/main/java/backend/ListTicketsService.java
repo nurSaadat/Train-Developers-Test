@@ -28,8 +28,8 @@ public class ListTicketsService {
 		
 		MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-		ResultSet rs = db.getData("select T.TicketID, O.OrderID, T.DepartureDate, SD.DepartureTime, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName, \" \", P.LName) as `Name`\n" +
-				"from `User` U, `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA\n" + 
+		ResultSet rs = db.getData("select T.TicketID, O.OrderID, SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName, \" \", P.LName) as `Name`, T.RouteID \n" +
+				"from `User` U, `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA\n" +
 				"where U.Email = '" + email + "' and O.UserEmail = U.Email and T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID;");
 
 		while (rs.next()) {
@@ -37,8 +37,10 @@ public class ListTicketsService {
 			tickets.add(new CopyOnWriteArrayList<String>());
 			tickets.get(tickets.size() - 1).add(rs.getString("TicketID"));
 			tickets.get(tickets.size() - 1).add(rs.getString("OrderID"));
+			tickets.get(tickets.size() - 1).add(rs.getString("StationAbbr"));
 			tickets.get(tickets.size() - 1).add(rs.getString("DepartureDate"));
 			tickets.get(tickets.size() - 1).add(rs.getString("DepartureTime"));
+			tickets.get(tickets.size() - 1).add(rs.getString("StationTo"));
 			tickets.get(tickets.size() - 1).add(rs.getString("ArrivalDate"));
 			tickets.get(tickets.size() - 1).add(rs.getString("ArrivalTime"));
 			tickets.get(tickets.size() - 1).add(rs.getString("Price"));
@@ -47,7 +49,7 @@ public class ListTicketsService {
 			tickets.get(tickets.size() - 1).add(rs.getString("SeatNumber"));
 			tickets.get(tickets.size() - 1).add(rs.getString("DocumentID"));
 			tickets.get(tickets.size() - 1).add(rs.getString("Name"));
-
+			tickets.get(tickets.size() - 1).add(rs.getString("RouteID"));
 
 		}
 	
