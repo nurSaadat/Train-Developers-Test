@@ -1,0 +1,68 @@
+@import "header_footer.css";
+@import "image_box.css";
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 50% 50%;
+	text-align: center;
+}
+
+.box1 {
+	height: 17em;
+    padding: 30px;
+}
+
+.box2 {
+	height: 17em;
+    padding: 30px;
+}
+
+.form-background {
+	height: 17em;
+	background-color: rgba(0, 87, 168, 0.3);	
+	border-radius:4px;
+}
+
+form {
+	padding: 20px 0;
+  	text-align: center;  	
+}
+
+.box2 form input{
+	text-align:center;
+	width:70%;
+	height:35px;
+	margin-bottom:10px;
+	border:none;
+	border-radius:30px;
+}
+
+.box2 form input:focus{
+	outline:none;
+}
+
+.box2 button{
+	height:35px;
+	text-align:center;
+	margin-top:20px;
+	margin-bottom:0;
+	width:50%;
+	background-color:#0057A8;
+	color:#fff;
+	font-weight: bold;	
+	border:none;
+	border-radius:30px;
+}
+
+.box2 .sign-up-link{
+	padding: 20px 0;
+}
+
+.box3 {
+    text-align: center;
+}
+
+.box3 .news_box {
+	background: #F3F3F3;
+	transform: matrix(1, 0, 0, -1, 0, 0);	
+}
