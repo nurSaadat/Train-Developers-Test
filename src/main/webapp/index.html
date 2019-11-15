@@ -12,11 +12,11 @@
 			$.get("services/checkin", {}, function(r){
 				console.log(r);
 				if (r == "logged in") {
-					$("#log-out-button").css("visibility", "visible");
-					$("#booking-link").css("visibility", "visible");
-					$("#sign-up").css("visibility", "hidden");
-					$("#log-in-form").css("visibility", "hidden");
-					$("#profile-button").css("visibility", "visible");
+					$("#log-out-button").css("display", "inline-block");
+					$("#booking-box").css("display", "block");
+					$("#sign-up").css("display", "none");
+					$("#log-in-form").css("display", "none");
+					$("#profile-button").css("display", "inline-block");
 				}
 			}).fail(function(r) {
 				alert("Error! Checkin");
@@ -90,8 +90,8 @@
 	<div class="nav">
 		<ul>
 			<li id="main-page">Main Page</li>
-			<li id="profile-button" style="visibility:hidden">Go to profile</li>
-			<li id="log-out-button" style="visibility:hidden">Log Out</li>
+			<li id="profile-button" style="display:none">Go to profile</li>
+			<li id="log-out-button" style="display:none">Log Out</li>
 		</ul>
 	</div>
 		
@@ -107,8 +107,13 @@
 		</div>
 
 		<div class="box2">
-			<div class="form-background">		
-				<a href="user/booking.html" id="booking-link" style="visibility:hidden">Book a ticket</a>
+			<div class="form-background">	
+				<article class="item" style="display:none" id="booking-box">
+					<header>	
+						<a href="user/booking.html" id="booking-link"><img src="css/res/book_ticket.jpg"/></a>
+						<h3>Book ticket</h3>
+					</header>
+				</article>	
 				<form id="log-in-form">
 					<input type="text" id="user-email" placeholder="Email">
 					<input type="password" id="user-password" placeholder="Password">
