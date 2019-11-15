@@ -61,7 +61,7 @@ body {
 
 .footer { 
   background: #0057A8;
-  height: 80px; 
+  height: 100px;
   text-align: center;
   padding-bottom: 20px;
 }
@@ -71,18 +71,16 @@ body {
   font-size: 24px;
   line-height: 32px; 
   padding-top: 10px;
+  text-transform: uppercase;
 }
 
 .footer p { 
   color: #fff;
   font-size: 18px;  
   line-height: 20px;
-  margin: auto 40px;  
-  float: left;
 }
 
-@media (max-width:850px) {
-  .footer p { 
-  margin: auto 20px;  
-  }
+.footer .contact-container {
+  display: grid;
+  grid-template-columns: 33% 34% 33%;
 }
