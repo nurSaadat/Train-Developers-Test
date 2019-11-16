@@ -48,6 +48,10 @@
 
 			checkIn();
 			
+			$("#see_routes").on('click', function () {
+				window.location.href = "routes.html";
+			});
+			
 			$("#main-page").on('click', function () {
 				window.location.href = "index.html";
 			});
@@ -92,8 +96,8 @@
 	<div class="wrapper">
 		<div class="box1">
 			<article class="item">
-				<header>
-					<a href="routes.html"><img src="css/res/route_map.jpg"/></a>
+				<header id="see_routes">
+					<a><img src="css/res/route_map.jpg"/></a>
 					<h3>See routes</h3>
 				</header>
 			</article>		
@@ -138,6 +142,7 @@
 				<div class="date"><p>06.11.2019</p></div>
 				<div class="text"><p>Route AST-SEM was canceled due to weather conditions</p></div>
 			</div>
+			<br>
 			<a href="">See More</a>
 		</div>
 	</div>

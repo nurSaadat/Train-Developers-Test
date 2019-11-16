@@ -12,6 +12,7 @@ body {
   background-size: cover;
   height: 200px;
   text-align: left; 
+  width: 100%;
 }
 
 .header h1 {
