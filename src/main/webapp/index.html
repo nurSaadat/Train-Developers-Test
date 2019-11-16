@@ -56,6 +56,10 @@
 				window.location.href = "index.html";
 			});
 			
+			$("#booking-link").on('click', function () {
+				window.location.href = "user/booking.html";
+			});
+			
 			$("#log-in-button").on('click', function () {
 				logIn();
 			});
@@ -106,8 +110,8 @@
 		<div class="box2">
 			<div class="form-background">	
 				<article class="item" style="display:none" id="booking-box">
-					<header>	
-						<a href="user/booking.html" id="booking-link"><img src="css/res/book_ticket.jpg"/></a>
+					<header id="booking-link">	
+						<a><img src="css/res/book_ticket.jpg"/></a>
 						<h3>Book ticket</h3>
 					</header>
 				</article>	

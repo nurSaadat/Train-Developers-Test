@@ -221,6 +221,10 @@
         }
 
         $(document).ready(function () {
+        	
+        	$("#main-page").on('click', function (r) {
+				window.location.href = "../index.html";
+			});
 
             $("#find-routes").on("click", function() {
                 getRoutes();

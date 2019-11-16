@@ -90,71 +90,82 @@
             $("#find-routes").on("click", function() {
                 getRoutes();
             });
+            
+            $("#main-page").on('click', function (r) {
+				window.location.href = "../index.html";
+			});
         });
 
     </script>
 
 </head>
 <body>
-<div class="header">
-    <div><img src="css/main_logo.jpg" height="65px"/></div>
-    <div><h2>TRAIN DEVELOPERS</h2></div>
-    <div><a href="index.html">Main Page</a></div>
-</div>
-<div>
-    <h2>Routes</h2>
-    <a href="index.html">Main Page</a>
-    <br><br><br>
-    <table id="routes-table">
-        <tr>
-            <th>RouteID</th>
-            <th>DateFrom</th>
-            <th>DateTo</th>
-            <th>TimeFrom</th>
-            <th>TimeTo</th>
-            <th>Distance (in km)</th>
-            <th>Status</th>
-            <th>StationFrom</th>
-            <th>StationTo</th>
-        </tr>
-    </table>
-</div>
-<select id="stationFrom">
-    <option value="AST">Astana</option>
-    <option value="ALM">Almaty</option>
-    <option value="SEM">Semey</option>
-    <option value="ATB">Aktobe</option>
-    <option value="PET">Petropavlovsk</option>
-    <option value="KSH">Kokshetau</option>
-</select>
-
-<select id="stationTo">
-    <option value="AST">Astana</option>
-    <option value="ALM">Almaty</option>
-    <option value="SEM">Semey</option>
-    <option value="ATB">Aktobe</option>
-    <option value="PET">Petropavlovsk</option>
-    <option value="KSH">Kokshetau</option>
-</select>
-<br>
-<label for="dateFrom">Departure Date from</label>
-<input type="date" id="dateFrom" required>
-<br>
-<label for="dateTo">Departure Date to</label>
-<input type="date" id="dateTo" required>
-<br>
-<button id="find-routes"> Find Routes</button>
-<br><br><br>
-<div style="width:80%; height:90%" id="map"></div>
-
-<div class="contact">
-    <h3>CONTACT US</h3>
-    <div class="contactUs">
-        <div><p>email: support@train.kz</p></div>
-        <div><p>telephone: +77777777777</p></div>
-        <div><p>telephone: +77777777778</p></div>
-    </div>
-</div>
-
+<!-- Header -->
+	<div class="header">
+		<h1>Train Developers</h1>	
+	</div>
+	
+<!-- Menu bar -->
+	<div class="nav">
+		<ul>
+			<li id="main-page">Main Page</li>
+			<li id="profile-button" style="display:none">Go to profile</li>
+			<li id="log-out-button" style="display:none">Log Out</li>
+		</ul>
+	</div>
+	
+	<div class="main_section">
+		<h3>Routes</h3>
+		<div class="blue_table">
+			<table id="routes-table">
+		        <tr>
+		            <th>RouteID</th>
+		            <th>DateFrom</th>
+		            <th>DateTo</th>
+		            <th>TimeFrom</th>
+		            <th>TimeTo</th>
+		            <th>Distance (in km)</th>
+		            <th>Status</th>
+		            <th>StationFrom</th>
+		            <th>StationTo</th>
+		        </tr>
+		    </table>
+		</div>
+		From
+		<select id="stationFrom" class="white_select">
+		    <option value="AST">Astana</option>
+		    <option value="ALM">Almaty</option>
+		    <option value="SEM">Semey</option>
+		    <option value="ATB">Aktobe</option>
+		    <option value="PET">Petropavlovsk</option>
+		    <option value="KSH">Kokshetau</option>
+		</select>
+		To
+		<select id="stationTo" class="white_select">
+		    <option value="AST">Astana</option>
+		    <option value="ALM">Almaty</option>
+		    <option value="SEM">Semey</option>
+		    <option value="ATB">Aktobe</option>
+		    <option value="PET">Petropavlovsk</option>
+		    <option value="KSH">Kokshetau</option>
+		</select>
+		<div class="dates">
+			<label for="dateFrom">Departure Date from</label>
+			<input type="date" id="dateFrom" required>
+			<label for="dateTo">Departure Date to</label>
+			<input type="date" id="dateTo" required>
+		</div>
+		<button id="find-routes"> Find Routes</button>		
+	</div>
+	<div id="map" class="map"></div>
+<!-- Contacts -->
+	<div class="footer">
+		<h3>Contact us</h3>
+		<div class="contact-container">
+			<div><p>email: train.dev@nu.edu.kz</p></div>
+			<div><p>telephone: +77777777777</p></div>
+			<div><p>telephone: +77777777778</p></div>
+		</div>
+	</div>
 </body>
 </html>
