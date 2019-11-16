@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TrainDevelopers | Main page</title>
-    <link rel = "stylesheet" type="text/css" href = "../css/base.css">
+    <link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type="text/javascript">
@@ -144,15 +144,28 @@
 
                 manageAgent();
             });
+
+            $("#main-page").on('click', function () {
+                window.location.href = "index.html";
+            });
         });
 
     </script>
 </head>
 <body>
+
+<!-- Header -->
 <div class="header">
-    <div><img src="../css/main_logo.jpg" height="65px"/></div>
-    <div><h2>TRAIN DEVELOPERS</h2></div>
-    <div><a href="../index.html">Main Page</a></div>
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
 </div>
 
 <h2>Employees approval form</h2>
@@ -216,10 +229,11 @@
 <br>
 <button id="manage" type="button">Add as your agent</button>
 
-<div class="contact">
-    <h3>CONTACT US</h3>
-    <div class="contactUs">
-        <div><p>email: support@train.kz</p></div>
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
         <div><p>telephone: +77777777777</p></div>
         <div><p>telephone: +77777777778</p></div>
     </div>

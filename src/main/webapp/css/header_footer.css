@@ -34,6 +34,7 @@ body {
   background: #0057A8;
   height: 32px; 
   width: 100%;
+  margin-bottom: 25px;
 }
 
 .nav ul {
@@ -60,17 +61,17 @@ body {
   color: #0057A8;
 }
 
-.footer { 
+.footer {
   background: #0057A8;
   height: 100px;
   text-align: center;
-  padding-bottom: 20px; 
   left: 0;
   bottom: 0;
   width: 100%;
 }
 
-.footer h3 { 
+.footer h3 {
+  padding-top: 10px;
   color: #fff;
   font-size: 24px;
   line-height: 28px; 

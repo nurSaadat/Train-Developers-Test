@@ -47,41 +47,49 @@
                 signUp();
             });
 
+            $("#main-page").on('click', function () {
+                window.location.href = "index.html";
+            });
+
         });
 
     </script>
 
 </head>
 <body>
+<!-- Header -->
 <div class="header">
-    <div><img src="css/main_logo.jpg" height="65px"/></div>
-    <h2>TRAIN DEVELOPERS</h2>
-    <div><a href="index.html">Main Page</a></div>
+    <h1>Train Developers</h1>
 </div>
-<h2>Create Profile</h2>
 
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
+</div>
+
+<!-- Sign up -->
 <div class="box1">
-    <label for="email">Email</label>
-    <input type="text" id="email" placeholder="Email">
-    <br>
-    <label for="fname">First Name</label>
-    <input type="text" id="fname" placeholder="First Name">
-    <br>
-    <label for="lname">Last Name</label>
-    <input type="text" id="lname" placeholder = "Last Name">
-    <br>
-    <form>
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Password">
-        <br>
-        <button id="signup" type="button">Sign Up</button>
-    </form>
+    <div class="form-background">
+        <h3>Create Profile</h3>
+        <form id="sign-up-form">
+            <input type="text" id="email" placeholder="Email">
+            <input type="text" id="fname" placeholder="First Name">
+            <input type="text" id="lname" placeholder = "Last Name">
+            <input type="password" id="password" placeholder="Password">
+            <button id="signup" type="button">Sign Up</button>
+        </form>
+    </div>
 </div>
 
-<div class="contact">
-    <h3>CONTACT US</h3>
-    <div class="contactUs">
-        <div><p>email: support@train.kz</p></div>
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
         <div><p>telephone: +77777777777</p></div>
         <div><p>telephone: +77777777778</p></div>
     </div>

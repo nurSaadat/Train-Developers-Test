@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticket Booking</title>
-    <link rel = "stylesheet" href = "../startPageStyle.css">
+    <link rel = "stylesheet" href = "../css/header_footer.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type = "text/javascript">
@@ -277,6 +277,10 @@ $(document).ready(function () {
             postTicket();
         });
 
+        $("#main-page").on('click', function () {
+            window.location.href = "../index.html";
+        });
+
     /*         ("#add-pass-btn").on("click", function() {
                 var passForm = $(".newPass").eq(0).clone().show();
                 $(".addPass").append(passForm);
@@ -295,6 +299,20 @@ $(document).ready(function () {
 </head>
 
 <body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
+</div>
 
 <h2>Ticket Booking</h2>
 
@@ -418,7 +436,15 @@ $(document).ready(function () {
 <br>
 <button id="request" type="button">Send a request</button>
 
-
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
 
 </body>
 </html>
