@@ -28,13 +28,18 @@
 			getInfo();
 
 			$("#ticket-history").on('click', function (r) {
-
 				window.location.href = "./ticket_history.html";
 			});
 
 			$("#current-tickets").on('click', function (r) {
-
 				window.location.href = "./current_tickets.html";
+			});
+			
+			$("#main-page").on('click', function (r) {
+				window.location.href = "../index.html";
+			});
+			$("#buy-ticket").on('click', function (r) {
+				window.location.href = "./booking.html";
 			});
 
 		});
@@ -42,32 +47,55 @@
 	</script>
 </head>
 <body>
-<div class="header">
-	<div><img src="../css/main_logo.jpg" height="65px"/></div>
-	<div><h2>TRAIN DEVELOPERS</h2></div>
-	<div><a href="../index.html">Main Page</a></div>
-	<div><a href="booking.html">Buy Ticket</a></div>
-</div>
-<h2>Personal profile</h2>
-<div class="box1">
-	<div id="first-name"></div>
-	<div id="last-name"></div>
-	<div id="email"></div>
-	<br>
-	<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
-	<br><br>
-	<button id="ticket-history">Ticket history</button>
-	<br><br>
-	<button id="current-tickets">Current tickets</button>
-</div>
-
-<div class="contact">
-	<h3>CONTACT US</h3>
-	<div class="contactUs">
-		<div><p>email: support@train.kz</p></div>
-		<div><p>telephone: +77777777777</p></div>
-		<div><p>telephone: +77777777778</p></div>
+<!-- Header -->
+	<div class="header">
+		<h1>Train Developers</h1>	
 	</div>
-</div>
+	
+<!-- Menu bar -->
+	<div class="nav">
+		<ul>
+			<li id="main-page">Main Page</li>
+			<li id="buy-ticket">Buy Ticket</li>
+		</ul>
+	</div>
+	
+<!-- Personal profile -->	
+	<div class="wrapper">
+		<div class="box1">
+			<div class=personal_info>
+				<h3>Personal profile</h3>
+				<div class="personal_info_item" id="first-name"></div>
+				<div class="personal_info_item" id="last-name"></div>
+				<div class="personal_info_item" id="email"></div>
+			</div>
+			<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
+		</div>
+		<div class="box2">
+			<article class="item" id="ticket-history">
+				<header>	
+					<a><img src="../css/res/ticket_history.jpg"/></a>
+					<h3>Ticket history</h3>
+				</header>
+			</article>	
+			<article class="item" id="current-tickets">
+				<header>	
+					<a><img src="../css/res/current_tickets.jpg"/></a>
+					<h3>Current tickets</h3>
+				</header>
+			</article>
+
+		</div>
+	</div>
+	
+<!-- Contacts -->
+	<div class="footer">
+		<h3>Contact us</h3>
+		<div class="contact-container">
+			<div><p>email: train.dev@nu.edu.kz</p></div>
+			<div><p>telephone: +77777777777</p></div>
+			<div><p>telephone: +77777777778</p></div>
+		</div>
+	</div>
 </body>
 </html>

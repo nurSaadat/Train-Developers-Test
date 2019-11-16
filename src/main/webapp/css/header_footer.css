@@ -63,14 +63,16 @@ body {
   background: #0057A8;
   height: 100px;
   text-align: center;
-  padding-bottom: 20px;
+  padding-bottom: 20px; 
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 
 .footer h3 { 
   color: #fff;
   font-size: 24px;
-  line-height: 32px; 
-  padding-top: 10px;
+  line-height: 28px; 
   text-transform: uppercase;
 }
 
@@ -80,7 +82,8 @@ body {
   line-height: 20px;
 }
 
-.footer .contact-container {
+.footer .contact-container {	 
+  background: #0057A8;
   display: grid;
   grid-template-columns: 33% 34% 33%;
 }

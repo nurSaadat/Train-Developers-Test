@@ -56,8 +56,17 @@
 		position: relative;
 		z-index: 1;
 	}
+	
+@media screen and (max-width: 800px) {
+	.item img {
+		width: auto;
+	}
+}
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {	
+	.item img {
+		width: auto;
+	}
 
 	.item {
 		padding: 2em 1em 0.1em 1em;
