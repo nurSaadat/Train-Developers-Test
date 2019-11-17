@@ -232,10 +232,9 @@
         }
 
         function postTicket() {
-            $.post("../services/book", {DepartureDate : ticket[0], ArrivingDate: ticket[1], Price: ticket[2], OrderID: orderID, RouteID: ticket[3], TrainID: ticket[4], SeatNumber: ticket[5], CarriageNumber: ticket[6], ScheduleFromID: ticket[7], ScheduleToID: ticket[8]}, function(r) {
+            $.post("../services/book", {ticket : [ticket[0], ticket[1], ticket[2], orderID, ticket[3], ticket[4], ticket[5], ticket[6], ticket[7], ticket[8]], passenger : [passenger[0], passenger[1], passenger[2], passenger[3], passenger[4], passenger[5], passenger[6], passenger[7], passenger[8], orderID]}, function(r) {
                 console.log(r + " book");
-                newTicketID = r[0];
-                postPassenger();
+                window.location.href = "current_tickets.html";
                 // redirect
                 //window.location.href = "../index.html";
             }).fail(function(r) {
@@ -243,17 +242,6 @@
             });
         }
 
-        function postPassenger() {
-            $.post("../services/passengers", {DocumentType : passenger[0], Tariff: passenger[1], DocumentID: passenger[2], FName: passenger[3], LName: passenger[4], PhoneNumber: passenger[5], Citizenship: passenger[6], Gender: passenger[7], DateOfBirth: passenger[8], OrderID: orderID, TicketID: newTicketID}, function(r) {
-                console.log(r + " passengers");
-
-                // redirect
-                window.location.href = "current_tickets.html";
-
-            }).fail(function(r) {
-                console.log(r.responseText + " passengers");
-            });
-        }
 
 $(document).ready(function () {
         getTickets()

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrainDevelopers | Main page</title>
+    <link rel = "stylesheet" type="text/css" href = "../css/ticket_history.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+        function getCancelledTickets() {
+            $.get('../services/cancel', {}, function(r) {
+                showCancelledTickets(r);
+            }, 'json');
+        }
+
+        function showCancelledTickets(items) {
+            items.forEach(function (e) {
+                $("#cancelled-t").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td>" + e[12] + "</td><td>" + e[13] + "</td><td>" + e[14] + "</td><td><button class = \"cancel-t\"> Cancel </button></td></tr>");
+            });
+
+            $("#cancelled-t tr > td:eq(15) > button").on('click', function () {
+                orderID = $(this).closest('tr').find("td").eq(1).html();
+                ticketID = $(this).closest('tr').find("td").eq(2).html();
+                confirmCancelling = confirm("Are you sure?");
+                if (confirmCancelling == true){
+                    deleteFromCancelledTickets(orderID, ticketID);
+                }
+
+            });
+        }
+
+        function deleteFromCancelledTickets(orderID, ticketID){
+            $.ajax({
+                url: '../services/cancel',
+                type: 'DELETE',
+                data: {orderID: orderID, ticketID: ticketID},
+                success: function() {
+                    console.log("success delete from cancelled ticket table" + r.responseText);
+                    window.location.href = "manage_requests.html";
+                }
+            }).fail(function(r) {
+                console.log("fail" + r.responseText + " route delete");
+            });
+        }
+
+        $(document).ready(function () {
+            getCancelledTickets();
+
+            $("#main-page").on('click', function () {
+                window.location.href = "index.html";
+            });
+        });
+
+    </script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
+</div>
+<h2>Requests</h2>
+<br>
+<a href="regular_profile.html">Back to Profile Page</a>
+<br>
+<div class="box1">
+    <h2>Cancelled tickets</h2>
+    <table id="cancelled-t">
+        <tr>
+            <th>Email</th>
+            <th>Order ID</th>
+            <th>Ticket ID</th>
+            <th>From</th>
+            <th>Departure Date</th>
+            <th>Departure Time</th>
+            <th>To</th>
+            <th>Arrival Date</th>
+            <th>Arrival Time</th>
+            <th>Price</th>
+            <th>Train ID</th>
+            <th>Carriage Number</th>
+            <th>Seat Number</th>
+            <th>Document ID</th>
+            <th>Name</th>
+        </tr>
+    </table>
+    <br>
+    <h2>Cancelled tickets</h2>
+    <table id="edited-t">
+        <tr>
+            <th>Email</th>
+            <th>Order ID</th>
+            <th>Ticket ID</th>
+            <th>From</th>
+            <th>Departure Date</th>
+            <th>Departure Time</th>
+            <th>To</th>
+            <th>Arrival Date</th>
+            <th>Arrival Time</th>
+            <th>Price</th>
+            <th>Train ID</th>
+            <th>Carriage Number</th>
+            <th>Seat Number</th>
+            <th>Document ID</th>
+            <th>Name</th>
+        </tr>
+    </table>
+</div>
+
+</div>
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
+</body>
+</html>
