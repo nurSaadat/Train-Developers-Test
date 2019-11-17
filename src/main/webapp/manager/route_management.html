@@ -8,7 +8,7 @@
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 
-		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo;
+		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text;
 		var route = [];
 
 		function validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo){
@@ -42,6 +42,19 @@
 				return false;
 			}
 
+			return true;
+		}
+		
+		function validate_text(text){
+			
+			if(text == "" || text == null){
+				alert("Please, write an fnnouncement.");
+				return false;
+			} else if(text.length > 449){
+				alert("The text is too large.");
+				return false;
+			}
+			
 			return true;
 		}
 
@@ -82,11 +95,12 @@
 			status = document.getElementById('statusEdit').value;
 			stationFrom = document.getElementById('stationFromEdit').value;
 			stationTo = document.getElementById('stationToEdit').value;
+			text = document.getElementById('textEdit').value;
 
-			if(validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo)){
+			if(validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo) && validate_text(text)){
 
-				route = [routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo];
-				console.log(route);
+				route = [routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text];
+				//console.log(route);
 
 				$.post("../services/routes", {route : route}, function(r) {
 
@@ -107,10 +121,11 @@
 			status = document.getElementById('statusEdit').value;
 			stationFrom = document.getElementById('stationFromEdit').value;
 			stationTo = document.getElementById('stationToEdit').value;
+			text = document.getElementById('textEdit').value;
 
-			if(validate_route(1, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo)){
+			if(validate_route(1, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo) && validate_text(text)){
 
-				route = [dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo];
+				route = [dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text];
 				console.log(route);
 
 				$.ajax({
@@ -268,6 +283,9 @@
 	<option value="PET">Petropavlovsk</option>
 	<option value="KSH">Kokshetau</option>
 </select>
+<br>
+<label for="textEdit">Announcement text</label>
+<input type="text" id="textEdit" required>
 <br>
 <button id="edit-route"> Edit Route</button>
 <br>
