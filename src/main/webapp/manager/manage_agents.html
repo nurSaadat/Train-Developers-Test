@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TrainDevelopers | Main page</title>
+    <link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var email, fName, lName;
+        var mEmail;
+        var wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay
+
+        function getAgents() {
+
+            $.get("../services/agents", function(r) {
+
+                console.log(r);
+                showAgents(r);
+            },'json').fail(function(r) {
+
+                alert("Error on get agents");
+                console.log(r.responseText);
+            });
+        }
+
+        function showAgents(items) {
+
+            items.forEach(function (e) {
+
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+            });
+            if ($('#agents-table tr').length == 1) {
+                alert("No agents found!")
+            }
+            $("#agents-table tr > td > button").on('click', function () {
+
+                email = $(this).closest('tr').find("td").eq(0).html();
+                fName = $(this).closest('tr').find("td").eq(1).html();
+                lName = $(this).closest('tr').find("td").eq(2).html();
+
+                console.log(email, fName, lName);
+            });
+
+        }
+
+        function manageAgent(){
+
+            var getInfo = $.get('../services/accInfo', {}, function(r) {
+
+                mEmail = r[2];
+                console.log(mEmail);
+            }, 'json');
+
+            getInfo.then(function() {
+
+                wHours = document.getElementById('wHours').value;
+                position = document.getElementById('position').value;
+                wage = document.getElementById('wage').value;
+                ban = document.getElementById('ban').value;
+                dob = document.getElementById('dob').value;
+                address = document.getElementById('address').value;
+                phone = document.getElementById('phone').value;
+                gender = document.getElementById('gender').value;
+                sDate = document.getElementById('sDate').value;
+                eDate = document.getElementById('eDate').value;
+                hpd = document.getElementById('hpd').value;
+                dpw = document.getElementById('dpw').value;
+                pDay = document.getElementById('pDay').value;
+
+                if(validate_agent(wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail)){
+
+                    agent = [wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail];
+                    console.log(agent);
+
+                    $.post("../services/agents", {agent : agent}, function(r) {
+
+                        // redirect
+                        window.location.href = "regular_profile.html";
+                    }).fail(function(r) {
+
+                        console.log("fail" + r.responseText + " create agent");
+                    });
+                }
+            });
+        }
+
+        function validate_agent(wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail){
+
+            if (wHours == "" || wHours == null ) {
+                alert("Please, set employee's working hours.");
+                return false;
+            } else if (position == "" || position == null) {
+                alert("Please, fill out employee's position.");
+                return false;
+            } else if (wage == "" || wage == null ) {
+                alert("Please, set employee's wage.");
+                return false;
+            } else if (ban == "" || ban == null) {
+                alert("Please, fill out employee's bank account number.");
+                return false;
+            } else if (dob == "" || dob == null) {
+                alert("Please, fill out employee's date of birth.");
+                return false;
+            } else if (address == "" || address == null) {
+                alert("Please, fill out employee's home address.");
+                return false;
+            }else if (phone == "" || phone == null) {
+                alert("Please, fill out employee's phone number.");
+                return false;
+            }else if (gender == "" || gender == null) {
+                alert("Please, choose employee's gender.");
+                return false;
+            }else if (sDate == "" || sDate == null) {
+                alert("Please, fill out employee's start date.");
+                return false;
+            }else if (eDate == "" || eDate == null) {
+                alert("Please, fill out employee's end date.");
+                return false;
+            }else if (hpd == "" || hpd == null) {
+                alert("Please, set employee's hours per day.");
+                return false;
+            }else if (dpw == "" || dpw == null) {
+                alert("Please, set employee's day per week.");
+                return false;
+            }else if (pDay == "" || pDay == null) {
+                alert("Please, fill out employee's payday.");
+                return false;
+            }else if (email == "" || email == null) {
+                alert("Error. Problem getting employee's email.");
+                return false;
+            }else if (mEmail == "" || mEmail == null) {
+                alert("Error. Problem getting your email.");
+                return false;
+            } return true;
+        }
+
+        $(document).ready(function () {
+
+            getAgents();
+
+            $("#manage").on("click", function() {
+
+                manageAgent();
+            });
+
+            $("#main-page").on('click', function () {
+                window.location.href = "index.html";
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
+</div>
+
+<h2>Employees approval form</h2>
+
+<h2>Potential employees</h2>
+<table id="agents-table">
+    <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last name</th>
+        <th></th>
+    </tr>
+</table>
+<br>
+<div class="addAgent">
+    <div class="newAgent">
+
+        <label for="wHours">Working Hours</label>
+        <input type="text" id="wHours" required>
+        <br>
+        <label for="position">Position</label>
+        <input type="text" id="position" required>
+        <br>
+        <label for="wage">Wage</label>
+        <input type="text" id="wage" required>
+        <br>
+        <label for="ban">Bank Account Number</label>
+        <input type="text" id="ban" required>
+        <br>
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" required>
+        <br>
+        <label for="address">Home Address</label>
+        <input type="text" id="address" required>
+        <br>
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" required>
+        <br>
+        <label>Gender</label>
+        <select id="gender">
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+        </select>
+        <br>
+        <label for="sDate">Start Date</label>
+        <input type="date" id="sDate" required>
+        <br>
+        <label for="eDate">End Date</label>
+        <input type="date" id="eDate" required>
+        <br>
+        <label for="hpd">Hours per Day</label>
+        <input type="text" id="hpd" required>
+        <br>
+        <label for="dpw">Days per Week</label>
+        <input type="text" id="dpw" required>
+        <br>
+        <label for="pDay">Payday</label>
+        <input type="date" id="pDay" required>
+    </div>
+</div>
+<br>
+<button id="manage" type="button">Add as your agent</button>
+
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
+
+</body>
+</html>

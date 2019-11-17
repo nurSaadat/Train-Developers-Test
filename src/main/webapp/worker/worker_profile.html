@@ -69,7 +69,7 @@
 		getInfo();
 		
 		$("#logout").on('click', function (r) {
-			$.post("services/logout", {}, function(r){
+			$.post("../services/logout", {}, function(r){
 				console.log(r);
 			}).fail(function(r) {
 				alert("Error!");
@@ -78,24 +78,24 @@
 		
 		$("#manage-agents").on('click', function (r) {
 			
-			window.location.href = "manage_agents.html";
+			window.location.href = "../manager/manage_agents.html";
 			
 	    });
 		
 		$("#manage-routes").on('click', function (r) {
 			
-			window.location.href = "route_management.html";
+			window.location.href = "../manager/route_management.html";
 			
 	    });
 		
 		$("#manage-managers").on('click', function (r) {
 			
-			window.location.href = "manage_managers.html";
+			window.location.href = "../admin/manage_managers.html";
 			
 		});
 
 		$("#main-page").on('click', function () {
-			window.location.href = "index.html";
+			window.location.href = "../index.html";
 		});
 	    
 	});

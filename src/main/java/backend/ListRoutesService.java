@@ -54,11 +54,14 @@ public class ListRoutesService {
     @POST
     public Response editRoute(@FormParam("route[]") List<String> route) throws ClassNotFoundException, SQLException {
     	
-    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null 
-				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0) {
+    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null || route.get(9) == null  
+				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0 || route.get(9).compareTo("") == 0) {
 			
 			return Response.serverError().entity("Error! One of the fields is empty!").build();
 		}
+    	
+    	if(route.get(9).length() > 449)
+    		return Response.serverError().entity("Error! News text is too large!").build();
     	
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
     	
@@ -103,6 +106,11 @@ public class ListRoutesService {
     			"`StationAbbr` = '" + route.get(8) + "' " + 
     			"WHERE `ScheduleID` = 2 AND `RouteID` = " + route.get(0) + " AND `StationAbbr` = '" + oldTo + "';");
     	
+    	db.insertData("INSERT INTO `RailwayStation`.`News` " + 
+    			"(`Text`) " + 
+    			"VALUES " + 
+    			"'" + route.get(9) + "');");
+    	
     	db.closeConnection();
     	
         return Response.ok().build(); 
@@ -111,11 +119,14 @@ public class ListRoutesService {
     @PUT
     public Response addRoute(@FormParam("route[]") List<String> route) throws ClassNotFoundException, SQLException {
     	
-    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null 
-				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0) {
+    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null 
+				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0) {
 			
 			return Response.serverError().entity("Error! One of the fields is empty!").build();
 		}
+    	
+    	if(route.get(8).length() > 449)
+    		return Response.serverError().entity("Error! News text is too large!").build();
     	
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
     	
@@ -179,6 +190,11 @@ public class ListRoutesService {
     			"" + routeID + ", " + 
     			"'" + route.get(7) + "');");
     	
+    	db.insertData("INSERT INTO `RailwayStation`.`News` " + 
+    			"(`Text`) " + 
+    			"VALUES " + 
+    			"('" + route.get(8) + "');");
+    	
     	db.closeConnection();
     	
         return Response.ok().build(); 
@@ -201,9 +217,6 @@ public class ListRoutesService {
 			return Response.serverError().entity("Error! Given route is not present in the database!").build();
 		
     	db.deleteData("DELETE FROM `RailwayStation`.`ScheduleHasTrain` " + 
-    			"WHERE RouteID = " + routeID + ";");
-    	
-    	db.deleteData("DELETE FROM `RailwayStation`.`ChangeAnnouncement` " + 
     			"WHERE RouteID = " + routeID + ";");
     	
     	db.deleteData("DELETE FROM `RailwayStation`.`Ticket` " + 
