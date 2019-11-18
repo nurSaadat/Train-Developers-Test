@@ -64,6 +64,19 @@
             $("#main-page").on('click', function () {
                 window.location.href = "../index.html";
             });
+
+            $("#profile-button").on('click', function () {
+                window.location.href = "regular_profile.html";
+            });
+
+            $("#log-out-button").on('click', function (r) {
+                $.post("../services/logout", {}, function(r){
+                    console.log(r);
+                    window.location.href = "../index.html";
+                }).fail(function(r) {
+                    alert("Error log out");
+                });
+            });
         });
 
     </script>
@@ -78,36 +91,36 @@
 <div class="nav">
     <ul>
         <li id="main-page">Main Page</li>
-        <li id="profile-button" style="display:none">Go to profile</li>
-        <li id="log-out-button" style="display:none">Log Out</li>
+        <li id="profile-button">Go to profile</li>
+        <li id="log-out-button">Log Out</li>
     </ul>
 </div>
-<h2>Current Tickets</h2>
-<br>
-<a href="regular_profile.html">Back to Profile Page</a>
-<br>
-<div>
-    <h2>Tickets</h2>
-    <table id="ticket-table">
-        <tr>
-            <th>Ticket ID</th>
-            <th>Order ID</th>
-            <th>From</th>
-            <th>Departure Date</th>
-            <th>Departure Time</th>
-            <th>To</th>
-            <th>Arrival Date</th>
-            <th>Arrival Time</th>
-            <th>Price</th>
-            <th>Train ID</th>
-            <th>Carriage Number</th>
-            <th>Seat Number</th>
-            <th>Document ID</th>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </table>
+
+<!-- Current Tickets -->
+<div class="main_section">
+    <h3>Current Tickets</h3>
+    <div class="blue_table">
+        <table id="ticket-table">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Order ID</th>
+                <th>From</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+                <th>To</th>
+                <th>Arrival Date</th>
+                <th>Arrival Time</th>
+                <th>Price</th>
+                <th>Train ID</th>
+                <th>Carriage Number</th>
+                <th>Seat Number</th>
+                <th>Document ID</th>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <!-- Contacts -->

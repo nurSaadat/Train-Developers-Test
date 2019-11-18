@@ -1,5 +1,12 @@
 @import "header_footer.css";
+@import "blue_table.css";
 
-table, th, td {
-    border: 1px solid black;
+.main_section {
+    text-align: center;
+    margin: 0 60px;
+}
+
+.main_section h3 {
+    color: #0057A8;
+    font-size: 32px;
 }
