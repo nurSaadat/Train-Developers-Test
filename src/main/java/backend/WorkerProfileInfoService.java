@@ -33,24 +33,12 @@ public class WorkerProfileInfoService {
         	ResultSet rs = db.getData("SELECT * "
     				+ "FROM `User`  "
     				+ "WHERE Email = '" + email + "';");
-        	
-        	for (int i = 0; i < 10; i++) {
-        		
-        		System.out.println("STEP 1");
-        		
-        	}
     		
     		if (rs.next()) {
     			
     			info.add(rs.getString("Fname"));
     			info.add(rs.getString("Lname"));
     			info.add(rs.getString("Email"));
-    			
-    			for (int i = 0; i < 10; i++) {
-            		
-            		System.out.println("STEP 2");
-            		
-            	}
     			
     			ResultSet td = db.getData("SELECT * FROM Employee WHERE Email = '" + email + "';");
     			
@@ -64,12 +52,6 @@ public class WorkerProfileInfoService {
         			info.add(td.getString("Gender"));
         			info.add(td.getString("Payday"));
         			info.add(td.getString("Wage"));
-        			
-        			for (int i = 0; i < 10; i++) {
-                		
-                		System.out.println("STEP 3");
-                		
-                	}
         			
         			if (type.compareTo("agent") == 0) {
                 		

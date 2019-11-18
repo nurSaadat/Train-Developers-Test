@@ -37,6 +37,7 @@ public class MainApplication extends Application {
         singletons.add(new WorkerProfileInfoService());
         singletons.add(new CancelTicketService());
         singletons.add(new AddManagerService());
+        singletons.add(new ListSubordinateEmployeeService());
     }
     
     @Override

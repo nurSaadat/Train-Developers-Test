@@ -8,16 +8,15 @@
     <script src="../scripts/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var email, fName, lName;
-        var mEmail;
-        var wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay;
+        var email, fName, lName, mEmail, wHours, position, wage, sDate, eDate, hpd, dpw, pDay;
 
         function getAgents() {
 
-            $.get("../services/agents", function(r) {
+            $.get("../services/myworkers", function(r) {
 
                 console.log(r);
                 showAgents(r);
+                
             },'json').fail(function(r) {
 
                 alert("Error on get agents");
@@ -30,28 +29,96 @@
 
             items.forEach(function (e) {
 
-                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td></tr>");
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
             });
+            
             if ($('#agents-table tr').length == 1) {
                 alert("No agents found!")
             }
+            
             $("#agents-table tr > td > button").on('click', function () {
 
                 email = $(this).closest('tr').find("td").eq(0).html();
                 fName = $(this).closest('tr').find("td").eq(1).html();
                 lName = $(this).closest('tr').find("td").eq(2).html();
                 position = $(this).closest('tr').find("td").eq(3).html();
-                workinghours = $(this).closest('tr').find("td").eq(4).html();
-                startdate = $(this).closest('tr').find("td").eq(5).html();
-                enddate = $(this).closest('tr').find("td").eq(6).html();
-                hoursperday = $(this).closest('tr').find("td").eq(7).html();
-                daysperweek = $(this).closest('tr').find("td").eq(8).html();
+                wHours = $(this).closest('tr').find("td").eq(4).html();
+                sDate = $(this).closest('tr').find("td").eq(5).html();
+                eDate = $(this).closest('tr').find("td").eq(6).html();
+                hpd = $(this).closest('tr').find("td").eq(7).html();
+                dpw = $(this).closest('tr').find("td").eq(8).html();
                 wage = $(this).closest('tr').find("td").eq(9).html();
-                payday = $(this).closest('tr').find("td").eq(10).html();
+                pDay = $(this).closest('tr').find("td").eq(10).html();
+                
+                console.log(email, fName, lName);
+                
+                $("#wHours").attr("placeholder", wHours);
+                $("#sDate").attr("placeholder", sDate);
+                $("#eDate").attr("placeholder", eDate);
+                $("#hpd").attr("placeholder", hpd);
+                $("#dpw").attr("placeholder", dpw);
+                $("#wage").attr("placeholder", wage);
+                $("#pDay").attr("placeholder", pDay);
 
-                console.log(email, fName, lName, position, workinghours, startdate, enddate, hoursperday, daysperweek, wage, payday);
             });
 
+        }
+        
+        function manageAgent(){
+
+			wHours = document.getElementById('wHours').value;
+			wage = document.getElementById('wage').value;
+			sDate = document.getElementById('sDate').value;
+			eDate = document.getElementById('eDate').value;
+			hpd = document.getElementById('hpd').value;
+			dpw = document.getElementById('dpw').value;
+			pDay = document.getElementById('pDay').value;
+			
+			if (validate_agent(wHours, wage, sDate, eDate, hpd, dpw, pDay, email)) {
+			
+			    agent = [wHours, wage, sDate, eDate, hpd, dpw, pDay, email];
+			    console.log(agent);
+			
+			    $.post("../services/myworkers", {agent : agent}, function(r) {
+			
+			        // redirect
+			        window.location.href = "worker_profile.html";
+			        
+			    }).fail(function(r) {
+			
+			        console.log("fail" + r.responseText + " modify agent");
+			    });
+			}
+                
+        }
+        
+        function validate_agent(wHours, wage, sDate, eDate, hpd, dpw, pDay, email){
+
+            if (wHours == "" || wHours == null ) {
+                alert("Please, set employee's working hours.");
+                return false;
+            } else if (wage == "" || wage == null ) {
+                alert("Please, set employee's wage.");
+                return false;
+            } else if (sDate == "" || sDate == null) {
+                alert("Please, fill out employee's start date.");
+                return false;
+            } else if (eDate == "" || eDate == null) {
+                alert("Please, fill out employee's end date.");
+                return false;
+            } else if (hpd == "" || hpd == null) {
+                alert("Please, set employee's hours per day.");
+                return false;
+            } else if (dpw == "" || dpw == null) {
+                alert("Please, set employee's day per week.");
+                return false;
+            } else if (pDay == "" || pDay == null) {
+                alert("Please, fill out employee's payday.");
+                return false;
+            } else if (email == "" || email == null) {
+                alert("Error. Problem getting employee's email.");
+                return false;
+            } return true;
         }
 
         $(document).ready(function () {
@@ -60,6 +127,12 @@
 
             $("#main-page").on('click', function () {
                 window.location.href = "../index.html";
+            });
+            
+            $("#manage").on("click", function() {
+            	
+                manageAgent();
+                
             });
             
         });
@@ -89,10 +162,47 @@
         <th>Email</th>
         <th>First Name</th>
         <th>Last name</th>
+        <th>Position</th>
+        <th>Working Hours</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Hours Per Day</th>
+        <th>Days Per Week</th>
+        <th>Wage</th>
+        <th>Pay Day</th>
+        <th>Modify</th>
         <th></th>
     </tr>
 </table>
 <br>
+
+<div class="modifyAgent">
+    <div class="modifiedAgent">
+
+        <label for="wHours">Working Hours</label>
+        <input type="text" id="wHours" required>
+        <br>
+        <label for="wage">Wage</label>
+        <input type="text" id="wage" required>
+        <br>
+        <label for="sDate">Start Date</label>
+        <input type="date" id="sDate" required>
+        <br>
+        <label for="eDate">End Date</label>
+        <input type="date" id="eDate" required>
+        <br>
+        <label for="hpd">Hours Per Day</label>
+        <input type="text" id="hpd" required>
+        <br>
+        <label for="dpw">Days Per Week</label>
+        <input type="text" id="dpw" required>
+        <br>
+        <label for="pDay">Pay Day</label>
+        <input type="date" id="pDay" required>
+    </div>
+</div>
+<br>
+<button id="manage" type="button">Modify Information</button>
 
 <!-- Contacts -->
 <div class="footer">
