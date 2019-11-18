@@ -15,9 +15,9 @@ public class CheckLogInService {
 		HttpSession Session = request.getSession(false);
 		
         if (Session != null) {
-        	return Response.ok("logged in").build();
+        	return Response.ok(Session.getAttribute("type")).build();
         } else {
-        	return Response.ok(false).build();
+        	return Response.ok("false").build();
         }		
         
 	}
