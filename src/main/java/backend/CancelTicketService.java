@@ -16,7 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CancelTicketService {
 
     @POST
-
     public Response register(@FormParam("OrderID") String OrderID, @FormParam("TicketID") String TicketID) throws SQLException, ClassNotFoundException {
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
@@ -39,8 +38,6 @@ public class CancelTicketService {
     public Response getList(@Context HttpServletRequest req) throws ClassNotFoundException, SQLException {
 
         List<List<String>> tickets = new CopyOnWriteArrayList<>();
-
-        HttpSession session = req.getSession(false);
 
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 

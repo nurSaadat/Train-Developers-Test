@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TrainDevelopers | Main page</title>
+    <link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var email, fName, lName;
+        var mEmail;
+        var wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay;
+
+        function getAgents() {
+
+            $.get("../services/agents", function(r) {
+
+                console.log(r);
+                showAgents(r);
+            },'json').fail(function(r) {
+
+                alert("Error on get agents");
+                console.log(r.responseText);
+            });
+            
+        }
+
+        function showAgents(items) {
+
+            items.forEach(function (e) {
+
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td></tr>");
+            });
+            if ($('#agents-table tr').length == 1) {
+                alert("No agents found!")
+            }
+            $("#agents-table tr > td > button").on('click', function () {
+
+                email = $(this).closest('tr').find("td").eq(0).html();
+                fName = $(this).closest('tr').find("td").eq(1).html();
+                lName = $(this).closest('tr').find("td").eq(2).html();
+                position = $(this).closest('tr').find("td").eq(3).html();
+                workinghours = $(this).closest('tr').find("td").eq(4).html();
+                startdate = $(this).closest('tr').find("td").eq(5).html();
+                enddate = $(this).closest('tr').find("td").eq(6).html();
+                hoursperday = $(this).closest('tr').find("td").eq(7).html();
+                daysperweek = $(this).closest('tr').find("td").eq(8).html();
+                wage = $(this).closest('tr').find("td").eq(9).html();
+                payday = $(this).closest('tr').find("td").eq(10).html();
+
+                console.log(email, fName, lName, position, workinghours, startdate, enddate, hoursperday, daysperweek, wage, payday);
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            getAgents();
+
+            $("#main-page").on('click', function () {
+                window.location.href = "../index.html";
+            });
+            
+        });
+
+    </script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button" style="display:none">Go to profile</li>
+        <li id="log-out-button" style="display:none">Log Out</li>
+    </ul>
+</div>
+
+<h2>List of subordinate employee</h2>
+
+<table id="agents-table">
+    <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last name</th>
+        <th></th>
+    </tr>
+</table>
+<br>
+
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
+
+</body>
+</html>
