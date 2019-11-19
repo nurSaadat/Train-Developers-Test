@@ -10,6 +10,7 @@
 
 		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text;
 		var route = [];
+		var distanceEdit, statusEdit;
 
 		function validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo){
 
@@ -81,7 +82,17 @@
 			$("#routes-table tr > td > button").on('click', function () {
 
 				routeID = $(this).closest('tr').find("td").eq(0).html();
+				distanceEdit = $(this).closest('tr').find("td").eq(5).html();
+				statusEdit = $(this).closest('tr').find("td").eq(6).html();
+				
 				$("div.seat").text("You chose route with RouteID: " + routeID);
+				
+				console.log(distanceEdit);
+				console.log(statusEdit);
+				
+                $("#distanceEdit").attr("placeholder", distanceEdit);
+                $("#statusEdit").attr("placeholder", statusEdit);
+				
 			});
 		}
 
