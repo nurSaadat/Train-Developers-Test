@@ -12,7 +12,7 @@
 }
 
 .routes_section {
-    padding: 10px 30px;
+    padding: 20px 30px;
     background-color: rgba(0, 87, 168, 0.3);
     text-align: center;
     margin: auto;
@@ -84,6 +84,28 @@
     text-align: left;
     font-weight: bold;
     font-size: 20px;
+}
+
+.info-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    border: none;
+}
+
+.info-table td {
+    padding: 8px;
+    text-align: right;
+    font-size: 18px;
+    width: 68%;
+}
+
+.white_input {
+    width: 255px;
+}
+
+.white_select {
+    width: 260px;
 }
 
 button{

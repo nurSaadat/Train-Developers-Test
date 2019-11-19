@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/train_schedule.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -87,7 +87,7 @@
 
 				if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
 
-					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
 				}
 			});
 
@@ -212,6 +212,20 @@
 			$("#main-page").on('click', function () {
 				window.location.href = "../index.html";
 			});
+
+			$("#profile-button").on('click', function () {
+				window.location.href = "../worker/worker_profile.html";
+			});
+
+			$("#log-out-button").on('click', function (r) {
+				$.post("../services/logout", {}, function(r){
+					console.log(r);
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					alert("Error log out");
+				});
+			});
+
 		});
 
 	</script>
@@ -226,112 +240,134 @@
 <div class="nav">
 	<ul>
 		<li id="main-page">Main Page</li>
-		<li id="profile-button" style="display:none">Go to profile</li>
-		<li id="log-out-button" style="display:none">Log Out</li>
+		<li id="profile-button">Go to profile</li>
+		<li id="log-out-button">Log Out</li>
 	</ul>
 </div>
-<h2>Routes management</h2>
-<br>
-<div>
-	<h2>Routes</h2>
-	<br>
-	<table id="routes-table">
-		<tr>
-			<th>RouteID</th>
-			<th>DateFrom</th>
-			<th>DateTo</th>
-			<th>TimeFrom</th>
-			<th>TimeTo</th>
-			<th>Distance (in km)</th>
-			<th>Status</th>
-			<th>StationFrom</th>
-			<th>StationTo</th>
-			<th></th>
-		</tr>
-	</table>
+
+<!-- Routes management -->
+<div class="main_section">
+	<h3>Routes Management</h3>
+	<div class="routes_section">
+		<div class="routes_options">
+			<h3>Routes</h3>
+			<div class="blue_table">
+				<table id="routes-table">
+					<tr>
+						<th>RouteID</th>
+						<th>DateFrom</th>
+						<th>DateTo</th>
+						<th>TimeFrom</th>
+						<th>TimeTo</th>
+						<th>Distance (in km)</th>
+						<th>Status</th>
+						<th>StationFrom</th>
+						<th>StationTo</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			From
+			<select id="stationFrom" class="white_select">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			To
+			<select id="stationTo" class="white_select">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			<label for="dateFrom">Departure Date from</label>
+			<input type="date" id="dateFrom" required>
+			<label for="dateTo">Departure Date to</label>
+			<input type="date" id="dateTo" required>
+		</div>
+		<button id="find-routes"> Find Routes</button>
+		<div class="route"></div>
+		<br>
+		<table class="info-table">
+			<tr>
+				<td><label for="timeArrEdit">Train arrives at the first station</label></td>
+				<td><input type="time" id="timeArrEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="dateFromEdit">Departure Date</label></td>
+				<td><input type="date" id="dateFromEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="dateToEdit">Arrival Date</label></td>
+				<td><input type="date" id="dateToEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeDepEdit">Train departs from the last station</label></td>
+				<td><input type="time" id="timeDepEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeFromEdit">Departure Time</label></td>
+				<td><input type="time" id="timeFromEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeToEdit">Arrival Time</label></td>
+				<td><input type="time" id="timeToEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="distanceEdit">Distance</label></td>
+				<td><input type="number" id="distanceEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="statusEdit">Status</label></td>
+				<td><input type="text" id="statusEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="stationFromEdit">Station From</label></td>
+				<td>
+					<select id="stationFromEdit" class="white_select">
+						<option value="AST">Astana</option>
+						<option value="ALM">Almaty</option>
+						<option value="SEM">Semey</option>
+						<option value="ATB">Aktobe</option>
+						<option value="PET">Petropavlovsk</option>
+						<option value="KSH">Kokshetau</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="stationToEdit">Station To</label></td>
+				<td>
+					<select id="stationToEdit" class="white_select">
+						<option value="AST">Astana</option>
+						<option value="ALM">Almaty</option>
+						<option value="SEM">Semey</option>
+						<option value="ATB">Aktobe</option>
+						<option value="PET">Petropavlovsk</option>
+						<option value="KSH">Kokshetau</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="titleEdit">Announcement text title</label></td>
+				<td><input type="text" id="titleEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="textEdit">Announcement text</label></td>
+				<td><input type="text" id="textEdit" required class="white_input"></td>
+			</tr>
+		</table>
+		<button id="edit-route"> Edit Route</button>
+		<button id="add-route"> Add Route</button>
+		<button id="delete-route"> Delete Route</button>
+	</div>
 </div>
-<select id="stationFrom">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
 
-<select id="stationTo">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
-<br>
-<label for="dateFrom">Departure Date from</label>
-<input type="date" id="dateFrom" required>
-<br>
-<label for="dateTo">Departure Date to</label>
-<input type="date" id="dateTo" required>
-<br>
-<button id="find-routes"> Find Routes</button>
-<br>
-<div class="route"></div>
-<br>
-<label for="timeArrEdit">Train arrives at the first station</label>
-<input type="time" id="timeArrEdit" value=00:00:00 required>
-<br>
-<label for="dateFromEdit">Departure Date</label>
-<input type="date" id="dateFromEdit" required>
-<br>
-<label for="dateToEdit">Arrival Date</label>
-<input type="date" id="dateToEdit" required>
-<br>
-<label for="timeDepEdit">Train departs from the last station</label>
-<input type="time" id="timeDepEdit" value=00:00:00 required>
-<br>
-<label for="timeFromEdit">Departure Time</label>
-<input type="time" id="timeFromEdit" value=00:00:00 required>
-<br>
-<label for="timeToEdit">Arrival Time</label>
-<input type="time" id="timeToEdit" value=00:00:00 required>
-<br>
-<label for="distanceEdit">Distance</label>
-<input type="number" id="distanceEdit" required>
-<br>
-<label for="statusEdit">Status</label>
-<input type="text" id="statusEdit" required>
-<br>
-<select id="stationFromEdit">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
-<select id="stationToEdit">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
-<br>
-<label for="titleEdit">Announcement text title</label>
-<input type="text" id="titleEdit" required>
-<br>
-<label for="textEdit">Announcement text</label>
-<input type="text" id="textEdit" required>
-<br>
-<button id="edit-route"> Edit Route</button>
-<br>
-<button id="add-route"> Add Route</button>
-<br>
-<button id="delete-route"> Delete Route</button>
-
-<!-- Contacts -->
+<!-- Contact us-->
 <div class="footer">
 	<h3>Contact us</h3>
 	<div class="contact-container">

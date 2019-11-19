@@ -47,6 +47,10 @@
     width: 255px;
 }
 
+.white_select {
+    width: 260px;
+}
+
 .main_section button{
     height:35px;
     text-align:center;
