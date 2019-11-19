@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TrainDevelopers | Main page</title>
-    <link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+    <link rel = "stylesheet" type="text/css" href = "../css/manage_workers.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type="text/javascript">
@@ -29,7 +29,7 @@
 
             items.forEach(function (e) {
 
-                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
             });
             if ($('#agents-table tr').length == 1) {
                 alert("No agents found!")
@@ -148,6 +148,19 @@
             $("#main-page").on('click', function () {
                 window.location.href = "../index.html";
             });
+
+            $("#profile-button").on('click', function () {
+                window.location.href = "../worker/worker_profile.html";
+            });
+
+            $("#log-out-button").on('click', function (r) {
+                $.post("../services/logout", {}, function(r){
+                    console.log(r);
+                    window.location.href = "../index.html";
+                }).fail(function(r) {
+                    alert("Error log out");
+                });
+            });
         });
 
     </script>
@@ -163,71 +176,92 @@
 <div class="nav">
     <ul>
         <li id="main-page">Main Page</li>
-        <li id="profile-button" style="display:none">Go to profile</li>
-        <li id="log-out-button" style="display:none">Log Out</li>
+        <li id="profile-button">Go to profile</li>
+        <li id="log-out-button">Log Out</li>
     </ul>
 </div>
 
-<h2>Employees approval form</h2>
-
-<h2>Potential employees</h2>
-<table id="agents-table">
-    <tr>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last name</th>
-        <th></th>
-    </tr>
-</table>
-<br>
-<div class="addAgent">
-    <div class="newAgent">
-
-        <label for="wHours">Working Hours</label>
-        <input type="text" id="wHours" required>
-        <br>
-        <label for="position">Position</label>
-        <input type="text" id="position" required>
-        <br>
-        <label for="wage">Wage</label>
-        <input type="text" id="wage" required>
-        <br>
-        <label for="ban">Bank Account Number</label>
-        <input type="text" id="ban" required>
-        <br>
-        <label for="dob">Date of Birth</label>
-        <input type="date" id="dob" required>
-        <br>
-        <label for="address">Home Address</label>
-        <input type="text" id="address" required>
-        <br>
-        <label for="phone">Phone Number</label>
-        <input type="text" id="phone" required>
-        <br>
-        <label>Gender</label>
-        <select id="gender">
-            <option value="F">Female</option>
-            <option value="M">Male</option>
-        </select>
-        <br>
-        <label for="sDate">Start Date</label>
-        <input type="date" id="sDate" required>
-        <br>
-        <label for="eDate">End Date</label>
-        <input type="date" id="eDate" required>
-        <br>
-        <label for="hpd">Hours per Day</label>
-        <input type="text" id="hpd" required>
-        <br>
-        <label for="dpw">Days per Week</label>
-        <input type="text" id="dpw" required>
-        <br>
-        <label for="pDay">Payday</label>
-        <input type="date" id="pDay" required>
+<!-- Employees approval form -->
+<div class="main_section">
+    <h3>Employees approval form</h3>
+    <div class="form-background">
+        <div class="info-table">
+            <h3>Potential employees</h3>
+            <div class="blue_table">
+                <table id="agents-table">
+                    <tr>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last name</th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="input">
+            <table class="input-table">
+                <tr>
+                    <td><label for="wHours">Working Hours</label></td>
+                    <td><input type="text" id="wHours" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="position">Position</label></td>
+                    <td><input type="text" id="position" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="wage">Wage</label></td>
+                    <td><input type="text" id="wage" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="ban">Bank Account Number</label></td>
+                    <td><input type="text" id="ban" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="dob">Date of Birth</label></td>
+                    <td><input type="date" id="dob" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="address">Home Address</label></td>
+                    <td><input type="text" id="address" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="phone">Phone Number</label></td>
+                    <td><input type="text" id="phone" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label>Gender</label></td>
+                    <td>
+                        <select id="gender" class="white_select">
+                            <option value="F">Female</option>
+                            <option value="M">Male</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="sDate">Start Date</label></td>
+                    <td><input type="date" id="sDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="eDate">End Date</label></td>
+                    <td><input type="date" id="eDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="hpd">Hours per Day</label></td>
+                    <td><input type="text" id="hpd" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="dpw">Days per Week</label></td>
+                    <td><input type="text" id="dpw" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="pDay">Payday</label></td>
+                    <td><input type="date" id="pDay" required class="white_input"></td>
+                </tr>
+            </table>
+        </div>
+        <button id="manage" type="button">Add as your agent</button>
     </div>
 </div>
-<br>
-<button id="manage" type="button">Add as your agent</button>
 
 <!-- Contacts -->
 <div class="footer">

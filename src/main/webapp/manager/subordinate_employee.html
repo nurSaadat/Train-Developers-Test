@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TrainDevelopers | Main page</title>
-    <link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+    <link rel = "stylesheet" type="text/css" href = "../css/manage_workers.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type="text/javascript">
@@ -29,7 +29,7 @@
 
             items.forEach(function (e) {
 
-                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
             });
             
             if ($('#agents-table tr').length == 1) {
@@ -128,6 +128,19 @@
             $("#main-page").on('click', function () {
                 window.location.href = "../index.html";
             });
+
+            $("#profile-button").on('click', function () {
+                window.location.href = "../worker/worker_profile.html";
+            });
+
+            $("#log-out-button").on('click', function (r) {
+                $.post("../services/logout", {}, function(r){
+                    console.log(r);
+                    window.location.href = "../index.html";
+                }).fail(function(r) {
+                    alert("Error log out");
+                });
+            });
             
             $("#manage").on("click", function() {
             	
@@ -150,59 +163,68 @@
 <div class="nav">
     <ul>
         <li id="main-page">Main Page</li>
-        <li id="profile-button" style="display:none">Go to profile</li>
-        <li id="log-out-button" style="display:none">Log Out</li>
+        <li id="profile-button">Go to profile</li>
+        <li id="log-out-button">Log Out</li>
     </ul>
 </div>
 
-<h2>List of subordinate employee</h2>
-
-<table id="agents-table">
-    <tr>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last name</th>
-        <th>Position</th>
-        <th>Working Hours</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Hours Per Day</th>
-        <th>Days Per Week</th>
-        <th>Wage</th>
-        <th>Pay Day</th>
-        <th>Modify</th>
-        <th></th>
-    </tr>
-</table>
-<br>
-
-<div class="modifyAgent">
-    <div class="modifiedAgent">
-
-        <label for="wHours">Working Hours</label>
-        <input type="text" id="wHours" required>
-        <br>
-        <label for="wage">Wage</label>
-        <input type="text" id="wage" required>
-        <br>
-        <label for="sDate">Start Date</label>
-        <input type="date" id="sDate" required>
-        <br>
-        <label for="eDate">End Date</label>
-        <input type="date" id="eDate" required>
-        <br>
-        <label for="hpd">Hours Per Day</label>
-        <input type="text" id="hpd" required>
-        <br>
-        <label for="dpw">Days Per Week</label>
-        <input type="text" id="dpw" required>
-        <br>
-        <label for="pDay">Pay Day</label>
-        <input type="date" id="pDay" required>
+<!-- List of subordinate employee -->
+<div class="main_section">
+    <h3>List of subordinate employee</h3>
+    <div class="form-background">
+        <div class="blue_table">
+            <table id="agents-table">
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last name</th>
+                    <th>Position</th>
+                    <th>Working Hours</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Hours Per Day</th>
+                    <th>Days Per Week</th>
+                    <th>Wage</th>
+                    <th>Pay Day</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+        <div class="input">
+            <table class="input-table">
+                <tr>
+                    <td><label for="wHours">Working Hours</label></td>
+                    <td><input type="text" id="wHours" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="wage">Wage</label></td>
+                    <td><input type="text" id="wage" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="sDate">Start Date</label></td>
+                    <td><input type="date" id="sDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="eDate">End Date</label></td>
+                    <td><input type="date" id="eDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="hpd">Hours per Day</label></td>
+                    <td><input type="text" id="hpd" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="dpw">Days per Week</label></td>
+                    <td><input type="text" id="dpw" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="pDay">Payday</label></td>
+                    <td><input type="date" id="pDay" required class="white_input"></td>
+                </tr>
+            </table>
+        </div>
+        <button id="manage" type="button">Modify Information</button>
     </div>
 </div>
-<br>
-<button id="manage" type="button">Modify Information</button>
 
 <!-- Contacts -->
 <div class="footer">
