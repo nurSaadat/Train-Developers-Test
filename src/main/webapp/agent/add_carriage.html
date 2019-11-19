@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/add_carriage.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -45,7 +45,7 @@
 
 			items.forEach(function (e) {
 
-				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
 			});
 
 			$("#trains-table tr > td > button").on('click', function () {
@@ -102,31 +102,39 @@
 		<li id="main-page">Main Page</li>
 	</ul>
 </div>
-<h2>Add Carriage</h2>
-<br>
-<div>
-	<h2>Trains</h2>
-	<br>
-	<table id="trains-table">
-		<tr>
-			<th>TrainID</th>
-			<th>Capacity</th>
-			<th>Number of Carriages</th>
-			<th>Type</th>
-			<th></th>
-		</tr>
-	</table>
+
+<!-- Add Carriage -->
+<div class="main_section">
+	<h3>Add Carriage</h3>
+	<div class="form-background">
+		<div class="info-table">
+			<h3>Trains</h3>
+			<div class="blue_table">
+				<table id="trains-table">
+					<tr>
+						<th>TrainID</th>
+						<th>Capacity</th>
+						<th>Number of Carriages</th>
+						<th>Type</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			<div class="train"></div>
+		</div>
+		<table class="input-table">
+			<tr>
+				<td><label for="numberOfSeats">Number of Seats</label></td>
+				<td><input type="number" id="numberOfSeats" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="classType">Class</label></td>
+				<td><input type="text" id="classType" required class="white_input"></td>
+			</tr>
+		</table>
+		<button id="add-carriage"> Add Carriage</button>
+	</div>
 </div>
-<br>
-<div class="train"></div>
-<br>
-<label for="numberOfSeats">Number of Seats</label>
-<input type="number" id="numberOfSeats" required>
-<br>
-<label for="classType">Class</label>
-<input type="text" id="classType" required>
-<br>
-<button id="add-carriage"> Add Carriage</button>
 
 <!-- Contacts -->
 <div class="footer">
