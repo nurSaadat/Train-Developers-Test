@@ -9,31 +9,32 @@
     <script type="text/javascript">
 
         var email, fName, lName;
+        var mEmail;
         var wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay
 
-        function getManagers() {
+        function getAgents() {
 
             $.get("../services/agents", function(r) {
 
                 console.log(r);
-                showManagers(r);
+                showAgents(r);
             },'json').fail(function(r) {
 
-                alert("Error on get managers");
+                alert("Error on get agents");
                 console.log(r.responseText);
             });
         }
 
-        function showManagers(items) {
+        function showAgents(items) {
 
             items.forEach(function (e) {
 
-                $("#managers-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
             });
-            if ($('#managers-table tr').length == 1) {
-                alert("No potential managers found!")
+            if ($('#agents-table tr').length == 1) {
+                alert("No agents found!")
             }
-            $("#managers-table tr > td > button").on('click', function () {
+            $("#agents-table tr > td > button").on('click', function () {
 
                 email = $(this).closest('tr').find("td").eq(0).html();
                 fName = $(this).closest('tr').find("td").eq(1).html();
@@ -44,42 +45,54 @@
 
         }
 
-        function manageManager(){
+        function manageAgent(){
 
-        	wHours = document.getElementById('wHours').value;
-            position = "Manager";
-            wage = document.getElementById('wage').value;
-            ban = document.getElementById('ban').value;
-            dob = document.getElementById('dob').value;
-            address = document.getElementById('address').value;
-            phone = document.getElementById('phone').value;
-            gender = document.getElementById('gender').value;
-            sDate = document.getElementById('sDate').value;
-            eDate = document.getElementById('eDate').value;
-            hpd = document.getElementById('hpd').value;
-            dpw = document.getElementById('dpw').value;
-            pDay = document.getElementById('pDay').value;
+            var getInfo = $.get('../services/accInfo', {}, function(r) {
 
-            if(validate_manager(wHours, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email)){
+                mEmail = r[2];
+                console.log(mEmail);
+            }, 'json');
 
-                manager = [wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email];
-                console.log(manager);
+            getInfo.then(function() {
 
-                $.post("../services/managers", {manager : manager}, function(r) {
+                wHours = document.getElementById('wHours').value;
+                position = document.getElementById('position').value;
+                wage = document.getElementById('wage').value;
+                ban = document.getElementById('ban').value;
+                dob = document.getElementById('dob').value;
+                address = document.getElementById('address').value;
+                phone = document.getElementById('phone').value;
+                gender = document.getElementById('gender').value;
+                sDate = document.getElementById('sDate').value;
+                eDate = document.getElementById('eDate').value;
+                hpd = document.getElementById('hpd').value;
+                dpw = document.getElementById('dpw').value;
+                pDay = document.getElementById('pDay').value;
 
-                    // redirect
-                    window.location.href = "../worker/worker_profile.html";
-                }).fail(function(r) {
+                if(validate_agent(wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail)){
 
-                    console.log("fail" + r.responseText + " create manager");
-                });
-            }
+                    agent = [wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail];
+                    console.log(agent);
+
+                    $.post("../services/agents", {agent : agent}, function(r) {
+
+                        // redirect
+                        window.location.href = "../worker/worker_profile.html";
+                    }).fail(function(r) {
+
+                        console.log("fail" + r.responseText + " create agent");
+                    });
+                }
+            });
         }
 
-        function validate_manager(wHours, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email){
+        function validate_agent(wHours, position, wage, ban, dob, address, phone, gender, sDate, eDate, hpd, dpw, pDay, email, mEmail){
 
             if (wHours == "" || wHours == null ) {
                 alert("Please, set employee's working hours.");
+                return false;
+            } else if (position == "" || position == null) {
+                alert("Please, fill out employee's position.");
                 return false;
             } else if (wage == "" || wage == null ) {
                 alert("Please, set employee's wage.");
@@ -117,16 +130,19 @@
             }else if (email == "" || email == null) {
                 alert("Error. Problem getting employee's email.");
                 return false;
+            }else if (mEmail == "" || mEmail == null) {
+                alert("Error. Problem getting your email.");
+                return false;
             } return true;
         }
 
         $(document).ready(function () {
 
-            getManagers();
+            getAgents();
 
             $("#manage").on("click", function() {
 
-                manageManager();
+                manageAgent();
             });
 
             $("#main-page").on('click', function () {
@@ -155,7 +171,7 @@
 <h2>Employees approval form</h2>
 
 <h2>Potential employees</h2>
-<table id="managers-table">
+<table id="agents-table">
     <tr>
         <th>Email</th>
         <th>First Name</th>
@@ -164,11 +180,14 @@
     </tr>
 </table>
 <br>
-<div class="addmanager">
-    <div class="newmanager">
+<div class="addAgent">
+    <div class="newAgent">
 
         <label for="wHours">Working Hours</label>
         <input type="text" id="wHours" required>
+        <br>
+        <label for="position">Position</label>
+        <input type="text" id="position" required>
         <br>
         <label for="wage">Wage</label>
         <input type="text" id="wage" required>
@@ -208,7 +227,7 @@
     </div>
 </div>
 <br>
-<button id="manage" type="button">Add as manager</button>
+<button id="manage" type="button">Add as your agent</button>
 
 <!-- Contacts -->
 <div class="footer">

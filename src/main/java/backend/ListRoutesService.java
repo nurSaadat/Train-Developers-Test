@@ -54,14 +54,17 @@ public class ListRoutesService {
     @POST
     public Response editRoute(@FormParam("route[]") List<String> route) throws ClassNotFoundException, SQLException {
     	
-    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null || route.get(9) == null  
-				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0 || route.get(9).compareTo("") == 0) {
+    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null || route.get(9) == null || route.get(10) == null || route.get(11) == null || route.get(12) == null
+				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0 || route.get(9).compareTo("") == 0 || route.get(10).compareTo("") == 0 || route.get(11).compareTo("") == 0 || route.get(12).compareTo("") == 0) {
 			
 			return Response.serverError().entity("Error! One of the fields is empty!").build();
 		}
     	
     	if(route.get(9).length() > 449)
     		return Response.serverError().entity("Error! News text is too large!").build();
+    	
+    	if(route.get(10).length() > 99)
+    		return Response.serverError().entity("Error! News title is too large!").build();
     	
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
     	
@@ -94,7 +97,7 @@ public class ListRoutesService {
     	
     	db.updateData("UPDATE `RailwayStation`.`Schedule` " + 
     			"SET " + 
-    			"`ArrivalTime` = '" + route.get(3) + "', " + 
+    			"`ArrivalTime` = '" + route.get(11) + "', " + 
     			"`DepartureTime` = '" + route.get(3) + "', " + 
     			"`StationAbbr` = '" + route.get(7) + "' " + 
     			"WHERE `ScheduleID` = 1 AND `RouteID` = " + route.get(0) + " AND `StationAbbr` = '" + oldFrom + "';");
@@ -102,14 +105,15 @@ public class ListRoutesService {
     	db.updateData("UPDATE `RailwayStation`.`Schedule` " + 
     			"SET " + 
     			"`ArrivalTime` = '" + route.get(4) + "', " + 
-    			"`DepartureTime` = '" + route.get(4) + "', " + 
+    			"`DepartureTime` = '" + route.get(12) + "', " + 
     			"`StationAbbr` = '" + route.get(8) + "' " + 
     			"WHERE `ScheduleID` = 2 AND `RouteID` = " + route.get(0) + " AND `StationAbbr` = '" + oldTo + "';");
     	
     	db.insertData("INSERT INTO `RailwayStation`.`News` " + 
-    			"(`Text`) " + 
+    			"(`Text`, " + 
+    			"`Title`) " + 
     			"VALUES " + 
-    			"'" + route.get(9) + "');");
+    			"('" + route.get(9) + "', '" + route.get(10) + "');");
     	
     	db.closeConnection();
     	
@@ -119,14 +123,17 @@ public class ListRoutesService {
     @PUT
     public Response addRoute(@FormParam("route[]") List<String> route) throws ClassNotFoundException, SQLException {
     	
-    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null 
-				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0) {
+    	if (route.get(0) == null || route.get(1) == null || route.get(2) == null || route.get(3) == null || route.get(4) == null || route.get(5) == null || route.get(6) == null || route.get(7) == null || route.get(8) == null || route.get(9) == null || route.get(10) == null || route.get(11) == null
+				|| route.get(0).compareTo("") == 0 || route.get(1).compareTo("") == 0 || route.get(2).compareTo("") == 0 || route.get(3).compareTo("") == 0 || route.get(4).compareTo("") == 0 || route.get(5).compareTo("") == 0 || route.get(6).compareTo("") == 0 || route.get(7).compareTo("") == 0 || route.get(8).compareTo("") == 0 || route.get(9).compareTo("") == 0 || route.get(10).compareTo("") == 0 || route.get(11).compareTo("") == 0) {
 			
 			return Response.serverError().entity("Error! One of the fields is empty!").build();
 		}
     	
     	if(route.get(8).length() > 449)
     		return Response.serverError().entity("Error! News text is too large!").build();
+    	
+    	if(route.get(9).length() > 99)
+    		return Response.serverError().entity("Error! News title is too large!").build();
     	
     	MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
     	
@@ -172,7 +179,7 @@ public class ListRoutesService {
     			"`StationAbbr`) " + 
     			"VALUES " + 
     			"(1, " + 
-    			"'" + route.get(2) + "', " + 
+    			"'" + route.get(10) + "', " + 
     			"'" + route.get(2) + "', " + 
     			"" + routeID + ", " + 
     			"'" + route.get(6) + "');");
@@ -186,14 +193,15 @@ public class ListRoutesService {
     			"VALUES " + 
     			"(2, " + 
     			"'" + route.get(3) + "', " + 
-    			"'" + route.get(3) + "', " + 
+    			"'" + route.get(11) + "', " + 
     			"" + routeID + ", " + 
     			"'" + route.get(7) + "');");
     	
     	db.insertData("INSERT INTO `RailwayStation`.`News` " + 
-    			"(`Text`) " + 
+    			"(`Text`, " + 
+    			"`Title`) " + 
     			"VALUES " + 
-    			"('" + route.get(8) + "');");
+    			"('" + route.get(8) + "', '" + route.get(9) + "');");
     	
     	db.closeConnection();
     	
@@ -219,8 +227,15 @@ public class ListRoutesService {
     	db.deleteData("DELETE FROM `RailwayStation`.`ScheduleHasTrain` " + 
     			"WHERE RouteID = " + routeID + ";");
     	
-    	db.deleteData("DELETE FROM `RailwayStation`.`Ticket` " + 
-    			"WHERE RouteID = " + routeID + ";");
+    	rs = db.getData("SELECT TicketID, OrderID FROM `RailwayStation`.`Ticket` WHERE RouteID = " + routeID + ";");
+    	
+    	while(rs.next()) {
+    		
+    		db.deleteData("DELETE FROM `RailwayStation`.`Passenger` " + 
+        			"WHERE TicketID = " + rs.getString("TicketID") + " and OrderID = " + rs.getString("OrderID") + ";");
+    		db.deleteData("DELETE FROM `RailwayStation`.`Ticket` " + 
+        			"WHERE TicketID = " + rs.getString("TicketID") + "and OrderID = " + rs.getString("OrderID") + ";");
+    	}
     	
     	db.deleteData("DELETE FROM `RailwayStation`.`Schedule` " + 
     			"WHERE RouteID = " + routeID + ";");

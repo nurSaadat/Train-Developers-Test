@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Main page</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var capacity, type;
+
+		function validate_train(capacity, type){
+
+			if (capacity == "" || capacity == null ) {
+				alert("Please, select capcity for a new train.");
+				return false;
+			} else if (type == "" || type == null) {
+				alert("Please, choose a type for a new train.");
+				return false;
+			}
+
+			return true;
+		}
+
+		function addTrain(){
+
+			capacity = document.getElementById('capacity').value;
+			type = document.getElementById('type').value;
+
+			if(validate_train(capacity, type)){
+				
+				console.log(capacity, type);
+
+				$.post("../services/addTrain", {capacity: capacity, type: type}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addTrain post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#add-train").on("click", function() {
+
+				addTrain();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+	</ul>
+</div>
+<h2>Add Train</h2>
+<br>
+<label for="capacity">Capacity</label>
+<input type="number" id="capacity" required>
+<br>
+<label for="type">Type</label>
+<input type="text" id="type" required>
+<br>
+<button id="add-train"> Add Train</button>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>

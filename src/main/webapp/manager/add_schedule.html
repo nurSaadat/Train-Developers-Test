@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Main page</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var routeID, timeFrom, timeTo, stationFrom;
+		var schedule = [];
+
+		function validate_route(routeID, timeFrom, timeTo, stationFrom){
+
+			if (routeID == "" || routeID == null ) {
+				alert("Please, select a route to be edited.");
+				return false;
+			} else if (timeFrom == "" || timeFrom == null) {
+				alert("Please, choose the departure time.");
+				return false;
+			} else if (timeTo == "" || timeTo == null) {
+				alert("Please, choose the arrival time.");
+				return false;
+			} else if (stationFrom == "" || stationFrom == null) {
+				alert("Please, choose departure station.");
+				return false;
+			}
+
+			return true;
+		}
+
+		function getRoutes() {
+
+			$.get('../services/routes', function (r){
+
+				update(r);
+			}, 'json');
+		}
+
+		function update(items) {
+
+			$("#routes-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
+
+					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+				}
+			});
+
+			$("#routes-table tr > td > button").on('click', function () {
+
+				routeID = $(this).closest('tr').find("td").eq(0).html();
+				
+				$("div.route").text("You chose route with RouteID: " + routeID);
+			});
+		}
+
+		function addSchedule(){
+
+			timeFrom = document.getElementById('timeFromEdit').value;
+			timeTo = document.getElementById('timeToEdit').value;
+			stationFrom = document.getElementById('stationFromEdit').value;
+
+			if(validate_route(routeID, timeFrom, timeTo, stationFrom)){
+
+				schedule = [routeID, timeFrom, timeTo, stationFrom];
+				console.log(schedule);
+
+				$.post("../services/addSchedule", {schedule: schedule}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addSchedule post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#find-routes").on("click", function() {
+
+				getRoutes();
+			});
+
+			$("#add-schedule").on("click", function() {
+
+				addSchedule();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+	</ul>
+</div>
+<h2>Add Schedule</h2>
+<br>
+<div>
+	<h2>Routes</h2>
+	<br>
+	<table id="routes-table">
+		<tr>
+			<th>RouteID</th>
+			<th>DateFrom</th>
+			<th>DateTo</th>
+			<th>TimeFrom</th>
+			<th>TimeTo</th>
+			<th>Distance (in km)</th>
+			<th>Status</th>
+			<th>StationFrom</th>
+			<th>StationTo</th>
+			<th></th>
+		</tr>
+	</table>
+</div>
+<select id="stationFrom">
+	<option value="AST">Astana</option>
+	<option value="ALM">Almaty</option>
+	<option value="SEM">Semey</option>
+	<option value="ATB">Aktobe</option>
+	<option value="PET">Petropavlovsk</option>
+	<option value="KSH">Kokshetau</option>
+</select>
+
+<select id="stationTo">
+	<option value="AST">Astana</option>
+	<option value="ALM">Almaty</option>
+	<option value="SEM">Semey</option>
+	<option value="ATB">Aktobe</option>
+	<option value="PET">Petropavlovsk</option>
+	<option value="KSH">Kokshetau</option>
+</select>
+<br>
+<label for="dateFrom">Departure Date from</label>
+<input type="date" id="dateFrom" required>
+<br>
+<label for="dateTo">Departure Date to</label>
+<input type="date" id="dateTo" required>
+<br>
+<button id="find-routes"> Find Routes</button>
+<br>
+<div class="route"></div>
+<br>
+<label for="timeFromEdit">Departure Time</label>
+<input type="time" id="timeFromEdit" value=00:00:00 required>
+<br>
+<label for="timeToEdit">Arrival Time</label>
+<input type="time" id="timeToEdit" value=00:00:00 required>
+<br>
+<select id="stationFromEdit">
+	<option value="AST">Astana</option>
+	<option value="ALM">Almaty</option>
+	<option value="SEM">Semey</option>
+	<option value="ATB">Aktobe</option>
+	<option value="PET">Petropavlovsk</option>
+	<option value="KSH">Kokshetau</option>
+</select>
+<br>
+<button id="add-schedule"> Add Schedule</button>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>

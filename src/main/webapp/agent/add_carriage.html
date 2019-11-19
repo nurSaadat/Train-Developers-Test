@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Main page</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var numberOfSeats, classType, trainID;
+
+		function validate_carriage(numberOfSeats, classType, trainID){
+
+			if (numberOfSeats == "" || numberOfSeats == null ) {
+				alert("Please, select a capcity for a new carriage.");
+				return false;
+			} else if (parseInt(numberOfSeats) < 1) {
+				alert("Number of seats is less than one. Please, select another number!");
+				return false;
+			} else if (classType == "" || classType == null) {
+				alert("Please, choose a type for a new carriage.");
+				return false;
+			} else if (trainID == "" || trainID == null) {
+				alert("Please, select a train.");
+				return false;
+			}
+
+			return true;
+		}
+		
+		function getTrains() {
+
+			$.get('../services/trains', function (r){
+
+				updateTrains(r);
+			}, 'json').fail(function(r) {
+				console.log("fail" + r.responseText + " train get");
+			});
+		}
+		
+		function updateTrains(items) {
+
+			$("#trains-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+			});
+
+			$("#trains-table tr > td > button").on('click', function () {
+
+				trainID = $(this).closest('tr').find("td").eq(0).html();
+				
+				$("div.train").text("You chose train with TrainID: " + trainID);
+			});
+		}
+
+		function addCarriage(){
+
+			numberOfSeats = document.getElementById('numberOfSeats').value;
+			classType = document.getElementById('classType').value;
+
+			if(validate_carriage(numberOfSeats, classType, trainID)){
+				
+				console.log(numberOfSeats, classType, trainID);
+
+				$.post("../services/addCarriage", {numberOfSeats: numberOfSeats, classType: classType, trainID: trainID}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addCarriage post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#add-carriage").on("click", function() {
+
+				addCarriage();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+			
+			getTrains();
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+	</ul>
+</div>
+<h2>Add Carriage</h2>
+<br>
+<div>
+	<h2>Trains</h2>
+	<br>
+	<table id="trains-table">
+		<tr>
+			<th>TrainID</th>
+			<th>Capacity</th>
+			<th>Number of Carriages</th>
+			<th>Type</th>
+			<th></th>
+		</tr>
+	</table>
+</div>
+<br>
+<div class="train"></div>
+<br>
+<label for="numberOfSeats">Number of Seats</label>
+<input type="number" id="numberOfSeats" required>
+<br>
+<label for="classType">Class</label>
+<input type="text" id="classType" required>
+<br>
+<button id="add-carriage"> Add Carriage</button>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>
