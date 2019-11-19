@@ -78,19 +78,25 @@
 		
 		$("#manage-agents").on('click', function (r) {
 			
-			window.location.href = "../manager/manage_agents.html";
+			window.location.href = "manage_agents.html";
 			
 	    });
 		
 		$("#manage-routes").on('click', function (r) {
 			
-			window.location.href = "../manager/route_management.html";
+			window.location.href = "route_management.html";
 			
 	    });
 		
 		$("#manage-managers").on('click', function (r) {
 			
-			window.location.href = "../admin/manage_managers.html";
+			window.location.href = "manage_managers.html";
+			
+		});
+		
+		$("#subordinate-employee").on('click', function (r) {
+			
+			window.location.href = "subordinate_employee.html";
 			
 		});
 
@@ -113,7 +119,7 @@
 		<ul>
 			<li id="main-page">Main Page</li>
 			<li id="profile-button" style="display:none">Go to profile</li>
-			<li id="log-out-button">Log Out</li>
+			<li id="log-out-button" style="display:none">Log Out</li>
 		</ul>
 	</div>
 	<h2>Personal profile</h2>
@@ -121,7 +127,7 @@
 	<div id="last-name"></div>
 	<div id="email"></div>
 	<br>
-	<button id="change-password">Change Password</button>
+	<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
 	<br><br>
 	<div id="agent-block">
 	<button id="passenger-requests">See Passenger Requests</button>
@@ -131,6 +137,8 @@
 	<button id="manage-agents">Manage Agents</button>
 	<br><br>
 	<button id="manage-routes">Manage Routes</button>
+	<br><br>
+	<button id="subordinate-employee">My Employees</button>
 	<br><br>
 	</div>
 	<div id="admin-block">

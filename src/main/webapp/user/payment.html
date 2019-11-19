@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Make a Payment</title>
-    <link rel = "stylesheet" href = "../css/header_footer.css">
+    <link rel = "stylesheet" href = "../css/payment.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
 
@@ -102,44 +102,53 @@
     </ul>
 </div>
 
-<h2>Make a Payment</h2>
+<div class="box1">
+    <h3>Make a Payment</h3>
+    <div class="page">
+        <form class="payment-card">
+            <div class="payment-card-front">
+                <input type="text" class="card" id="cardName" placeholder="Cardholder's Name">
+                <br>
+                <input type="text" class="card" id="cardNumber" placeholder="Card Number">
+                <br>
+                <span class="payment-card-caption">Valid thru</span>
+                <br>
+                <select name="expMonth" id="expMonth">
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+                <span class="payment-card-separator">/</span>
+                <select name="expYear" id="expYear">
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+                <br>
+            </div>
 
-<label for="cardName">Cardholder's Name</label>
-<input type="text" id="cardName" required>
-<br>
-<label for="cardNumber">Card Number</label>
-<input type="text" id="cardNumber" required>
-<br>
-<label for="cardNumber">Exp Month</label>
-<select name="expMonth" id="expMonth">
-    <option value="January">January</option>
-    <option value="February">February</option>
-    <option value="March">March</option>
-    <option value="April">April</option>
-    <option value="May">May</option>
-    <option value="June">June</option>
-    <option value="July">July</option>
-    <option value="August">August</option>
-    <option value="September">September</option>
-    <option value="October">October</option>
-    <option value="November">November</option>
-    <option value="December">December</option>
-</select>
-<label for="expYear">Exp Year</label>
-<select name="expYear" id="expYear">
-    <option value="2019">2019</option>
-    <option value="2020">2020</option>
-    <option value="2021">2021</option>
-    <option value="2022">2022</option>
-    <option value="2023">2023</option>
-    <option value="2024">2024</option>
-    <option value="2025">2025</option>
-</select>
-<br>
-<label for="cvv">CVV/CVC</label>
-<input type="password" id="cvv" required>
-<br>
-<button id="pay">Submit</button>
+            <div class="payment-card-back">
+                <input type="password" class="cvv" id="cvv" placeholder="CVV/CVC">
+
+            </div>
+        </form>
+    </div>
+    <button id="pay">Submit</button>
+</div>
+
 
 <!-- Contacts -->
 <div class="footer">

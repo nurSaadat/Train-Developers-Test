@@ -7,11 +7,14 @@
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="scripts/jquery.min.js"></script>
 	<script type="text/javascript">
+	
+	var type;
 
 		function checkIn(){
 			$.get("services/checkin", {}, function(r){
 				console.log(r);
-				if (r == "logged in") {
+				if (r != "false") {
+					type = r;
 					$("#log-out-button").css("display", "inline-block");
 					$("#booking-box").css("display", "block");
 					$("#sign-up").css("display", "none");
@@ -24,13 +27,13 @@
 		}
 
 		function goToProfile(r){
-			window.location.href = "user/regular_profile.html";
-			/* console.log(r);
+			
 			if (r == 'user') {
 				window.location.href = "user/regular_profile.html";
 			} else {
 				window.location.href = "worker/worker_profile.html";
-			} */
+			}
+			
 		}
 
 		function logIn(){
@@ -74,7 +77,7 @@
 			});
 
 			$("#profile-button").on('click', function () {
-				goToProfile();
+				goToProfile(type);
 			});
 
 		});
