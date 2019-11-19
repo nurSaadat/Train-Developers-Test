@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/train_schedule.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -43,7 +43,7 @@
 
 				if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
 
-					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
 				}
 			});
 
@@ -103,7 +103,7 @@
 
 			items.forEach(function (e) {
 
-				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" id =\"" + e[0] + "\">Select</button></td></tr>");
+				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
 			});
 
 			$("#trains-table tr > td > button").on('click', function () {
@@ -163,87 +163,89 @@
 		<li id="main-page">Main Page</li>
 	</ul>
 </div>
-<h2>Add Schedule</h2>
-<br>
-<div>
-	<h2>Routes</h2>
-	<br>
-	<table id="routes-table">
-		<tr>
-			<th>RouteID</th>
-			<th>DateFrom</th>
-			<th>DateTo</th>
-			<th>TimeFrom</th>
-			<th>TimeTo</th>
-			<th>Distance (in km)</th>
-			<th>Status</th>
-			<th>StationFrom</th>
-			<th>StationTo</th>
-			<th></th>
-		</tr>
-	</table>
-</div>
-<select id="stationFrom">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
 
-<select id="stationTo">
-	<option value="AST">Astana</option>
-	<option value="ALM">Almaty</option>
-	<option value="SEM">Semey</option>
-	<option value="ATB">Aktobe</option>
-	<option value="PET">Petropavlovsk</option>
-	<option value="KSH">Kokshetau</option>
-</select>
-<br>
-<label for="dateFrom">Departure Date from</label>
-<input type="date" id="dateFrom" required>
-<br>
-<label for="dateTo">Departure Date to</label>
-<input type="date" id="dateTo" required>
-<br>
-<button id="find-routes"> Find Routes</button>
-<br>
-<div class="route"></div>
-<br>
-<div>
-	<h2>Schedules</h2>
-	<br>
-	<table id="schedules-table">
-		<tr>
-			<th>ScheduleID</th>
-			<th>Arrival Time</th>
-			<th>Departure Time</th>
-			<th>Station Abbreviation</th>
-			<th></th>
-		</tr>
-	</table>
+<!-- Add Schedule -->
+<div class="main_section">
+	<h3>Add Schedule</h3>
+	<div class="routes_section">
+		<div class="routes_options">
+			<h3>Routes</h3>
+			<div class="blue_table">
+				<table id="routes-table">
+					<tr>
+						<th>RouteID</th>
+						<th>Date From</th>
+						<th>Date To</th>
+						<th>Time From</th>
+						<th>Time To</th>
+						<th>Distance (km)</th>
+						<th>Status</th>
+						<th>Station From</th>
+						<th>Station To</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			From
+			<select id="stationFrom" class="white_input">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			To
+			<select id="stationTo" class="white_input">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			<label for="dateFrom">Departure Date from</label>
+			<input type="date" id="dateFrom" required>
+			<label for="dateTo">Departure Date to</label>
+			<input type="date" id="dateTo" required>
+		</div>
+		<button id="find-routes"> Find Routes</button>
+		<div class="route"></div>
+	</div>
+	<div class="schedules_section">
+		<h3>Schedules</h3>
+		<div class="blue_table">
+			<table id="schedules-table">
+				<tr>
+					<th>ScheduleID</th>
+					<th>Arrival Time</th>
+					<th>Departure Time</th>
+					<th>Station Abbreviation</th>
+					<th></th>
+				</tr>
+			</table>
+		</div>
+		<div class="schedule"></div>
+	</div>
+	<div class="trains_section">
+		<div class="trains_options">
+			<h3>Trains</h3>
+			<div class="blue_table">
+				<table id="trains-table">
+					<tr>
+						<th>TrainID</th>
+						<th>Capacity</th>
+						<th>Number of Carriages</th>
+						<th>Type</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			<div class="train"></div>
+		</div>
+		<button id="add-schedule"> Add Schedule</button>
+	</div>
 </div>
-<br>
-<div class="schedule"></div>
-<br>
-<div>
-	<h2>Trains</h2>
-	<br>
-	<table id="trains-table">
-		<tr>
-			<th>TrainID</th>
-			<th>Capacity</th>
-			<th>Number of Carriages</th>
-			<th>Type</th>
-			<th></th>
-		</tr>
-	</table>
-</div>
-<br>
-<div class="train"></div>
-<br>
-<button id="add-schedule"> Add Schedule</button>
 
 <!-- Contacts -->
 <div class="footer">
