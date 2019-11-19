@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/worker_profile.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -119,42 +119,55 @@
 		<ul>
 			<li id="main-page">Main Page</li>
 			<li id="profile-button" style="display:none">Go to profile</li>
-			<li id="log-out-button" style="display:none">Log Out</li>
+			<li id="log-out-button">Log Out</li>
 		</ul>
 	</div>
-	<h2>Personal profile</h2>
-	<div id="first-name"></div>
-	<div id="last-name"></div>
-	<div id="email"></div>
-	<br>
-	<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
-	<br><br>
-	<div id="agent-block">
-	<button id="passenger-requests">See Passenger Requests</button>
-	<br><br>
+<!-- Personal profile -->
+	<div class="main_section">
+		<h3>Personal Profile</h3>
+		<div class="form-background">
+			<div class="info">
+				<div>
+					<div id="first-name"></div><br>
+					<div id="last-name"></div><br>
+					<div id="email"></div><br>
+					<div id="position"></div><br>
+					<div id="gender"></div><br>
+					<div id="birth-date"></div><br>
+					<div id="address"></div><br>
+				</div>
+				<div>
+					<div id="phone-number"></div><br>
+					<div id="bank-acc-num"></div><br>
+					<div id="salary"></div><br>
+					<div id="payday"></div><br>
+					<div id="manager-name"></div><br>
+					<div id="manager-email"></div>
+				</div>
+			</div>
+			<div class="buttons">
+				<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
+				<br><br>
+				<div id="agent-block">
+					<button id="passenger-requests">See Passenger Requests</button>
+					<br><br>
+				</div>
+				<div id="manager-block">
+					<button id="manage-agents">Manage Agents</button>
+					<br><br>
+					<button id="manage-routes">Manage Routes</button>
+					<br><br>
+					<button id="subordinate-employee">My Employees</button>
+					<br><br>
+				</div>
+				<div id="admin-block">
+					<button id="manage-managers">Manage Managers</button>
+					<br><br>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div id="manager-block">
-	<button id="manage-agents">Manage Agents</button>
-	<br><br>
-	<button id="manage-routes">Manage Routes</button>
-	<br><br>
-	<button id="subordinate-employee">My Employees</button>
-	<br><br>
-	</div>
-	<div id="admin-block">
-	<button id="manage-managers">Manage Managers</button>
-	<br><br>
-	</div>
-	<div id="position"></div>
-	<div id="gender"></div>
-	<div id="birth-date"></div>
-	<div id="address"></div>
-	<div id="phone-number"></div>
-	<div id="bank-acc-num"></div>
-	<div id="salary"></div>
-	<div id="payday"></div>
-	<div id="manager-name"></div>
-	<div id="manager-email"></div>
+
 <!-- Contacts -->
 	<div class="footer">
 		<h3>Contact us</h3>

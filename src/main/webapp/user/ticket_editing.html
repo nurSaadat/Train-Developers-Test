@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ticket Booking</title>
-    <link rel = "stylesheet" href = "../css/header_footer.css">
+    <link rel = "stylesheet" href = "../css/booking.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type = "text/javascript">
@@ -311,127 +311,157 @@ $(document).ready(function () {
     </ul>
 </div>
 
-<h2>Ticket Booking</h2>
+<!-- Booking -->
+<div class="main_section">
+    <h3>Ticket Editing</h3>
+    <div class="routes_section">
+        <div class="routes_options">
+            <h3>Routes</h3>
+            <div class="blue_table">
+                <table id="routes-table">
+                    <tr>
+                        <th>Route ID</th>
+                        <th>Date From</th>
+                        <th>Date To</th>
+                        <th>Time From</th>
+                        <th>Time To</th>
+                        <th>Distance (km)</th>
+                        <th>Status</th>
+                        <th>Station From</th>
+                        <th>Station To</th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+            From
+            <select id="stationFrom" class="white_select">
+                <option value="AST">Astana</option>
+                <option value="ALM">Almaty</option>
+                <option value="SEM">Semey</option>
+                <option value="ATB">Aktobe</option>
+                <option value="PET">Petropavlovsk</option>
+                <option value="KSH">Kokshetau</option>
+            </select>
+            To
+            <select id="stationTo" class="white_select">
+                <option value="AST">Astana</option>
+                <option value="ALM">Almaty</option>
+                <option value="SEM">Semey</option>
+                <option value="ATB">Aktobe</option>
+                <option value="PET">Petropavlovsk</option>
+                <option value="KSH">Kokshetau</option>
+            </select>
+            <label for="dateFrom">Departure Date</label>
+            <input type="date" id="dateFrom" required>
+        </div>
+        <button id="keep-seat"> Keep the old seat</button>
+        <button id="find-routes"> Find Routes</button>
+    </div>
 
-<h2>Routes</h2>
-<table id="routes-table">
-    <tr>
-        <th>RouteID</th>
-        <th>DateFrom</th>
-        <th>DateTo</th>
-        <th>TimeFrom</th>
-        <th>TimeTo</th>
-        <th>Distance (in km)</th>
-        <th>Status</th>
-        <th>StationFrom</th>
-        <th>StationTo</th>
-        <th></th>
-    </tr>
-</table>
-
-<select id="stationFrom">
-    <option value="AST">Astana</option>
-    <option value="ALM">Almaty</option>
-    <option value="SEM">Semey</option>
-    <option value="ATB">Aktobe</option>
-    <option value="PET">Petropavlovsk</option>
-    <option value="KSH">Kokshetau</option>
-</select>
-
-<select id="stationTo">
-    <option value="AST">Astana</option>
-    <option value="ALM">Almaty</option>
-    <option value="SEM">Semey</option>
-    <option value="ATB">Aktobe</option>
-    <option value="PET">Petropavlovsk</option>
-    <option value="KSH">Kokshetau</option>
-</select>
-<br>
-<label for="dateFrom">Departure Date</label>
-<input type="date" id="dateFrom" required>
-<br>
-<br>
-<button id="keep-seat"> Keep the old seat</button>
-
-<button id="find-routes"> Find Routes</button>
-<br><br><br>
-<table id="seats-table">
-    <tr>
-        <th>SeatNumber</th>
-        <th>Status</th>
-        <th>Carriage Number</th>
-        <th>Class</th>
-        <th>Price</th>
-        <th>Train Number</th>
-        <th></th>
-    </tr>
-</table>
-<br>
-<div class="seat"></div>
-<div id="passanger-number" style="visibility:hidden">
-	<label> Number of passengers </label>
-	<input type="number" id = "numOfpassengers" required>
-</div>
-<div class="addPass">
-    <div class="newPass">
-
-        <label for="fname">First Name</label>
-        <input type="text" id="fname" required>
-        <br>
-        <label for="lname">Last Name</label>
-        <input type="text" id="lname" required>
-        <br>
-        <label for="dob">Date of Birth</label>
-        <input type="date" id="dob" required>
-        <br>
-        <label>Gender</label>
-        <select id="gender">
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-        </select>
-        <br>
-        <label>Citizenship</label>
-        <select id="country">
-            <option value="Kazakhstan">Kazakhstan</option>
-            <option value="Russia">Russia</option>
-            <option value="Other">Other</option>
-        </select>
-        <br>
-        <label>Document Type</label>
-        <select id="doctype">
-            <option value="passport">Passport</option>
-            <option value="IDcard">ID Card</option>
-        </select>
-        <br>
-        <label>Tariff</label>
-        <select id="tariff">
-            <option value="regular">Regular</option>
-            <option value="retired">Retired</option>
-            <option value="student">Student</option>
-            <option value="child">Child</option>
-        </select>
-        <br>
-        <label>Payment Type</label>
-        <select id="payment">
-            <option value="BankCard">Bank card</option>
-            <option value="OnlineWallet">Online wallet</option>
-            <option value="Other">Other</option>
-        </select>
-        <br>
-        <label for="docID">Document ID</label>
-        <input type="text" id="docID" required>
-        <br>
-        <label for="telephone">Phone Number</label>
-        <input type="text" id="telephone" required>
-        <br>
-        <button class="remove-pass-btn" style="visibility:hidden">Remove a Passenger</button>
+    <div class="seats_section">
+        <h3>Seats</h3>
+        <div class="blue_table">
+            <table id="seats-table">
+                <tr>
+                    <th>Seat Number</th>
+                    <th>Status</th>
+                    <th>Carriage Number</th>
+                    <th>Class</th>
+                    <th>Price</th>
+                    <th>Train Number</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+        <div class="seat"></div>
+        <div id="passanger-number" style="visibility:hidden">
+            <label> Number of passengers </label>
+            <input type="number" id = "numOfpassengers" required>
+        </div>
+        <div class="addPass">
+            <div class="newPass">
+                <table class="info-table">
+                    <tr>
+                        <td><label for="fname">First Name</label></td>
+                        <td><input type="text" id="fname" required class="white_input"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="lname">Last Name</label></td>
+                        <td><input type="text" id="lname" required class="white_input"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="dob">Date of Birth</label></td>
+                        <td><input type="date" id="dob" required class="white_input"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Gender</label></td>
+                        <td>
+                            <select id="gender" class="white_select">
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Citizenship</label></td>
+                        <td>
+                            <select id="country" class="white_select">
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Document Type</label></td>
+                        <td>
+                            <select id="doctype" class="white_select">
+                                <option value="passport">Passport</option>
+                                <option value="IDcard">ID Card</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Tariff</label></td>
+                        <td>
+                            <select id="tariff" class="white_select">
+                                <option value="regular">Regular</option>
+                                <option value="retired">Retired</option>
+                                <option value="student">Student</option>
+                                <option value="child">Child</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Payment Type</label></td>
+                        <td>
+                            <select id="payment" class="white_select">
+                                <option value="BankCard">Bank card</option>
+                                <option value="OnlineWallet">Online wallet</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="docID">Document ID</label></td>
+                        <td><input type="text" id="docID" required class="white_input"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="telephone">Phone Number</label></td>
+                        <td><input type="text" id="telephone" required  class="white_input"></td>
+                    </tr>
+                </table>
+                <br>
+                <button class="remove-pass-btn" style="visibility:hidden">Remove a Passenger</button>
+            </div>
+        </div>
+        <div class="button_book">
+            <button id="edit-ticket" type="button">Edit Ticket</button>
+            <div class="ticket"></div>
+            <button id="request" type="button">Send a request</button>
+        </div>
     </div>
 </div>
-<button id="edit-ticket" type="button">Edit Ticket</button>
-<br>
-<div class="ticket"></div>
-<br>
-<button id="request" type="button">Send a request</button>
 
 <!-- Contacts -->
 <div class="footer">
