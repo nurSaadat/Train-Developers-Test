@@ -8,11 +8,11 @@
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
 
-		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text;
+		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep;
 		var route = [];
 		var distanceEdit, statusEdit;
 
-		function validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo){
+		function validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep){
 
 			if (routeID == "" || routeID == null ) {
 				alert("Please, select a route to be edited.");
@@ -41,18 +41,30 @@
 			}else if (stationTo == "" || stationTo == null) {
 				alert("Please, choose arrival station.");
 				return false;
+			} else if (timeArr == "" || timeArr == null) {
+				alert("Please, choose the train arrival time.");
+				return false;
+			} else if (timeDep == "" || timeDep == null) {
+				alert("Please, choose the train departure time.");
+				return false;
 			}
 
 			return true;
 		}
 		
-		function validate_text(text){
+		function validate_text(text, title){
 			
 			if(text == "" || text == null){
-				alert("Please, write an fnnouncement.");
+				alert("Please, write an announcement.");
 				return false;
 			} else if(text.length > 449){
 				alert("The text is too large.");
+				return false;
+			} else if(title == "" || title == null){
+				alert("Please, fill out the announcement title.");
+				return false;
+			} else if(title.length > 99){
+				alert("The title is too large.");
 				return false;
 			}
 			
@@ -85,7 +97,7 @@
 				distanceEdit = $(this).closest('tr').find("td").eq(5).html();
 				statusEdit = $(this).closest('tr').find("td").eq(6).html();
 				
-				$("div.seat").text("You chose route with RouteID: " + routeID);
+				$("div.route").text("You chose route with RouteID: " + routeID);
 				
 				console.log(distanceEdit);
 				console.log(statusEdit);
@@ -107,17 +119,20 @@
 			stationFrom = document.getElementById('stationFromEdit').value;
 			stationTo = document.getElementById('stationToEdit').value;
 			text = document.getElementById('textEdit').value;
+			title = document.getElementById('titleEdit').value;
+			timeArr = document.getElementById('timeArrEdit').value;
+			timeDep = document.getElementById('timeDepEdit').value;
 
-			if(validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo) && validate_text(text)){
+			if(validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep) && validate_text(text, title)){
 
-				route = [routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text];
+				route = [routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep];
 				//console.log(route);
 
 				$.post("../services/routes", {route : route}, function(r) {
 
 					window.location.href = "../index.html";
 				}).fail(function(r) {
-					console.log("fail" + r.responseText + " route post");
+					console.log("fail" + r.responseText + " addNews post");
 				});
 			}
 		}
@@ -133,10 +148,13 @@
 			stationFrom = document.getElementById('stationFromEdit').value;
 			stationTo = document.getElementById('stationToEdit').value;
 			text = document.getElementById('textEdit').value;
+			title = document.getElementById('titleEdit').value;
+			timeArr = document.getElementById('timeArrEdit').value;
+			timeDep = document.getElementById('timeDepEdit').value;
 
-			if(validate_route(1, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo) && validate_text(text)){
+			if(validate_route(1, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep) && validate_text(text, title)){
 
-				route = [dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text];
+				route = [dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep];
 				console.log(route);
 
 				$.ajax({
@@ -260,11 +278,17 @@
 <br>
 <div class="route"></div>
 <br>
+<label for="timeArrEdit">Train arrives at the first station</label>
+<input type="time" id="timeArrEdit" value=00:00:00 required>
+<br>
 <label for="dateFromEdit">Departure Date</label>
 <input type="date" id="dateFromEdit" required>
 <br>
 <label for="dateToEdit">Arrival Date</label>
 <input type="date" id="dateToEdit" required>
+<br>
+<label for="timeDepEdit">Train departs from the last station</label>
+<input type="time" id="timeDepEdit" value=00:00:00 required>
 <br>
 <label for="timeFromEdit">Departure Time</label>
 <input type="time" id="timeFromEdit" value=00:00:00 required>
@@ -294,6 +318,9 @@
 	<option value="PET">Petropavlovsk</option>
 	<option value="KSH">Kokshetau</option>
 </select>
+<br>
+<label for="titleEdit">Announcement text title</label>
+<input type="text" id="titleEdit" required>
 <br>
 <label for="textEdit">Announcement text</label>
 <input type="text" id="textEdit" required>

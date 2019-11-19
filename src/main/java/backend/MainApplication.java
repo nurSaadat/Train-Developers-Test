@@ -40,6 +40,13 @@ public class MainApplication extends Application {
         singletons.add(new ListSubordinateEmployeeService());
         singletons.add(new ShowRecentNewsService());
         singletons.add(new ShowAllNewsService());
+        singletons.add(new AddNewsService());
+        singletons.add(new AddScheduleService());
+        singletons.add(new ListSchedulesService());
+        singletons.add(new AddTrainService());
+        singletons.add(new AddCarriageService());
+        singletons.add(new ListTrainsService());
+        singletons.add(new AddTrainScheduleService());
     }
     
     @Override

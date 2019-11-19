@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Main page</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+	
+		var text, title;
+		
+		function validate_text(text, title){
+			
+			if(text == "" || text == null){
+				alert("Please, write an announcement.");
+				return false;
+			} else if(text.length > 449){
+				alert("The text is too large.");
+				return false;
+			} else if(title == "" || title == null){
+				alert("Please, fill out the announcement title.");
+				return false;
+			} else if(title.length > 99){
+				alert("The title is too large.");
+				return false;
+			}
+			
+			return true;
+		}
+
+		function addNews(){
+			
+			text = document.getElementById('text').value;
+			title = document.getElementById('title').value;
+			
+			if(validate_text(text, title)){
+				
+				$.post("../services/addNews", {text: text, title: title}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " route post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#add-news").on("click", function() {
+
+				addNews();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+	</ul>
+</div>
+<h2>Send News</h2>
+<br>
+<label for="title">Announcement text title</label>
+<input type="text" id="title" required>
+<br>
+<label for="text">Announcement text</label>
+<input type="text" id="text" required>
+<br>
+<button id="add-news"> Add News</button>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>
