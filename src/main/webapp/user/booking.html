@@ -182,7 +182,7 @@
             items.forEach(function (e) {
 
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
-                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" style=\"width: 100%\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
 
 
