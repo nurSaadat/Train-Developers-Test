@@ -30,6 +30,12 @@
 	font-size: 24px;
 }
 
+.route {
+	text-align: left;
+	font-weight: bold;
+	font-size: 20px;
+}
+
 .white_input {
 	width: 255px;
 }

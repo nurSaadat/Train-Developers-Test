@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/train_schedule.css">
+	<link rel = "stylesheet" type="text/css" href = "../css/change_password.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -90,18 +90,12 @@
 <!-- Send News -->
 <div class="main_section">
 	<h3>Send News</h3>
-	<div class="routes_section">
-		<table class="info-table">
-			<tr>
-				<td><label for="title">Announcement text title</label></td>
-				<td><input type="text" id="title" required class="white_input"></td>
-			</tr>
-			<tr>
-				<td><label for="text">Announcement text</label></td>
-				<td><input type="text" id="text" required class="white_input"></td>
-			</tr>
-		</table>
-		<button id="add-news"> Add News</button>
+	<div class="form-background">
+		<form id="send-news-form">
+			<input type="text" id="title" required class="white_input" placeholder="Announcement text title">
+			<input type="text" id="text" required class="white_input" placeholder="Announcement text">
+			<button id="add-news"> Add News</button>
+		</form>
 	</div>
 </div>
 
