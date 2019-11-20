@@ -41,7 +41,7 @@
 
                 if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
 
-                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td></tr>");
+                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\""+ e[0]+"\">Show on the map</button></td></tr>");
                 }
             });
             $("#routes-table tr").on('click', function () {
@@ -129,6 +129,7 @@
 		            <th>Status</th>
 		            <th>StationFrom</th>
 		            <th>StationTo</th>
+					<th></th>
 		        </tr>
 		    </table>
 		</div>
