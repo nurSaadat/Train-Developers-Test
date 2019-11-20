@@ -6,6 +6,24 @@
 	text-align: center;
 }
 
+.box1 h3 {
+	margin-top: 0;
+	margin-bottom: 30px;
+	font-size: 36px;
+	line-height:36px;
+	color: #0057A8;
+}
+
+.form-background {
+	text-align: center;
+	padding-top: 7%;
+	height: 100%;
+	width: 80%;
+	background-color: rgba(0, 87, 168, 0.3);
+	border-radius:4px;
+	font-size: 20px;
+}
+
 .box1 {
 	align-items: center;
 	height: auto;
@@ -16,15 +34,8 @@
 
 	.personal_info {
 		width: 100%;
-		text-align: left;
-	}
-	
-	.personal_info h3 {
-		margin-top: 0;
-		margin-bottom: 30px;
-		font-size: 36px;
-		line-height:36px;
-		color: #000000;
+		text-align: center;
+		padding-bottom: 20%;
 	}
 	
 	.box1 button{

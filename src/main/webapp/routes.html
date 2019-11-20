@@ -117,47 +117,49 @@
 	
 	<div class="main_section">
 		<h3>Routes</h3>
-		<div class="blue_table">
-			<table id="routes-table">
-		        <tr>
-		            <th>RouteID</th>
-		            <th>DateFrom</th>
-		            <th>DateTo</th>
-		            <th>TimeFrom</th>
-		            <th>TimeTo</th>
-		            <th>Distance (in km)</th>
-		            <th>Status</th>
-		            <th>StationFrom</th>
-		            <th>StationTo</th>
-					<th></th>
-		        </tr>
-		    </table>
+		<div class="routes_section">
+			<div class="blue_table">
+				<table id="routes-table">
+					<tr>
+						<th>RouteID</th>
+						<th>DateFrom</th>
+						<th>DateTo</th>
+						<th>TimeFrom</th>
+						<th>TimeTo</th>
+						<th>Distance (in km)</th>
+						<th>Status</th>
+						<th>StationFrom</th>
+						<th>StationTo</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			From
+			<select id="stationFrom" class="white_select">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			To
+			<select id="stationTo" class="white_select">
+				<option value="AST">Astana</option>
+				<option value="ALM">Almaty</option>
+				<option value="SEM">Semey</option>
+				<option value="ATB">Aktobe</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KSH">Kokshetau</option>
+			</select>
+			<div class="dates">
+				<label for="dateFrom">Departure Date from</label>
+				<input type="date" id="dateFrom" required>
+				<label for="dateTo">Departure Date to</label>
+				<input type="date" id="dateTo" required>
+			</div>
+			<button id="find-routes"> Find Routes</button>
 		</div>
-		From
-		<select id="stationFrom" class="white_select">
-		    <option value="AST">Astana</option>
-		    <option value="ALM">Almaty</option>
-		    <option value="SEM">Semey</option>
-		    <option value="ATB">Aktobe</option>
-		    <option value="PET">Petropavlovsk</option>
-		    <option value="KSH">Kokshetau</option>
-		</select>
-		To
-		<select id="stationTo" class="white_select">
-		    <option value="AST">Astana</option>
-		    <option value="ALM">Almaty</option>
-		    <option value="SEM">Semey</option>
-		    <option value="ATB">Aktobe</option>
-		    <option value="PET">Petropavlovsk</option>
-		    <option value="KSH">Kokshetau</option>
-		</select>
-		<div class="dates">
-			<label for="dateFrom">Departure Date from</label>
-			<input type="date" id="dateFrom" required>
-			<label for="dateTo">Departure Date to</label>
-			<input type="date" id="dateTo" required>
-		</div>
-		<button id="find-routes"> Find Routes</button>		
 	</div>
 	<div id="map" class="map"></div>
 <!-- Contacts -->
