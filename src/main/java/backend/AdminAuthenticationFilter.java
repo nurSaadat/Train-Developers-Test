@@ -1,6 +1,9 @@
 package backend;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -34,11 +37,25 @@ public class AdminAuthenticationFilter implements Filter {
 
         if (session == null) {   //checking whether the session exists
         	
+        	FileWriter out = new FileWriter("Project_log/serverAuth.log", true);
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            
+            out.write(formatter.format(date) + " - <Unauthorized access request> Method: " + req.getMethod() + ", Request URL: " + req.getRequestURI() + ", User: not set, IP: " + req.getRemoteAddr() + ".\n");
+            out.close();
+        	
             this.context.log("Unauthorized access request");
             res.sendRedirect(req.getContextPath() + "/index.html");
         } else {
         	
         	if(!(session.getAttribute("type") == "admin")) {
+        		
+        		FileWriter out = new FileWriter("Project_log/serverAuth.log", true);
+                Date date = new Date();
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                
+                out.write(formatter.format(date) + " - <Unauthorized access request> Method: " + req.getMethod() + ", Request URL: " + req.getRequestURI() + ", User: " + session.getAttribute("type") + ", Email: " + session.getAttribute("email") + ", IP: " + req.getRemoteAddr() + ".\n");
+            	out.close();
         		
         		this.context.log("Unauthorized access request");
                 res.sendRedirect(req.getContextPath() + "/index.html");
