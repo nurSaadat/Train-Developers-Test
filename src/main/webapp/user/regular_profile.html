@@ -39,9 +39,6 @@
 			$("#buy-ticket").on('click', function (r) {
 				window.location.href = "./booking.html";
 			});
-			$("#manage-requests").on('click', function (r) {
-				window.location.href = "./manage_requests.html";
-			});
 			$("#log-out-button").on('click', function (r) {
 				$.post("../services/logout", {}, function(r){
 					console.log(r);
@@ -66,7 +63,6 @@
 		<ul>
 			<li id="main-page">Main Page</li>
 			<li id="buy-ticket">Buy Ticket</li>
-			<li id="manage-requests">Manage Requests</li>
 			<li id="log-out-button">Log Out</li>
 		</ul>
 	</div>
