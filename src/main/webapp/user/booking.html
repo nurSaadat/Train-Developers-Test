@@ -163,7 +163,8 @@
             }
             $("#routes-table tr > td > button").on('click', function () {
             	
-            	$("div.route").text("You chose route with RouteID: " + routeID);
+            	routeID = $(this).closest('tr').find("td").eq(0).html();
+            	$("#route").text("You chose route with RouteID: " + routeID);
             	
                 from = $(this).closest('tr').find("td").eq(7).html();
                 to = $(this).closest('tr').find("td").eq(8).html();
@@ -310,7 +311,8 @@
 				</select>
 				<label for="dateFrom">Departure Date</label>
 				<input type="date" id="dateFrom" required>		
-			</div>	
+			</div>	<br>
+			<div id="route"></div>
 			<button id="find-routes"> Find Routes</button>	
 		</div>
 			
