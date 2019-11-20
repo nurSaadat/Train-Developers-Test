@@ -17,8 +17,7 @@
 
 .form-background {
     text-align: left;
-    padding-top: 6%;
-    padding-left: 10%;
+    padding: 7% 5% 5% 10%;
     height: 19em;
     background-color: rgba(0, 87, 168, 0.3);
     border-radius:4px;
@@ -30,8 +29,7 @@
 .main_section button{
     height:35px;
     text-align:center;
-    margin-top:20px;
-    margin-bottom:0;
+    margin-bottom:20px;
     width:80%;
     background-color:#0057A8;
     color:#fff;
