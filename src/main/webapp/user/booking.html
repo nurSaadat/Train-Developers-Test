@@ -162,6 +162,9 @@
                 alert("No routes found!")
             }
             $("#routes-table tr > td > button").on('click', function () {
+            	
+            	$("div.route").text("You chose route with RouteID: " + routeID);
+            	
                 from = $(this).closest('tr').find("td").eq(7).html();
                 to = $(this).closest('tr').find("td").eq(8).html();
                 routeId = $(this).closest('tr').find("td").eq(0).html();
