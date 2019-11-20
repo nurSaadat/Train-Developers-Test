@@ -77,6 +77,24 @@
 			});
 		});
 		
+		$("#add_carriage").on('click', function (r) {
+			
+			window.location.href = "../agent/add_carriage.html";
+			
+		});
+		
+		$("#add_train").on('click', function (r) {
+			
+			window.location.href = "../agent/add_train.html";
+			
+		});
+		
+		$("#train_schedule").on('click', function (r) {
+			
+			window.location.href = "../agent/train_schedule.html";
+			
+		});
+		
 		$("#add_schedule").on('click', function (r) {
 			
 			window.location.href = "../manager/add_schedule.html";
@@ -162,6 +180,10 @@
 				<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
 				<div id="agent-block">
 					<button id="passenger-requests">See Passenger Requests</button>
+					<button id="add_carriage">Add Carriage</button>
+					<button id="add_train">Add Train</button>
+					<button id="train_schedule">Train Schedules</button>
+					<br><br>
 				</div>
 				<div id="manager-block">
 					<button id="manage-agents">Manage Agents</button>
