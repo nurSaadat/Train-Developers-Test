@@ -154,9 +154,9 @@
 
 
         function showRoutes(items) {
-        	
-        	$("#routes-table").find("tr:gt(0)").remove();
-        	
+
+            $("#routes-table").find("tr:gt(0)").remove();
+
             items.forEach(function (e) {
 
                 if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() == e[1])){
@@ -175,17 +175,17 @@
                 dist = $(this).closest('tr').find("td").eq(5).html();
                 console.log(from, to, routeId, dateFrom, dateTo)
                 getSeats();
-                
+
             });
 
         }
-        
+
         function showSeats(items) {
-        	
-        	$("#seats-table").find("tr:gt(0)").remove();
-        	
+
+            $("#seats-table").find("tr:gt(0)").remove();
+
             items.forEach(function (e) {
-            	
+
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
                 $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
@@ -215,11 +215,11 @@
 
         function getSeats() {
             $.get("../services/seats?RouteID=" + routeId, function(r) {
-            	
+
                 console.log(r);
                 showSeats(r);
             },'json').fail(function(r) {
-            	
+
                 alert("Error on get seats");
                 console.log(r.responseText);
             });
@@ -232,13 +232,13 @@
         }
 
         function postTicket() {
-            $.post("../services/book", {ticket : [ticket[0], ticket[1], ticket[2], orderID, ticket[3], ticket[4], ticket[5], ticket[6], ticket[7], ticket[8]], passenger : [passenger[0], passenger[1], passenger[2], passenger[3], passenger[4], passenger[5], passenger[6], passenger[7], passenger[8], orderID]}, function(r) {
-                console.log(r + " book");
+            $.post("../services/edit", {ticket : [oldTicketID, ticket[0], ticket[1], ticket[2], orderID, ticket[3], ticket[4], ticket[5], ticket[6], ticket[7], ticket[8]], passenger : [passenger[0], passenger[1], passenger[2], passenger[3], passenger[4], passenger[5], passenger[6], passenger[7], passenger[8]]}, function(r) {
+                console.log(r + " edit");
                 window.location.href = "current_tickets.html";
-                // redirect
+                //redirect
                 //window.location.href = "../index.html";
             }).fail(function(r) {
-                console.log(r.responseText + " book");
+                console.log(r.responseText + " edit");
             });
         }
 

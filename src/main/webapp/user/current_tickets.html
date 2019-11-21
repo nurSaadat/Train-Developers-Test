@@ -8,15 +8,26 @@
     <script src="../scripts/jquery.min.js"></script>
     <script type="text/javascript">
 
-        function getTickets() {
-            $.get('../services/tickets', {}, function(r) {
-                showTickets(r);
+        function getCurrentTickets() {
+            $.get('../services/tickets/current', {}, function(r) {
+                showCurrentTickets(r);
+            }, 'json');
+        }
+
+        function getCancelledTickets() {
+            $.get('../services/cancel', {}, function(r) {
+                showCancelledTickets(r);
+            }, 'json');
+        }
+
+        function getEditedTickets() {
+            $.get('../services/edit', {}, function(r) {
+                showEditedTickets(r);
             }, 'json');
         }
 
 
-
-        function showTickets(items) {
+        function showCurrentTickets(items) {
 
             $("#ticket-table").find("tr:gt(0)").remove();
 
@@ -26,11 +37,11 @@
                 var ticketDate = new Date(e[3]);
                 var today = new Date();
                 if (ticketDate > today){
-                    $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td>" + e[12] + "</td><td>" + e[13] + "</td><td><button> Edit </button class = \"edit-t\"></td ><td><button class = \"cancel-t\"> Cancel </button></td></tr>");
+                    $("#ticket-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td>" + e[12] + "</td><td>" + e[13] + "</td><td><button class = \"edit-t\"> Edit </button ></td ><td><button class = \"cancel-t\"> Cancel </button></td></tr>");
                 }
             });
 
-            $("#ticket-table tr > td:eq(14) > button").on('click', function () {
+            $("#ticket-table tr").find(".edit-t").on('click', function () {
                 orderID = $(this).closest('tr').find("td").eq(1).html();
                 ticketID = $(this).closest('tr').find("td").eq(0).html();
                 IDs = [orderID, ticketID];
@@ -39,7 +50,7 @@
                 window.location.href = 'ticket_editing.html';
             });
 
-            $("#ticket-table tr > td:eq(15) > button").on('click', function () {
+            $("#ticket-table tr").find(".cancel-t").on('click', function () {
                 orderID = $(this).closest('tr').find("td").eq(1).html();
                 ticketID = $(this).closest('tr').find("td").eq(0).html();
                 confirmCancelling = confirm("Are you sure?");
@@ -49,17 +60,42 @@
             });
 
         }
+        function showCancelledTickets(items) {
+
+            items.forEach(function (e) {
+                var ticketDate = new Date(e[4]);
+                var today = new Date();
+                if (ticketDate > today){
+                    $("#cancelled-t-table").append("<tr align=\"center\"><td>" + e[2] + "</td><td>" + e[1] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td>" + e[11] + "</td><td>" + e[12] + "</td><td>" + e[13] + "</td><td>" + e[14] + "</td><td><button class = \"cancel-t\" disabled> Cancelled (pending) </button></td></tr>");
+                }
+            });
+        }
+
+        function showEditedTickets(items) {
+
+            items.forEach(function (e) {
+                var ticketDate = new Date(e[1]);
+                var today = new Date();
+                if (ticketDate > today){
+                    $("#edited-t-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[4] + "</td><td>" + e[20] + "</td><td>" + e[1] + "</td><td>" + e[21] + "</td><td>" + e[22] + "</td><td>" + e[2] + "</td><td>" + e[23] + "</td><td>" + e[3] + "</td><td>" + e[6] + "</td><td>" + e[8] + "</td><td>" + e[7] + "</td><td>" + e[13] + "</td><td>" + e[14] + " " + e[15] + "</td><td><button class = \"edit-t\" disabled> Edited (pending) </button></td></tr>");
+                }
+            });
+        }
 
         function cancel(){
             $.post("../services/cancel", {OrderID : orderID, TicketID: ticketID}, function(r) {
                 console.log("success" + r + " cancel");
+                window.location.href = 'current_tickets.html';
             }).fail(function(r) {
                 console.log("fail" + r.responseText + " cancel");
             });
         }
 
         $(document).ready(function () {
-            getTickets();
+            getCancelledTickets();
+            getCurrentTickets();
+
+            getEditedTickets();
 
             $("#main-page").on('click', function () {
                 window.location.href = "../index.html";
@@ -117,6 +153,47 @@
                 <th>Document ID</th>
                 <th>Name</th>
                 <th></th>
+                <th></th>
+            </tr>
+        </table>
+        <br>
+        <h3> Cancelled Tickets</h3>
+        <table id="cancelled-t-table">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Order ID</th>
+                <th>From</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+                <th>To</th>
+                <th>Arrival Date</th>
+                <th>Arrival Time</th>
+                <th>Price</th>
+                <th>Train ID</th>
+                <th>Carriage Number</th>
+                <th>Seat Number</th>
+                <th>Document ID</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </table>
+        <h3> Edited Tickets</h3>
+        <table id="edited-t-table">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Order ID</th>
+                <th>From</th>
+                <th>Departure Date</th>
+                <th>Departure Time</th>
+                <th>To</th>
+                <th>Arrival Date</th>
+                <th>Arrival Time</th>
+                <th>Price</th>
+                <th>Train ID</th>
+                <th>Carriage Number</th>
+                <th>Seat Number</th>
+                <th>Document ID</th>
+                <th>Name</th>
                 <th></th>
             </tr>
         </table>

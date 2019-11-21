@@ -49,6 +49,7 @@ public class MainApplication extends Application {
         singletons.add(new AddTrainScheduleService());
         singletons.add(new LogFilter());
         singletons.add(new ListLogsService());
+        singletons.add(new EditTicketService());
     }
     
     @Override
