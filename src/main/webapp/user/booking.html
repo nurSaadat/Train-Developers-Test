@@ -12,9 +12,8 @@
         var passenger = [];
         var ticket = [];
         var order = [];
-		var passenger = [];
-		var ticket = [];
-
+        var toback = [];
+        
         function validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth){
 
             if (doctype == "" || doctype == null ) {
@@ -114,7 +113,9 @@
 
 				if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
 					passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
-					console.log(passenger);
+					/* console.log(passenger); */
+					sendingInfo = ticket + toback[i-1];
+					console.log(sendingInfo);
 					localStorage.setItem("passenger", JSON.stringify(passenger));
 					localStorage.setItem("ticket", JSON.stringify(ticket));
 				}
@@ -125,8 +126,8 @@
 
         function createTicket(){
             if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
-                ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
-                console.log(ticket);
+                ticket = [dateFrom, dateTo, routeId, from, to];
+                /* console.log(ticket); */
                 createPassenger();
             }
         }
@@ -190,17 +191,37 @@
                 $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" style=\"width: 100%; background-color:#23a134\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
 
-            $("#seats-table tr > td > button").on('click', function () {
-            	if (this.style.backgroundColor == "rgb(217, 50, 50)") {
-					this.style.backgroundColor = "rgb(35, 161, 52)";
-
-				}
-            	else this.style.backgroundColor = "rgb(217, 50, 50)";
-                seat = $(this).closest('tr').find("td").eq(0).html();
+            $("#seats-table tr > td > button").on('click', function () {            	
+            	seat = $(this).closest('tr').find("td").eq(0).html();
                 carriage = $(this).closest('tr').find("td").eq(2).html();
                 ticketPrice = $(this).closest('tr').find("td").eq(4).html();
-                trainId = $(this).closest('tr').find("td").eq(5).html();
-                console.log(seat, trainId, carriage, ticketPrice);
+                trainId = $(this).closest('tr').find("td").eq(5).html();  
+            	var temp = [ticketPrice, trainId,  seat, carriage];
+            	
+            	if (this.style.backgroundColor == "rgb(217, 50, 50)") {
+					this.style.backgroundColor = "rgb(35, 161, 52)";
+					var len = toback.length;
+					for (var i = 0; i < len; i++) {
+						var element = toback.shift();
+						if (JSON.stringify(temp)==JSON.stringify(element)) {
+							/* console.log(element); */
+							break;
+						}
+						toback.push(element);						
+					}
+				}
+            	else {
+            		/* Alert if more seats than passengers */
+                	if (toback.length == numOfpassengers) {
+                		alert("Can't choose more seats");
+                		return;
+                	}
+            		this.style.backgroundColor = "rgb(217, 50, 50)";
+            		toback.push(temp);
+            	}                            
+                
+                /* console.log(toback); */
+                /* console.log(seat, trainId, carriage, ticketPrice); */
                 $( "div.seat" ).text( "Your seat is " + seat + ", in carriage " + carriage + ", price: " + ticketPrice );
             });
 
