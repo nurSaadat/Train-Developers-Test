@@ -160,8 +160,12 @@ public class EditTicketService {
         List<List<String>> tickets = new CopyOnWriteArrayList<>();
 
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
+        
+        HttpSession session = req.getSession(false);
 
-        ResultSet rs = db.getData("select * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID) as emailT on EditTicket.OrderID = emailT.OrderID  ");
+		String email = (String)session.getAttribute("email");
+
+        ResultSet rs = db.getData("select * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID and O.UserEmail = '" + email + "') as emailT on EditTicket.OrderID = emailT.OrderID ; ");
 
         while (rs.next()) {
 
@@ -202,42 +206,95 @@ public class EditTicketService {
     }
 
     @Path("/confirm")
+    @GET
+    public Response getListAgent(@Context HttpServletRequest req) throws ClassNotFoundException, SQLException {
+
+        List<List<String>> tickets = new CopyOnWriteArrayList<>();
+
+        MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
+
+        ResultSet rs = db.getData("select * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID) as emailT on EditTicket.OrderID = emailT.OrderID ; ");
+
+        while (rs.next()) {
+
+            tickets.add(new CopyOnWriteArrayList<String>());
+            tickets.get(tickets.size() - 1).add(rs.getString("TicketID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DepartureDate"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ArrivingDate"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Price"));
+            tickets.get(tickets.size() - 1).add(rs.getString("OrderID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("RouteID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("TrainID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("SeatNumber"));
+            tickets.get(tickets.size() - 1).add(rs.getString("CarriageNumber"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ScheduleFromID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ScheduleToID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DocumentType"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Tariff"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DocumentID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("FName"));
+            tickets.get(tickets.size() - 1).add(rs.getString("LName"));
+            tickets.get(tickets.size() - 1).add(rs.getString("PhoneNumber"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Citizenship"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Gender"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DateOfBirth"));
+            tickets.get(tickets.size() - 1).add(rs.getString("StationAbbr"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DepartureTime"));
+            tickets.get(tickets.size() - 1).add(rs.getString("toStation"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ArrivalTime"));
+            tickets.get(tickets.size() - 1).add(rs.getString("route"));
+            tickets.get(tickets.size() - 1).add(rs.getString("UserEmail"));
+        }
+
+        db.closeConnection();
+
+        Gson gson = new Gson();
+        return Response.ok(gson.toJson(tickets)).build();
+
+    }
+    
+    @Path("/confirm")
     @POST
     public Response login(@FormParam("orderID") String OrderID, @FormParam("ticketID") String TicketID) throws SQLException, ClassNotFoundException {
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
         ResultSet rs = db.getData("select * from EditTicket where OrderID = " + OrderID + " and  TicketID = " + TicketID + ";");
-        //rs.next();
+        rs.next();
+        
+        db.updateData("UPDATE Ticket SET"
+                + " DepartureDate = '" + rs.getString(2)
+                + "', ArrivingDate = '" + rs.getString(3)
+                + "', Price = '" + rs.getString(4)
+                + "', RouteID = '" + rs.getString(6)
+                + "', TrainID = '" + rs.getString(7)
+                + "', SeatNumber = '" + rs.getString(8)
+                + "', CarriageNumber = '" + rs.getString(9)
+                + "', ScheduleFromID = '" + rs.getString(10)
+                + "', ScheduleToID = '" + rs.getString(11)
+                + "' WHERE TicketID = '" + TicketID
+                + "' and OrderID = '" + OrderID + "';");
+        
+        rs = db.getData("select * from EditTicket where OrderID = " + OrderID + " and  TicketID = " + TicketID + ";");
+        rs.next();
 
-        if(rs.next()) {
-            db.updateData("UPDATE Ticket SET"
-                    + " DepartureDate = '" + rs.getString(2)
-                    + "', ArrivingDate = '" + rs.getString(3)
-                    + "', Price = '" + rs.getString(4)
-                    + "', RouteID = '" + rs.getString(6)
-                    + "', TrainID = '" + rs.getString(7)
-                    + "', SeatNumber = '" + rs.getString(8)
-                    + "', CarriageNumber = '" + rs.getString(9)
-                    + "', ScheduleFromID = '" + rs.getString(10)
-                    + "', ScheduleToID = '" + rs.getString(11)
-                    + "' WHERE TicketID = '" + TicketID
-                    + "' and OrderID = '" + OrderID + "';");
+        db.updateData(" UPDATE `Passenger` SET"
+                + " DocumentType = '" + rs.getString(12)
+                + "', Tariff = '" + rs.getString(13)
+                + "', DocumentID = '" + rs.getString(14)
+                + "', FName = '" + rs.getString(15)
+                + "', LName = '" + rs.getString(16)
+                + "', PhoneNumber = '" + rs.getString(17)
+                + "', Citizenship = '" + rs.getString(18)
+                + "', Gender = '" + rs.getString(19)
+                + "', DateOfBirth = '" + rs.getString(20)
+                + "' WHERE TicketID = '" + TicketID
+                + "' and OrderID = '" + OrderID + "';");
+        
+        rs = db.getData("select * from EditTicket where OrderID = " + OrderID + " and  TicketID = " + TicketID + ";");
+        rs.next();
 
-            db.updateData(" UPDATE `Passenger` SET"
-                    + " DocumentType = '" + rs.getString(12)
-                    + "', Tariff = '" + rs.getString(13)
-                    + "', DocumentID = '" + rs.getString(14)
-                    + "', FName = '" + rs.getString(15)
-                    + "', LName = '" + rs.getString(16)
-                    + "', PhoneNumber = '" + rs.getString(17)
-                    + "', Citizenship = '" + rs.getString(18)
-                    + "', Gender = '" + rs.getString(19)
-                    + "', DateOfBirth = '" + rs.getString(20)
-                    + "' WHERE TicketID = '" + TicketID
-                    + "' and OrderID = '" + OrderID + "';");
-
-            db.deleteData(" DELETE FROM `RailwayStation`.`EditTicket` " +
-                    " WHERE OrderID = '" + OrderID + "' and TicketID = '" + TicketID + "';");
-        }
+        db.deleteData(" DELETE FROM `RailwayStation`.`EditTicket` " +
+                " WHERE OrderID = '" + OrderID + "' and TicketID = '" + TicketID + "';");
+        
         db.closeConnection();
         return Response.ok().build();
 
