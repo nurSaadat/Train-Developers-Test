@@ -55,8 +55,16 @@
 			$("#agent-block").remove();
 			$("#admin-block").remove();
 			
+		} else if (items[3] == "Admin"){
+			
+			$("#payday").append("Pay day: " + items[9]);
+			
+			$("#agent-block").remove();
+			$("#manager-block").remove();
+			
 		} else {
 			
+			$("#admin-block").remove();
 			$("#agent-block").remove();
 			$("#manager-block").remove();
 			
@@ -185,6 +193,7 @@
 			</div>
 			<div class="buttons">
 				<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
+				<button id="paychecks" onclick="window.location.href='paychecks.html'">Paychecks</button>
 				<div id="agent-block">
 					<button id="cancelled-tickets" onclick="window.location.href='../agent/cancelled_tickets.html'"> Requests to cancel</button>
 					<button id="edited-tickets" onclick="window.location.href='../agent/edited_tickets.html'">Requests to edit</button>
