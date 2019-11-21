@@ -160,7 +160,7 @@
             items.forEach(function (e) {
 
                 if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() == e[1])){
-                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                    $("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\""+ e[0]+"\">Select</button></td></tr>");
                 }
             });
             if ($('#routes-table tr').length == 1) {
@@ -187,7 +187,7 @@
             items.forEach(function (e) {
 
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
-                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\"  style=\"width: 100%\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
 
 
@@ -336,18 +336,18 @@ $(document).ready(function () {
             From
             <select id="stationFrom" class="white_select">
                 <option value="NUR">Nur-Sultan</option>
-				<option value="KSH">Kokshetau</option>
-				<option value="PET">Petropavlovsk</option>
-				<option value="KST">Kostanay</option>
-				<option value="PAV">Pavlodar</option>
+		<option value="KSH">Kokshetau</option>
+		<option value="PET">Petropavlovsk</option>
+		<option value="KST">Kostanay</option>
+		<option value="PAV">Pavlodar</option>
             </select>
             To
             <select id="stationTo" class="white_select">
                 <option value="NUR">Nur-Sultan</option>
-				<option value="KSH">Kokshetau</option>
-				<option value="PET">Petropavlovsk</option>
-				<option value="KST">Kostanay</option>
-				<option value="PAV">Pavlodar</option>
+		<option value="KSH">Kokshetau</option>
+		<option value="PET">Petropavlovsk</option>
+		<option value="KST">Kostanay</option>
+		<option value="PAV">Pavlodar</option>
             </select>
             <label for="dateFrom">Departure Date</label>
             <input type="date" id="dateFrom" required>
