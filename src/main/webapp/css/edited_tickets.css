@@ -1,0 +1,32 @@
+@import "header_footer.css";
+@import "blue_table.css";
+
+.main_section {
+    text-align: center;
+    margin: 0 60px;
+}
+
+.main_section h3 {
+    color: #0057A8;
+    font-size: 32px;
+}
+
+.ticket-data {
+    padding: 10px 30px;
+    background-color: rgba(0, 87, 168, 0.3);
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.box1 {
+
+}
+
+.box2 {
+
+}
