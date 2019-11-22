@@ -118,9 +118,9 @@ public class CancelTicketService {
 
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        ResultSet rs = db.getData("select distinct O.UserEmail, O.OrderID, T.TicketID,  SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName,P.LName) as `Name`\n" +
-                "                from `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA, `CancelledTicket` CT\n" +
-                "                where T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID and CT.OrderID = O.OrderID and CT.TicketID = T.TicketID;");
+        ResultSet rs = db.getData("select distinct O.UserEmail, O.OrderID, T.TicketID,  SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, P.FName as `Name`\n" +
+                "                from `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA, `CancelledTicket` CT, `Route` R\n" +
+                "                where T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID and CT.OrderID = O.OrderID and CT.TicketID = T.TicketID and R.RouteID = SA.RouteID and R.RouteID = SD.RouteID and T.RouteID = R.RouteID;");
 
         while (rs.next()) {
 
