@@ -51,6 +51,7 @@ public class MainApplication extends Application {
         singletons.add(new ListLogsService());
         singletons.add(new EditTicketService());
         singletons.add(new ShowAllPaychecksService());
+        singletons.add(new BookMultTicketService());
     }
     
     @Override

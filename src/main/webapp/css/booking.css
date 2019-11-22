@@ -66,6 +66,11 @@ button{
 	border-radius: 5px;
 }
 
+.passengers {
+	display: grid;
+	grid-template-columns: 33% 34% 33%;
+}
+
 .info-table table {
 	width: 100%;
 	border-collapse: collapse;

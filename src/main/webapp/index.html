@@ -27,11 +27,14 @@
 			console.log(r);
 			if (r != "false") {
 				type = r;
-				$("#log-out-button").css("display", "inline-block");
-				$("#booking-box").css("display", "block");
+				$("#log-out-button").css("display", "inline-block");				
 				$("#sign-up").css("display", "none");
+				$("#booking-box").css("display", "block");
 				$("#log-in-form").css("display", "none");
 				$("#profile-button").css("display", "inline-block");
+			}
+			if (r != "false" && r != 'user') {
+				$("#user-boxes").css("display", "none");	
 			}
 		}).fail(function(r) {
 			alert("Error! Checkin");
@@ -114,7 +117,7 @@
 	</div>
 		
 <!-- Blocks -->			
-	<div class="wrapper">
+	<div class="wrapper" id="user-boxes">
 		<div class="box1">
 			<article class="item">
 				<header id="see_routes">
