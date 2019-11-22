@@ -165,7 +165,7 @@ public class EditTicketService {
 
 		String email = (String)session.getAttribute("email");
 
-        ResultSet rs = db.getData("select * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID and O.UserEmail = '" + email + "') as emailT on EditTicket.OrderID = emailT.OrderID ; ");
+        ResultSet rs = db.getData("select distinct * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID and O.UserEmail = '" + email + "') as emailT on EditTicket.OrderID = emailT.OrderID ; ");
 
         while (rs.next()) {
 
@@ -213,7 +213,7 @@ public class EditTicketService {
 
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        ResultSet rs = db.getData("select * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID) as emailT on EditTicket.OrderID = emailT.OrderID ; ");
+        ResultSet rs = db.getData("select distinct * from EditTicket join (select distinct SD.StationAbbr, SD.DepartureTime, SA.StationAbbr as toStation, SA.ArrivalTime, R.RouteID as route from `Schedule` SD, `Schedule` SA, Route R where SA.RouteID = R.RouteID and SD.RouteID = R.RouteID and SA.StationAbbr = R.StationTo and SD.StationAbbr = R.StationFrom) as abbrT on EditTicket.RouteID = abbrT.route join (select O.UserEmail, O.OrderID from `Order` O, `Ticket` T where T.OrderID = O.OrderID) as emailT on EditTicket.OrderID = emailT.OrderID ; ");
 
         while (rs.next()) {
 
