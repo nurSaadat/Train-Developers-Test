@@ -100,51 +100,67 @@
         }
 
         function createPassenger(){
-        	for (var i=1; i <= numOfpassengers; i++) {
-				var doctype = document.getElementById('doctype' + i).value;
-				var tariff = document.getElementById('tariff' + i).value;
-				var docId = document.getElementById('docID' + i).value;
-				var PFname = document.getElementById('fname' + i).value;
-				var PLname = document.getElementById('lname' + i).value;
-				var phoneNum = document.getElementById('telephone' + i).value;
-				var citizenship = document.getElementById('country' + i).value;
-				var gender = document.getElementById('gender' + i).value;
-				var dateOfBirth = document.getElementById('dob' + i).value;
-
-				if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
-					passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
-					/* console.log(passenger); */
-					//sendingInfo = ticket.push(toback[i-1]);
-					//console.log(sendingInfo);
-					localStorage.setItem("passenger" + i, JSON.stringify(passenger));
-					//localStorage.setItem("ticket" + i, JSON.stringify(sendingInfo));
-				}
-			}
-        	if(numOfpassengers == 1){
-        		
-        		ticket1 = ticket1.concat(toback[0]);
-            	
-            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
-        	} else if (numOfpassengers == 2){
-        		
-        		ticket1 = ticket1.concat(toback[0]);
-            	ticket2 = ticket2.concat(toback[1]);
-            	
-            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
-            	localStorage.setItem("ticket2", JSON.stringify(ticket2));
-        	} else{
-        		
-        		ticket1 = ticket1.concat(toback[0]);
-        		ticket2 = ticket2.concat(toback[1]);
-        		ticket3 = ticket3.concat(toback[2]);
-            	
-            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
-            	localStorage.setItem("ticket2", JSON.stringify(ticket2));
-            	localStorage.setItem("ticket3", JSON.stringify(ticket3));
-        	}
         	
-			localStorage.setItem("order", JSON.stringify(order));
-			window.location.href='payment.html';
+        	let ans = true;
+        	
+        	if(numOfpassengers == toback.length){
+        		
+        		for (var i=1; i <= numOfpassengers; i++) {
+    				var doctype = document.getElementById('doctype' + i).value;
+    				var tariff = document.getElementById('tariff' + i).value;
+    				var docId = document.getElementById('docID' + i).value;
+    				var PFname = document.getElementById('fname' + i).value;
+    				var PLname = document.getElementById('lname' + i).value;
+    				var phoneNum = document.getElementById('telephone' + i).value;
+    				var citizenship = document.getElementById('country' + i).value;
+    				var gender = document.getElementById('gender' + i).value;
+    				var dateOfBirth = document.getElementById('dob' + i).value;
+
+    				if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
+    					passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
+    					/* console.log(passenger); */
+    					//sendingInfo = ticket.push(toback[i-1]);
+    					//console.log(sendingInfo);
+    					localStorage.setItem("passenger" + i, JSON.stringify(passenger));
+    					//localStorage.setItem("ticket" + i, JSON.stringify(sendingInfo));
+    				} else{
+    					
+    					ans = false;
+    				}
+    			}
+            	
+        		if(ans){
+        			
+        			if(numOfpassengers == 1){
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                	} else if (numOfpassengers == 2){
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                    	ticket2 = ticket2.concat(toback[1]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                    	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+                	} else{
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                		ticket2 = ticket2.concat(toback[1]);
+                		ticket3 = ticket3.concat(toback[2]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                    	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+                    	localStorage.setItem("ticket3", JSON.stringify(ticket3));
+                	}
+                	
+        			localStorage.setItem("order", JSON.stringify(order));
+        			window.location.href='payment.html';
+        		}
+        	} else {
+        		
+        		alert("Number of passengers is not equal to the number of tickets!");
+        	}
         }
 
         function createTicket(){
