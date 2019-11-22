@@ -17,7 +17,7 @@
         function showEditedTickets(items){
             items.forEach(function (e){
                 $(".box1").append("<div id=\"order" + e[4] + "\"> </div>");
-                var ticketTable = $('<table></table>').addClass("ticket");
+                var ticketTable = $('<table class="blue_table"></table>').addClass("ticket");
                 ticketTable.append("<tr><td>Departure Date </td><td>" + e[1] +"</td></tr>");
                 ticketTable.append("<tr><td>Arriving Date</td><td>" + e[2] +"</td></tr>");
                 ticketTable.append("<tr><td>Price</td><td>" + e[3] +"</td></tr>");
@@ -26,7 +26,7 @@
                 ticketTable.append("<tr><td>Carriage Number</td><td>" + e[8] +"</td></tr>");
                 ticketTable.append("<tr><td>FromID</td><td>" + e[9] +"</td></tr>");
                 ticketTable.append("<tr><td>FromID</td><td>" + e[9] +"</td></tr>");
-                var passengerTable = $('<table></table>').addClass("passenger");
+                var passengerTable = $('<table class="blue_table"></table>').addClass("passenger");
                 passengerTable.append("<tr><td>Name</td><td>" + e[14] + " " + e[15] +"</td></tr>");
                 passengerTable.append("<tr><td>Document type </td><td>" + e[11] +"</td></tr>");
                 passengerTable.append("<tr><td>Tariff</td><td>" + e[12] +"</td></tr>");
@@ -99,10 +99,9 @@
         <li id="log-out-button">Log Out</li>
     </ul>
 </div>
-<h2>Requests</h2>
-<br>
-<a href="../worker/worker_profile.html">Back to Profile Page</a>
-<br>
+<div class="main_section">
+
+<h3>Requests</h3>
 <div class="box1">
 </div>
 
