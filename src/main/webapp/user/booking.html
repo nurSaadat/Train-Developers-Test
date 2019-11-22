@@ -114,19 +114,44 @@
 				if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
 					passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
 					/* console.log(passenger); */
-					sendingInfo = ticket + toback[i-1];
-					console.log(sendingInfo);
-					localStorage.setItem("passenger", JSON.stringify(passenger));
-					localStorage.setItem("ticket", JSON.stringify(ticket));
+					//sendingInfo = ticket.push(toback[i-1]);
+					//console.log(sendingInfo);
+					localStorage.setItem("passenger" + i, JSON.stringify(passenger));
+					//localStorage.setItem("ticket" + i, JSON.stringify(sendingInfo));
 				}
 			}
+        	if(numOfpassengers == 1){
+        		
+        		ticket1 = ticket1.concat(toback[0]);
+            	
+            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+        	} else if (numOfpassengers == 2){
+        		
+        		ticket1 = ticket1.concat(toback[0]);
+            	ticket2 = ticket2.concat(toback[1]);
+            	
+            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+            	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+        	} else{
+        		
+        		ticket1 = ticket1.concat(toback[0]);
+        		ticket2 = ticket2.concat(toback[1]);
+        		ticket3 = ticket3.concat(toback[2]);
+            	
+            	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+            	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+            	localStorage.setItem("ticket3", JSON.stringify(ticket3));
+        	}
+        	
 			localStorage.setItem("order", JSON.stringify(order));
 			window.location.href='payment.html';
         }
 
         function createTicket(){
             if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
-                ticket = [dateFrom, dateTo, routeId, from, to];
+                ticket1 = [dateFrom, dateTo, routeId, from, to];
+                ticket2 = [dateFrom, dateTo, routeId, from, to];
+                ticket3 = [dateFrom, dateTo, routeId, from, to];
                 /* console.log(ticket); */
                 createPassenger();
             }
@@ -138,7 +163,7 @@
                 console.log(email);
             }, 'json');
             getInfo.then(function() {
-                var payment = document.getElementById('payment').value;
+                var payment = document.getElementById('payment1').value;
                 var today = new Date();
                 var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                 var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
