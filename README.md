@@ -8,3 +8,5 @@ Created by:</br><ul>
 <li><a href='https://github.com/mdmur'>Diana Murzagaliyeva</a></br></li>
 <li><a href='https://github.com/nurSaadat'>Saadat Nursultan</a></br></li>
 <li><a href='https://github.com/Faranio'>Farkhad Kuanyshkereyev</a></br></li></ul>
+
+Team <b>Train Developers</b>
