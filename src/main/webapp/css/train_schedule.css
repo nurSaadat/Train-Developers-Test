@@ -1,0 +1,121 @@
+@import "header_footer.css";
+@import "blue_table.css";
+
+.main_section {
+    text-align: center;
+    margin: 0 60px;
+}
+
+.main_section h3 {
+    color: #0057A8;
+    font-size: 32px;
+}
+
+.routes_section {
+    padding: 20px 30px;
+    background-color: rgba(0, 87, 168, 0.3);
+    text-align: center;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.routes_options {
+    text-align: left;
+}
+
+.routes_section h3 {
+    margin: 10px 0;
+    align-text: center;
+    color: #0057A8;
+    font-size: 24px;
+}
+
+.white_input {
+    width: 255px;
+}
+
+.route {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.schedules_section {
+    padding: 10px 30px;
+    background-color: rgba(0, 87, 168, 0.3);
+    text-align: left;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+
+.schedules_section h3 {
+    margin: 10px 0;
+    color: #0057A8;
+    font-size: 24px;
+}
+
+.schedule {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.trains_section {
+    padding: 10px 30px;
+    background-color: rgba(0, 87, 168, 0.3);
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 5px;
+}
+
+.trains_section h3 {
+    margin: 10px 0;
+    color: #0057A8;
+    font-size: 24px;
+}
+
+.trains_options {
+    text-align: left;
+}
+
+.train {
+    text-align: left;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.info-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    border: none;
+}
+
+.info-table td {
+    padding: 8px;
+    text-align: right;
+    font-size: 18px;
+}
+
+.white_input {
+    width: 255px;
+}
+
+.white_select {
+    width: 260px;
+}
+
+button{
+    height:35px;
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:10px;
+    width:30%;
+    background-color:#0057A8;
+    color:#fff;
+    font-weight: bold;
+    border:none;
+    border-radius:30px;
+}

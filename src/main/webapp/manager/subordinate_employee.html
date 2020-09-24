@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TrainDevelopers | Subordinate Employee</title>
+    <link rel = "stylesheet" type="text/css" href = "../css/manage_workers.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        var email, fName, lName, mEmail, wHours, position, wage, sDate, eDate, hpd, dpw, pDay;
+
+        function getAgents() {
+
+            $.get("../services/myworkers", function(r) {
+
+                console.log(r);
+                showAgents(r);
+                
+            },'json').fail(function(r) {
+
+                alert("Error on get agents");
+                console.log(r.responseText);
+            });
+            
+        }
+
+        function showAgents(items) {
+
+            items.forEach(function (e) {
+
+                $("#agents-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td>" + e[9] + "</td><td>" + e[10] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
+            });
+            
+            if ($('#agents-table tr').length == 1) {
+                alert("No agents found!")
+            }
+            
+            $("#agents-table tr > td > button").on('click', function () {
+
+                email = $(this).closest('tr').find("td").eq(0).html();
+                fName = $(this).closest('tr').find("td").eq(1).html();
+                lName = $(this).closest('tr').find("td").eq(2).html();
+                position = $(this).closest('tr').find("td").eq(3).html();
+                wHours = $(this).closest('tr').find("td").eq(4).html();
+                sDate = $(this).closest('tr').find("td").eq(5).html();
+                eDate = $(this).closest('tr').find("td").eq(6).html();
+                hpd = $(this).closest('tr').find("td").eq(7).html();
+                dpw = $(this).closest('tr').find("td").eq(8).html();
+                wage = $(this).closest('tr').find("td").eq(9).html();
+                pDay = $(this).closest('tr').find("td").eq(10).html();
+                
+                console.log(email, fName, lName);
+                
+                $("#wHours").attr("placeholder", wHours);
+                $("#sDate").attr("placeholder", sDate);
+                $("#eDate").attr("placeholder", eDate);
+                $("#hpd").attr("placeholder", hpd);
+                $("#dpw").attr("placeholder", dpw);
+                $("#wage").attr("placeholder", wage);
+                $("#pDay").attr("placeholder", pDay);
+
+            });
+
+        }
+        
+        function manageAgent(){
+
+			wHours = document.getElementById('wHours').value;
+			wage = document.getElementById('wage').value;
+			sDate = document.getElementById('sDate').value;
+			eDate = document.getElementById('eDate').value;
+			hpd = document.getElementById('hpd').value;
+			dpw = document.getElementById('dpw').value;
+			pDay = document.getElementById('pDay').value;
+			
+			if (validate_agent(wHours, wage, sDate, eDate, hpd, dpw, pDay, email)) {
+			
+			    agent = [wHours, wage, sDate, eDate, hpd, dpw, pDay, email];
+			    console.log(agent);
+			
+			    $.post("../services/myworkers", {agent : agent}, function(r) {
+			
+			        // redirect
+			        window.location.href = "../worker/worker_profile.html";
+			        
+			    }).fail(function(r) {
+			
+			        console.log("fail" + r.responseText + " modify agent");
+			    });
+			}
+                
+        }
+        
+        function validate_agent(wHours, wage, sDate, eDate, hpd, dpw, pDay, email){
+
+            if (wHours == "" || wHours == null ) {
+                alert("Please, set employee's working hours.");
+                return false;
+            } else if (wage == "" || wage == null ) {
+                alert("Please, set employee's wage.");
+                return false;
+            } else if (sDate == "" || sDate == null) {
+                alert("Please, fill out employee's start date.");
+                return false;
+            } else if (eDate == "" || eDate == null) {
+                alert("Please, fill out employee's end date.");
+                return false;
+            } else if (hpd == "" || hpd == null) {
+                alert("Please, set employee's hours per day.");
+                return false;
+            } else if (dpw == "" || dpw == null) {
+                alert("Please, set employee's day per week.");
+                return false;
+            } else if (pDay == "" || pDay == null) {
+                alert("Please, fill out employee's payday.");
+                return false;
+            } else if (email == "" || email == null) {
+                alert("Error. Problem getting employee's email.");
+                return false;
+            } return true;
+        }
+
+        $(document).ready(function () {
+
+            getAgents();
+
+            $("#main-page").on('click', function () {
+                window.location.href = "../index.html";
+            });
+
+            $("#profile-button").on('click', function () {
+                window.location.href = "../worker/worker_profile.html";
+            });
+
+            $("#log-out-button").on('click', function (r) {
+                $.post("../services/logout", {}, function(r){
+                    console.log(r);
+                    window.location.href = "../index.html";
+                }).fail(function(r) {
+                    alert("Error log out");
+                });
+            });
+            
+            $("#manage").on("click", function() {
+            	
+                manageAgent();
+                
+            });
+            
+        });
+
+    </script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button">Go to profile</li>
+        <li id="log-out-button">Log Out</li>
+    </ul>
+</div>
+
+<!-- List of subordinate employee -->
+<div class="main_section">
+    <h3>List of subordinate employee</h3>
+    <div class="form-background">
+        <div class="blue_table">
+            <table id="agents-table">
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last name</th>
+                    <th>Position</th>
+                    <th>Working Hours</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Hours Per Day</th>
+                    <th>Days Per Week</th>
+                    <th>Wage</th>
+                    <th>Pay Day</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+        <div class="input">
+            <table class="input-table" align="center">
+                <tr>
+                    <td><label for="wHours">Working Hours</label></td>
+                    <td><input type="text" id="wHours" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="wage">Wage</label></td>
+                    <td><input type="text" id="wage" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="sDate">Start Date</label></td>
+                    <td><input type="date" id="sDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="eDate">End Date</label></td>
+                    <td><input type="date" id="eDate" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="hpd">Hours per Day</label></td>
+                    <td><input type="text" id="hpd" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="dpw">Days per Week</label></td>
+                    <td><input type="text" id="dpw" required class="white_input"></td>
+                </tr>
+                <tr>
+                    <td><label for="pDay">Payday</label></td>
+                    <td><input type="date" id="pDay" required class="white_input"></td>
+                </tr>
+            </table>
+        </div>
+        <button id="manage" type="button">Modify Information</button>
+    </div>
+</div>
+
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
+
+</body>
+</html>

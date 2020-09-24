@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Train Schedule</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/train_schedule.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var trainID, routeID, scheduleID;
+		var train = [];
+
+		function validate_schedule(trainID, routeID, scheduleID){
+
+			if (routeID == "" || routeID == null ) {
+				alert("Please, select a route.");
+				return false;
+			} else if (trainID == "" || trainID == null) {
+				alert("Please, select a train.");
+				return false;
+			} else if (scheduleID == "" || scheduleID == null) {
+				alert("Please, select a schedule.");
+				return false;
+			}
+
+			return true;
+		}
+
+		function getRoutes() {
+
+			$.get('../services/routes', function (r){
+
+				updateRoutes(r);
+			}, 'json');
+		}
+
+		function updateRoutes(items) {
+
+			$("#routes-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
+
+					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
+				}
+			});
+
+			$("#routes-table tr > td > button").on('click', function () {
+
+				routeID = $(this).closest('tr').find("td").eq(0).html();
+				
+				$("div.route").text("You chose route with RouteID: " + routeID);
+				
+				getSchedules();
+			});
+		}
+		
+		function getSchedules() {
+            $.get("../services/schedules?RouteID=" + routeID, function(r) {
+
+                console.log(r);
+                showSchedules(r);
+            },'json').fail(function(r) {
+
+                alert("Error on get schedules");
+                console.log(r.responseText);
+            });
+        }
+		
+		function showSchedules(items) {
+
+            $("#schedules-table").find("tr:gt(0)").remove();
+
+            items.forEach(function (e) {
+
+                $("#schedules-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-s\" style=\"width: 100%\" id =\""+ e[0]+"\">Select</button></td></tr>");
+            });
+
+
+
+            $("#schedules-table tr > td > button").on('click', function () {
+                scheduleID = $(this).closest('tr').find("td").eq(0).html();
+                
+                console.log(scheduleID);
+                $( "div.schedule" ).text( "You chose schedule with ScheduleID: " + scheduleID );
+            });
+
+        }
+		
+		function getTrains() {
+
+			$.get('../services/trains', function (r){
+
+				updateTrains(r);
+			}, 'json');
+		}
+		
+		function updateTrains(items) {
+
+			$("#trains-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				$("#trains-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
+			});
+
+			$("#trains-table tr > td > button").on('click', function () {
+
+				trainID = $(this).closest('tr').find("td").eq(0).html();
+				
+				$("div.train").text("You chose train with TrainID: " + trainID);
+			});
+		}
+
+		function addSchedule(){
+
+			if(validate_schedule(trainID, routeID, scheduleID)){
+
+				train = [trainID, routeID, scheduleID];
+				console.log(train);
+
+				$.post("../services/addTrainSchedule", {train: train}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addTrainSchedule post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#find-routes").on("click", function() {
+
+				getRoutes();
+			});
+
+			$("#add-schedule").on("click", function() {
+
+				addSchedule();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+
+			$("#profile-button").on('click', function () {
+				window.location.href = "../worker/worker_profile.html";
+			});
+
+			$("#log-out-button").on('click', function (r) {
+				$.post("../services/logout", {}, function(r){
+					console.log(r);
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					alert("Error log out");
+				});
+			});
+			
+			getTrains();
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+		<li id="profile-button">Go to profile</li>
+		<li id="log-out-button">Log Out</li>
+	</ul>
+</div>
+
+<!-- Add Schedule -->
+<div class="main_section">
+	<h3>Add Schedule</h3>
+	<div class="routes_section">
+		<div class="routes_options">
+			<h3>Routes</h3>
+			<div class="blue_table">
+				<table id="routes-table">
+					<tr>
+						<th>RouteID</th>
+						<th>Date From</th>
+						<th>Date To</th>
+						<th>Time From</th>
+						<th>Time To</th>
+						<th>Distance (km)</th>
+						<th>Status</th>
+						<th>Station From</th>
+						<th>Station To</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			From
+			<select id="stationFrom" class="white_input">
+				<option value="NUR">Nur-Sultan</option>
+				<option value="KSH">Kokshetau</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KST">Kostanay</option>
+				<option value="PAV">Pavlodar</option>
+			</select>
+			To
+			<select id="stationTo" class="white_input">
+				<option value="NUR">Nur-Sultan</option>
+				<option value="KSH">Kokshetau</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KST">Kostanay</option>
+				<option value="PAV">Pavlodar</option>
+			</select>
+			<label for="dateFrom">Departure Date from</label>
+			<input type="date" id="dateFrom" required>
+			<label for="dateTo">Departure Date to</label>
+			<input type="date" id="dateTo" required>
+		</div>
+		<button id="find-routes"> Find Routes</button>
+		<div class="route"></div>
+	</div>
+	<div class="schedules_section">
+		<h3>Schedules</h3>
+		<div class="blue_table">
+			<table id="schedules-table">
+				<tr>
+					<th>ScheduleID</th>
+					<th>Arrival Time</th>
+					<th>Departure Time</th>
+					<th>Station Abbreviation</th>
+					<th></th>
+				</tr>
+			</table>
+		</div>
+		<div class="schedule"></div>
+	</div>
+	<div class="trains_section">
+		<div class="trains_options">
+			<h3>Trains</h3>
+			<div class="blue_table">
+				<table id="trains-table">
+					<tr>
+						<th>TrainID</th>
+						<th>Capacity</th>
+						<th>Number of Carriages</th>
+						<th>Type</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			<div class="train"></div>
+		</div>
+		<button id="add-schedule"> Add Schedule</button>
+	</div>
+</div>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>

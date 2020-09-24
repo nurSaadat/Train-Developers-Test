@@ -1,19 +1,18 @@
 @import "header_footer.css";
 
 .box1 {
+    text-align: center;
     padding: 0 15%;
 }
 
 .box1 h3 {
-    padding: 45px;
-    margin-top: 0;
-    font-size: 36px;
-    line-height:36px;
-    color: #000000;
+    font-size: 32px;
+    color: #0057A8;
 }
 
 .form-background {
-    height: 35em;
+    padding-top: 10%;
+    height: 25em;
     background-color: rgba(0, 87, 168, 0.3);
     border-radius:4px;
 }
@@ -40,7 +39,7 @@ form {
     text-align:center;
     margin-top:20px;
     margin-bottom:0;
-    width:50%;
+    width:30%;
     background-color:#0057A8;
     color:#fff;
     font-weight: bold;

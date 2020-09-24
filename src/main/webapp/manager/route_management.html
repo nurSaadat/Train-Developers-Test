@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Route Management</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/train_schedule.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep;
+		var route = [];
+		var distanceEdit, statusEdit;
+
+		function validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep){
+
+			if (routeID == "" || routeID == null ) {
+				alert("Please, select a route to be edited.");
+				return false;
+			} else if (dateFrom == "" || dateFrom == null) {
+				alert("Please, choose the departure date.");
+				return false;
+			} else if (dateTo == "" || dateTo == null ) {
+				alert("Please, choose the arrival date.");
+				return false;
+			} else if (timeFrom == "" || timeFrom == null) {
+				alert("Please, choose the departure time.");
+				return false;
+			} else if (timeTo == "" || timeTo == null) {
+				alert("Please, choose the arrival time.");
+				return false;
+			} else if (distance == "" || distance == null) {
+				alert("Please, set the distance.");
+				return false;
+			}else if (status == "" || status == null) {
+				alert("Please, fill out the status.");
+				return false;
+			}else if (stationFrom == "" || stationFrom == null) {
+				alert("Please, choose departure station.");
+				return false;
+			}else if (stationTo == "" || stationTo == null) {
+				alert("Please, choose arrival station.");
+				return false;
+			} else if (timeArr == "" || timeArr == null) {
+				alert("Please, choose the train arrival time.");
+				return false;
+			} else if (timeDep == "" || timeDep == null) {
+				alert("Please, choose the train departure time.");
+				return false;
+			}
+
+			return true;
+		}
+		
+		function validate_text(text, title){
+			
+			if(text == "" || text == null){
+				alert("Please, write an announcement.");
+				return false;
+			} else if(text.length > 449){
+				alert("The text is too large.");
+				return false;
+			} else if(title == "" || title == null){
+				alert("Please, fill out the announcement title.");
+				return false;
+			} else if(title.length > 99){
+				alert("The title is too large.");
+				return false;
+			}
+			
+			return true;
+		}
+
+		function getRoutes() {
+
+			$.get('../services/routes', function (r){
+
+				update(r);
+			}, 'json');
+		}
+
+		function update(items) {
+
+			$("#routes-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				if ($("#stationFrom").val() == e[7] && ($("#stationTo").val() == e[8]) && ($("#dateFrom").val() <= e[1]) && ($("#dateTo").val() >= e[1])){
+
+					$("#routes-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + e[4] + "</td><td>" + e[5] + "</td><td>" + e[6] + "</td><td>" + e[7] + "</td><td>" + e[8] + "</td><td><button class = \"selected-r\" style=\"width: 100%\" id =\"" + e[0] + "\">Select</button></td></tr>");
+				}
+			});
+
+			$("#routes-table tr > td > button").on('click', function () {
+
+				routeID = $(this).closest('tr').find("td").eq(0).html();
+				distanceEdit = $(this).closest('tr').find("td").eq(5).html();
+				statusEdit = $(this).closest('tr').find("td").eq(6).html();
+				
+				$("div.route").text("You chose route with RouteID: " + routeID);
+				
+				console.log(distanceEdit);
+				console.log(statusEdit);
+				
+                $("#distanceEdit").attr("placeholder", distanceEdit);
+                $("#statusEdit").attr("placeholder", statusEdit);
+				
+			});
+		}
+
+		function editRoute(){
+
+			dateFrom = document.getElementById('dateFromEdit').value;
+			dateTo = document.getElementById('dateToEdit').value;
+			timeFrom = document.getElementById('timeFromEdit').value;
+			timeTo = document.getElementById('timeToEdit').value;
+			distance = document.getElementById('distanceEdit').value;
+			status = document.getElementById('statusEdit').value;
+			stationFrom = document.getElementById('stationFromEdit').value;
+			stationTo = document.getElementById('stationToEdit').value;
+			text = document.getElementById('textEdit').value;
+			title = document.getElementById('titleEdit').value;
+			timeArr = document.getElementById('timeArrEdit').value;
+			timeDep = document.getElementById('timeDepEdit').value;
+
+			if(validate_route(routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep) && validate_text(text, title)){
+
+				route = [routeID, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep];
+				//console.log(route);
+
+				$.post("../services/routes", {route : route}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addNews post");
+				});
+			}
+		}
+
+		function addRoute(){
+
+			dateFrom = document.getElementById('dateFromEdit').value;
+			dateTo = document.getElementById('dateToEdit').value;
+			timeFrom = document.getElementById('timeFromEdit').value;
+			timeTo = document.getElementById('timeToEdit').value;
+			distance = document.getElementById('distanceEdit').value;
+			status = document.getElementById('statusEdit').value;
+			stationFrom = document.getElementById('stationFromEdit').value;
+			stationTo = document.getElementById('stationToEdit').value;
+			text = document.getElementById('textEdit').value;
+			title = document.getElementById('titleEdit').value;
+			timeArr = document.getElementById('timeArrEdit').value;
+			timeDep = document.getElementById('timeDepEdit').value;
+
+			if(validate_route(1, dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, timeArr, timeDep) && validate_text(text, title)){
+
+				route = [dateFrom, dateTo, timeFrom, timeTo, distance, status, stationFrom, stationTo, text, title, timeArr, timeDep];
+				console.log(route);
+
+				$.ajax({
+					url: '../services/routes',
+					type: 'PUT',
+					data: {route: route},
+					success: function() {
+
+						window.location.href = "../index.html";
+					}
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " route add");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#find-routes").on("click", function() {
+
+				getRoutes();
+			});
+
+			$("#edit-route").on("click", function() {
+
+				editRoute();
+			});
+
+			$("#add-route").on("click", function() {
+
+				addRoute();
+			});
+
+			$("#delete-route").on("click", function() {
+
+				if(routeID == "" || routeID == null){
+
+					alert("Please, select a route to be deleted.");
+				} else{
+
+					$.ajax({
+						url: '../services/routes',
+						type: 'DELETE',
+						data: {routeID: routeID},
+						success: function() {
+
+							window.location.href = "../index.html";
+						}
+					}).fail(function(r) {
+						console.log("fail" + r.responseText + " route delete");
+					});
+				}
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+
+			$("#profile-button").on('click', function () {
+				window.location.href = "../worker/worker_profile.html";
+			});
+
+			$("#log-out-button").on('click', function (r) {
+				$.post("../services/logout", {}, function(r){
+					console.log(r);
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					alert("Error log out");
+				});
+			});
+
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+		<li id="profile-button">Go to profile</li>
+		<li id="log-out-button">Log Out</li>
+	</ul>
+</div>
+
+<!-- Routes management -->
+<div class="main_section">
+	<h3>Routes Management</h3>
+	<div class="routes_section">
+		<div class="routes_options">
+			<h3>Routes</h3>
+			<div class="blue_table">
+				<table id="routes-table">
+					<tr>
+						<th>RouteID</th>
+						<th>DateFrom</th>
+						<th>DateTo</th>
+						<th>TimeFrom</th>
+						<th>TimeTo</th>
+						<th>Distance (in km)</th>
+						<th>Status</th>
+						<th>StationFrom</th>
+						<th>StationTo</th>
+						<th></th>
+					</tr>
+				</table>
+			</div>
+			From
+			<select id="stationFrom" class="white_select">
+				<option value="NUR">Nur-Sultan</option>
+				<option value="KSH">Kokshetau</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KST">Kostanay</option>
+				<option value="PAV">Pavlodar</option>
+			</select>
+			To
+			<select id="stationTo" class="white_select">
+				<option value="NUR">Nur-Sultan</option>
+				<option value="KSH">Kokshetau</option>
+				<option value="PET">Petropavlovsk</option>
+				<option value="KST">Kostanay</option>
+				<option value="PAV">Pavlodar</option>
+			</select>
+			<label for="dateFrom">Departure Date from</label>
+			<input type="date" id="dateFrom" required>
+			<label for="dateTo">Departure Date to</label>
+			<input type="date" id="dateTo" required>
+		</div>
+		<button id="find-routes"> Find Routes</button>
+		<div class="route"></div>
+		<br>
+		<table class="info-table" align="center">
+			<tr>
+				<td><label for="timeArrEdit">Train arrives at the first station</label></td>
+				<td><input type="time" id="timeArrEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="dateFromEdit">Departure Date</label></td>
+				<td><input type="date" id="dateFromEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="dateToEdit">Arrival Date</label></td>
+				<td><input type="date" id="dateToEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeDepEdit">Train departs from the last station</label></td>
+				<td><input type="time" id="timeDepEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeFromEdit">Departure Time</label></td>
+				<td><input type="time" id="timeFromEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="timeToEdit">Arrival Time</label></td>
+				<td><input type="time" id="timeToEdit" value=00:00:00 required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="distanceEdit">Distance</label></td>
+				<td><input type="number" id="distanceEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="statusEdit">Status</label></td>
+				<td><input type="text" id="statusEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="stationFromEdit">Station From</label></td>
+				<td>
+					<select id="stationFromEdit" class="white_select">
+						<option value="NUR">Nur-Sultan</option>
+						<option value="KSH">Kokshetau</option>
+						<option value="PET">Petropavlovsk</option>
+						<option value="KST">Kostanay</option>
+						<option value="PAV">Pavlodar</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="stationToEdit">Station To</label></td>
+				<td>
+					<select id="stationToEdit" class="white_select">
+						<option value="NUR">Nur-Sultan</option>
+						<option value="KSH">Kokshetau</option>
+						<option value="PET">Petropavlovsk</option>
+						<option value="KST">Kostanay</option>
+						<option value="PAV">Pavlodar</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="titleEdit">Announcement text title</label></td>
+				<td><input type="text" id="titleEdit" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="textEdit">Announcement text</label></td>
+				<td><input type="text" id="textEdit" required class="white_input"></td>
+			</tr>
+		</table>
+		<button id="edit-route"> Edit Route</button>
+		<button id="add-route"> Add Route</button>
+		<button id="delete-route"> Delete Route</button>
+	</div>
+</div>
+
+<!-- Contact us-->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>

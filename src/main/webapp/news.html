@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>TrainDevelopers | Main page</title>
+	<title>TrainDevelopers | News page</title>
 	<link rel = "stylesheet" type="text/css" href = "css/main_page.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="scripts/jquery.min.js"></script>
@@ -15,8 +15,11 @@
 	};
 	
 	function newsUpdate() {
+		
+		$("#recent-news").find("div").remove();
+		
 		app.items.forEach(function (e) {
-            $("#recent-news").append( "<div class=\"news-item\"><div class=\"title\"><p>" + e[0] + "</p></div><div class=\"date\"><p>" + e[2] + "</p></div><div class=\"text\"><p>" + e[1] + "</p></div></div>");
+            $("#recent-news").append( "<div class=\"news-item\"><div class=\"title\"><p>" + e[1] + "</p></div><div class=\"date\"><p>" + e[2] + "</p></div><div class=\"text\"><p>" + e[0] + "</p></div></div>");
         });
 	}	
 

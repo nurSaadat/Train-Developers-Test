@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Paychecks</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/main_page.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+	
+	var app = {
+	        items : [],
+	        nextpage : 0,
+	        prevpage : 0
+	};
+	
+	function newsUpdate() {
+		
+		$("#recent-news").find("div").remove();
+		
+		app.items.forEach(function (e) {
+            $("#recent-news").append( "<div class=\"news-item\"><div class=\"date\"><p>" + e[0] + "</p></div><div class=\"text\"><p>" + e[1] + "</p></div></div>");
+        });
+	}	
+
+	function getListItems(p) {
+	    $.ajax({
+	        url : '../services/show-all-paychecks?page=' + p,
+	        dataType : 'json',
+	        success : function(r) {
+	            app.items = r.list;
+	            app.nextpage = r.next;
+	            app.prevpage = r.prev;
+	            
+	       		if (app.nextpage == -1){
+	       			$('#next-button').attr("disabled", true);
+	       		}
+	            newsUpdate();
+	        }
+	    });
+	}
+
+	$(document).ready(function () {
+		$("#main-page").on('click', function () {
+			window.location.href = "../index.html";
+		});
+		
+		$('#prev-button').attr("disabled", true);
+	    getListItems(0);
+	    
+	    $("#prev-button").on('click', function () {  
+	    	$('#next-button').attr("disabled", false);
+	    	if (app.prevpage == 0){
+	    		$('#prev-button').attr("disabled", true);
+	    	}
+	    	getListItems(app.prevpage);
+	    });
+	    
+	    $("#next-button").on('click', function () {
+	    	
+	   		$('#prev-button').attr("disabled", false);
+
+	   		getListItems(app.nextpage);
+	    }); 
+	});	
+	</script>
+</head>
+<body>
+<!-- Header -->
+	<div class="header">
+		<h1>Train Developers</h1>	
+	</div>
+	
+<!-- Menu bar -->
+	<div class="nav">
+		<ul>
+			<li id="main-page">Main Page</li>
+			<li id="profile-button" style="display:none">Go to profile</li>
+			<li id="log-out-button" style="display:none">Log Out</li>
+		</ul>
+	</div>
+	
+<!-- News box -->
+	<div class="box3">
+		<div class="news_box">
+			<h3>Paychecks</h3>
+			<div id="recent-news"></div>
+		</div>
+	<button id="prev-button">Previous</button>
+	<button id="next-button">Next</button>
+	</div>
+		
+<!-- Contacts -->
+	<div class="footer">
+		<h3>Contact us</h3>
+		<div class="contact-container">
+			<div><p>email: train.dev@nu.edu.kz</p></div>
+			<div><p>telephone: +77777777777</p></div>
+			<div><p>telephone: +77777777778</p></div>
+		</div>
+	</div>
+</body>
+</html>

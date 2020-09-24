@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket Booking</title>
+    <title>TrainDevelopers | Ticket Booking</title>
     <link rel = "stylesheet" type="text/css" href = "../css/booking.css">
     <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
     <script src="../scripts/jquery.min.js"></script>
     <script type = "text/javascript">
+		var numOfpassengers = 1;
         var routeId, dateFrom, dateTo, from, to, seat, carriage, dist, ticketPrice, totalPrice, trainId, email;
         var passenger = [];
         var ticket = [];
         var order = [];
-
+        var toback = [];
+        
         function validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth){
 
             if (doctype == "" || doctype == null ) {
@@ -98,30 +100,75 @@
         }
 
         function createPassenger(){
-            var doctype = document.getElementById('doctype').value;
-            var tariff = document.getElementById('tariff').value;
-            var docId = document.getElementById('docID').value;
-            var PFname = document.getElementById('fname').value;
-            var PLname = document.getElementById('lname').value;
-            var phoneNum = document.getElementById('telephone').value;
-            var citizenship = document.getElementById('country').value;
-            var gender = document.getElementById('gender').value;
-            var dateOfBirth = document.getElementById('dob').value;
+        	
+        	let ans = true;
+        	
+        	if(numOfpassengers == toback.length){
+        		
+        		for (var i=1; i <= numOfpassengers; i++) {
+    				var doctype = document.getElementById('doctype' + i).value;
+    				var tariff = document.getElementById('tariff' + i).value;
+    				var docId = document.getElementById('docID' + i).value;
+    				var PFname = document.getElementById('fname' + i).value;
+    				var PLname = document.getElementById('lname' + i).value;
+    				var phoneNum = document.getElementById('telephone' + i).value;
+    				var citizenship = document.getElementById('country' + i).value;
+    				var gender = document.getElementById('gender' + i).value;
+    				var dateOfBirth = document.getElementById('dob' + i).value;
 
-            if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
-                passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
-                console.log(passenger);
-                localStorage.setItem("passenger", JSON.stringify(passenger));
-                localStorage.setItem("ticket", JSON.stringify(ticket));
-                localStorage.setItem("order", JSON.stringify(order));
-                window.location.href='payment.html';
-            }
+    				if (validate_passenger(doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth)){
+    					passenger = [doctype, tariff, docId, PFname, PLname, phoneNum, citizenship, gender, dateOfBirth];
+    					/* console.log(passenger); */
+    					//sendingInfo = ticket.push(toback[i-1]);
+    					//console.log(sendingInfo);
+    					localStorage.setItem("passenger" + i, JSON.stringify(passenger));
+    					//localStorage.setItem("ticket" + i, JSON.stringify(sendingInfo));
+    				} else{
+    					
+    					ans = false;
+    				}
+    			}
+            	
+        		if(ans){
+        			
+        			if(numOfpassengers == 1){
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                	} else if (numOfpassengers == 2){
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                    	ticket2 = ticket2.concat(toback[1]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                    	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+                	} else{
+                		
+                		ticket1 = ticket1.concat(toback[0]);
+                		ticket2 = ticket2.concat(toback[1]);
+                		ticket3 = ticket3.concat(toback[2]);
+                    	
+                    	localStorage.setItem("ticket1", JSON.stringify(ticket1));
+                    	localStorage.setItem("ticket2", JSON.stringify(ticket2));
+                    	localStorage.setItem("ticket3", JSON.stringify(ticket3));
+                	}
+                	
+        			localStorage.setItem("order", JSON.stringify(order));
+        			window.location.href='payment.html';
+        		}
+        	} else {
+        		
+        		alert("Number of passengers is not equal to the number of tickets!");
+        	}
         }
 
         function createTicket(){
             if (validate_ticket(dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to)){
-                ticket = [dateFrom, dateTo, ticketPrice, routeId, trainId,  seat, carriage, from, to];
-                console.log(ticket);
+                ticket1 = [dateFrom, dateTo, routeId, from, to];
+                ticket2 = [dateFrom, dateTo, routeId, from, to];
+                ticket3 = [dateFrom, dateTo, routeId, from, to];
+                /* console.log(ticket); */
                 createPassenger();
             }
         }
@@ -132,10 +179,7 @@
                 console.log(email);
             }, 'json');
             getInfo.then(function() {
-
-                var numOfpassengers = 1;
-                // document.getElementById('numOfpassengers').value;
-                var payment = document.getElementById('payment').value;
+                var payment = document.getElementById('payment1').value;
                 var today = new Date();
                 var bookingDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                 var bookingTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -162,6 +206,10 @@
                 alert("No routes found!")
             }
             $("#routes-table tr > td > button").on('click', function () {
+            	
+            	routeID = $(this).closest('tr').find("td").eq(0).html();
+            	$("#route").text("You chose route with RouteID: " + routeID);
+            	
                 from = $(this).closest('tr').find("td").eq(7).html();
                 to = $(this).closest('tr').find("td").eq(8).html();
                 routeId = $(this).closest('tr').find("td").eq(0).html();
@@ -180,19 +228,41 @@
             $("#seats-table").find("tr:gt(0)").remove();
 
             items.forEach(function (e) {
-
                 var price = parseFloat(e[4]) + parseFloat(dist) * 200;
-                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" style=\"width: 100%\" id =\""+ e[0]+"\">Select</button></td></tr>");
+                $("#seats-table").append("<tr align=\"center\"><td>" + e[0] + "</td><td>" + e[1] + "</td><td>" + e[2] + "</td><td>" + e[3] + "</td><td>" + price + "</td><td>" + e[5] + "</td><td><button class = \"selected-s\" style=\"width: 100%; background-color:#23a134\" id =\""+ e[0]+"\">Select</button></td></tr>");
             });
 
-
-
-            $("#seats-table tr > td > button").on('click', function () {
-                seat = $(this).closest('tr').find("td").eq(0).html();
+            $("#seats-table tr > td > button").on('click', function () {            	
+            	seat = $(this).closest('tr').find("td").eq(0).html();
                 carriage = $(this).closest('tr').find("td").eq(2).html();
                 ticketPrice = $(this).closest('tr').find("td").eq(4).html();
-                trainId = $(this).closest('tr').find("td").eq(5).html();
-                console.log(seat, trainId, carriage, ticketPrice);
+                trainId = $(this).closest('tr').find("td").eq(5).html();  
+            	var temp = [ticketPrice, trainId,  seat, carriage];
+            	
+            	if (this.style.backgroundColor == "rgb(217, 50, 50)") {
+					this.style.backgroundColor = "rgb(35, 161, 52)";
+					var len = toback.length;
+					for (var i = 0; i < len; i++) {
+						var element = toback.shift();
+						if (JSON.stringify(temp)==JSON.stringify(element)) {
+							/* console.log(element); */
+							break;
+						}
+						toback.push(element);						
+					}
+				}
+            	else {
+            		/* Alert if more seats than passengers */
+                	if (toback.length == numOfpassengers) {
+                		alert("Can't choose more seats");
+                		return;
+                	}
+            		this.style.backgroundColor = "rgb(217, 50, 50)";
+            		toback.push(temp);
+            	}                            
+                
+                /* console.log(toback); */
+                /* console.log(seat, trainId, carriage, ticketPrice); */
                 $( "div.seat" ).text( "Your seat is " + seat + ", in carriage " + carriage + ", price: " + ticketPrice );
             });
 
@@ -220,6 +290,41 @@
             });
         }
 
+		function addPass2() {
+			document.getElementById('addButton1').style.display = "none";
+			document.getElementById('addPass2').style.display = "block";
+			document.getElementById('addButton2').style.display = "block";
+			document.getElementById('removeButton2').style.display = "block";
+			numOfpassengers = 2;
+		}
+
+		function removePass2() {
+			document.getElementById('addPass2').style.display = "none";
+			document.getElementById('addButton2').style.display = "none";
+			document.getElementById('removeButton2').style.display = "none";
+			document.getElementById('addButton1').style.display = "none";
+			document.getElementById('addButton1').style.display = "block";
+			numOfpassengers = 1;
+		}
+
+		function addPass3() {
+			document.getElementById('addPass3').style.display = "block";
+			document.getElementById('removeButton3').style.display = "block";
+			document.getElementById('addButton2').style.display = "none";
+			document.getElementById('removeButton2').style.display = "none";
+			numOfpassengers = 3;
+		}
+
+		function removePass3() {
+			document.getElementById('addPass3').style.display = "none";
+			document.getElementById('removeButton3').style.display = "none";
+			document.getElementById('addButton2').style.display = "block";
+			document.getElementById('removeButton2').style.display = "block";
+			numOfpassengers = 2;
+        }
+
+
+
         $(document).ready(function () {
         	
         	$("#main-page").on('click', function (r) {
@@ -231,7 +336,7 @@
 			});
 
 			$("#log-out-button").on('click', function (r) {
-				$.post("services/logout", {}, function(r){
+				$.post("../services/logout", {}, function(r){
 					console.log(r);
 					window.location.href = "../index.html";
 				}).fail(function(r) {
@@ -264,6 +369,8 @@
 			<li id="log-out-button">Log Out</li>
 		</ul>
 	</div>
+
+<!-- Booking -->
 	<div class="main_section">
 		<h3>Ticket Booking</h3>
 		<div class="routes_section">
@@ -287,25 +394,24 @@
 				</div>
 				From
 				<select id="stationFrom" class="white_select">
-				    <option value="AST">Astana</option>
-				    <option value="ALM">Almaty</option>
-				    <option value="SEM">Semey</option>
-				    <option value="ATB">Aktobe</option>
-				    <option value="PET">Petropavlovsk</option>
-				    <option value="KSH">Kokshetau</option>
+				    <option value="NUR">Nur-Sultan</option>
+					<option value="KSH">Kokshetau</option>
+					<option value="PET">Petropavlovsk</option>
+					<option value="KST">Kostanay</option>
+					<option value="PAV">Pavlodar</option>
 				</select>
 				To 
 				<select id="stationTo" class="white_select">
-				    <option value="AST">Astana</option>
-				    <option value="ALM">Almaty</option>
-				    <option value="SEM">Semey</option>
-				    <option value="ATB">Aktobe</option>
-				    <option value="PET">Petropavlovsk</option>
-				    <option value="KSH">Kokshetau</option>
+				    <option value="NUR">Nur-Sultan</option>
+					<option value="KSH">Kokshetau</option>
+					<option value="PET">Petropavlovsk</option>
+					<option value="KST">Kostanay</option>
+					<option value="PAV">Pavlodar</option>
 				</select>
 				<label for="dateFrom">Departure Date</label>
 				<input type="date" id="dateFrom" required>		
-			</div>	
+			</div>	<br>
+			<div class="route" id="route"></div>
 			<button id="find-routes"> Find Routes</button>	
 		</div>
 			
@@ -325,77 +431,235 @@
 			</table>
 			</div>
 			<div class="seat"></div>
-			<table class="info-table">
-				<tr>
-					<td><label for="fname">First Name</label></td>
-					<td><input type="text" id="fname" required class="white_input"></td>
-				</tr>
-				<tr>
-					<td><label for="lname">Last Name</label></td>
-					<td><input type="text" id="lname" required class="white_input"></td>
-				</tr>
-				<tr>
-					<td><label for="dob">Date of Birth</label></td>
-					<td><input type="date" id="dob" required class="white_input"></td>
-				</tr>
-				<tr>
-					<td><label>Gender</label></td>
-					<td>
-						<select id="gender" class="white_select">
-					        <option value="Female">Female</option>
-					        <option value="Male">Male</option>
-				    	</select>
-				    </td>
-				</tr>
-				<tr>
-					<td><label>Citizenship</label></td>
-					<td>
-						<select id="country" class="white_select">
-					        <option value="Kazakhstan">Kazakhstan</option>
-					        <option value="Russia">Russia</option>
-					        <option value="Otder">Otder</option>
-				    	</select>
-					</td>
-				</tr>
-				<tr>
-					<td><label>Document Type</label></td>
-					<td>
-						<select id="doctype" class="white_select">
-					        <option value="passport">Passport</option>
-					        <option value="IDcard">ID Card</option>
-				    	</select>
-					</td>
-				</tr>
-				<tr>
-					<td><label>Tariff</label></td>
-					<td>
-						<select id="tariff" class="white_select">
-					        <option value="regular">Regular</option>
-					        <option value="retired">Retired</option>
-					        <option value="student">Student</option>
-					        <option value="child">Child</option>
-					    </select>
-					</td>
-				</tr>
-				<tr>
-					<td><label>Payment Type</label></td>
-					<td>
-						<select id="payment" class="white_select">
-					        <option value="BankCard">Bank card</option>
-					        <option value="OnlineWallet">Online wallet</option>
-					        <option value="Otder">Otder</option>
-					    </select>
-					</td>
-				</tr>
-				<tr>
-					<td><label for="docID" >Document ID</label></td>
-					<td><input type="text" id="docID" required class="white_input"></td>
-				</tr>
-				<tr>
-					<td><label for="telephone">Phone Number</label></td>
-					<td><input type="text" id="telephone" required class="white_input"></td>
-				</tr>
-			</table>
+			<div class="passengers">
+				<div class="pass1">
+					<table class="info-table">
+						<tr><td><label style="font-size: 20px; font-weight: bold">Passenger 1</label></td></tr>
+						<tr>
+							<td><label for="fname1">First Name</label></td>
+							<td><input type="text" id="fname1" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="lname1">Last Name</label></td>
+							<td><input type="text" id="lname1" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="dob1">Date of Birth</label></td>
+							<td><input type="date" id="dob1" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label>Gender</label></td>
+							<td>
+								<select id="gender1" class="white_select">
+									<option value="Female">Female</option>
+									<option value="Male">Male</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Citizenship</label></td>
+							<td>
+								<select id="country1" class="white_select">
+									<option value="Kazakhstan">Kazakhstan</option>
+									<option value="Russia">Russia</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Document Type</label></td>
+							<td>
+								<select id="doctype1" class="white_select">
+									<option value="passport">Passport</option>
+									<option value="IDcard">ID Card</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Tariff</label></td>
+							<td>
+								<select id="tariff1" class="white_select">
+									<option value="regular">Regular</option>
+									<option value="retired">Retired</option>
+									<option value="student">Student</option>
+									<option value="child">Child</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Payment Type</label></td>
+							<td>
+								<select id="payment1" class="white_select">
+									<option value="BankCard">Bank card</option>
+									<option value="OnlineWallet">Online wallet</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="docID1" >Document ID</label></td>
+							<td><input type="text" id="docID1" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="telephone1">Phone Number</label></td>
+							<td><input type="text" id="telephone1" required class="white_input"></td>
+						</tr>
+					</table>
+					<button type="button" id="addButton1" onclick="addPass2()" style="width: 50%">Add a Passenger</button>
+				</div>
+				<div class="pass2">
+					<table class="info-table" align="center" id="addPass2" style="display:none;">
+						<tr><td><label style="font-size: 20px; font-weight: bold">Passenger 2</label></td></tr>
+						<tr>
+							<td><label for="fname2">First Name</label></td>
+							<td><input type="text" id="fname2" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="lname2">Last Name</label></td>
+							<td><input type="text" id="lname2" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="dob2">Date of Birth</label></td>
+							<td><input type="date" id="dob2" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label>Gender</label></td>
+							<td>
+								<select id="gender2" class="white_select">
+									<option value="Female">Female</option>
+									<option value="Male">Male</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Citizenship</label></td>
+							<td>
+								<select id="country2" class="white_select">
+									<option value="Kazakhstan">Kazakhstan</option>
+									<option value="Russia">Russia</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Document Type</label></td>
+							<td>
+								<select id="doctype2" class="white_select">
+									<option value="passport">Passport</option>
+									<option value="IDcard">ID Card</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Tariff</label></td>
+							<td>
+								<select id="tariff2" class="white_select">
+									<option value="regular">Regular</option>
+									<option value="retired">Retired</option>
+									<option value="student">Student</option>
+									<option value="child">Child</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Payment Type</label></td>
+							<td>
+								<select id="payment2" class="white_select">
+									<option value="BankCard">Bank card</option>
+									<option value="OnlineWallet">Online wallet</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="docID2" >Document ID</label></td>
+							<td><input type="text" id="docID2" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="telephone2">Phone Number</label></td>
+							<td><input type="text" id="telephone2" required class="white_input"></td>
+						</tr>
+					</table>
+					<button type="button" id="removeButton2" onclick="removePass2()" style="width: 50%; display:none">Remove a Passenger</button>
+					<button type="button" id="addButton2" onclick="addPass3()" style="width: 50%; display:none">Add a Passenger</button>
+				</div>
+				<div class="pass3">
+					<table class="info-table" align="center" id="addPass3" style="display:none">
+						<tr><td><label style="font-size: 20px; font-weight: bold">Passenger 3</label></td></tr>
+						<tr>
+							<td><label for="fname3">First Name</label></td>
+							<td><input type="text" id="fname3" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="lname3">Last Name</label></td>
+							<td><input type="text" id="lname3" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="dob3">Date of Birth</label></td>
+							<td><input type="date" id="dob3" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label>Gender</label></td>
+							<td>
+								<select id="gender3" class="white_select">
+									<option value="Female">Female</option>
+									<option value="Male">Male</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Citizenship</label></td>
+							<td>
+								<select id="country3" class="white_select">
+									<option value="Kazakhstan">Kazakhstan</option>
+									<option value="Russia">Russia</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Document Type</label></td>
+							<td>
+								<select id="doctype3" class="white_select">
+									<option value="passport">Passport</option>
+									<option value="IDcard">ID Card</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Tariff</label></td>
+							<td>
+								<select id="tariff3" class="white_select">
+									<option value="regular">Regular</option>
+									<option value="retired">Retired</option>
+									<option value="student">Student</option>
+									<option value="child">Child</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label>Payment Type</label></td>
+							<td>
+								<select id="payment3" class="white_select">
+									<option value="BankCard">Bank card</option>
+									<option value="OnlineWallet">Online wallet</option>
+									<option value="Other">Other</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="docID3" >Document ID</label></td>
+							<td><input type="text" id="docID3" required class="white_input"></td>
+						</tr>
+						<tr>
+							<td><label for="telephone3">Phone Number</label></td>
+							<td><input type="text" id="telephone3" required class="white_input"></td>
+						</tr>
+					</table>
+					<button type="button" id="removeButton3" onclick="removePass3()" style="width: 50%; display:none">Remove a Passenger</button>
+				</div>
+			</div>
+
 			<div class="button_book">
 				<button id="book" type="button">Book a ticket</button>
 			</div>

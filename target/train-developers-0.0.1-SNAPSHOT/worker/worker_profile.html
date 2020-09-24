@@ -2,8 +2,8 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>TrainDevelopers | Main page</title>
-	<link rel = "stylesheet" type="text/css" href = "../css/header_footer.css">
+	<title>Personal Profile</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/worker_profile.css">
 	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
 	<script src="../scripts/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -67,14 +67,46 @@
 	$(document).ready(function () {	
 		
 		getInfo();
-		
-		$("#logout").on('click', function (r) {
+
+		$("#log-out-button").on('click', function (r) {
 			$.post("../services/logout", {}, function(r){
 				console.log(r);
+				window.location.href = "../index.html";
 			}).fail(function(r) {
-				alert("Error!");
-		    });
-	    });
+				alert("Error log out");
+			});
+		});
+		
+		
+		$("#add_carriage").on('click', function (r) {
+			
+			window.location.href = "../agent/add_carriage.html";
+			
+		});
+		
+		$("#add_train").on('click', function (r) {
+			
+			window.location.href = "../agent/add_train.html";
+			
+		});
+		
+		$("#train_schedule").on('click', function (r) {
+			
+			window.location.href = "../agent/train_schedule.html";
+			
+		});
+		
+		$("#add_schedule").on('click', function (r) {
+			
+			window.location.href = "../manager/add_schedule.html";
+			
+		});
+		
+		$("#send_news").on('click', function (r) {
+			
+			window.location.href = "../manager/send_news.html";
+			
+		});
 		
 		$("#manage-agents").on('click', function (r) {
 			
@@ -91,6 +123,18 @@
 		$("#manage-managers").on('click', function (r) {
 			
 			window.location.href = "../admin/manage_managers.html";
+			
+		});
+		
+		$("#subordinate-employee").on('click', function (r) {
+			
+			window.location.href = "../manager/subordinate_employee.html";
+			
+		});
+		
+		$("#manage-logs").on('click', function (r) {
+			
+			window.location.href = "../manager/manage_logs.html";
 			
 		});
 
@@ -116,37 +160,56 @@
 			<li id="log-out-button">Log Out</li>
 		</ul>
 	</div>
-	<h2>Personal profile</h2>
-	<div id="first-name"></div>
-	<div id="last-name"></div>
-	<div id="email"></div>
-	<br>
-	<button id="change-password">Change Password</button>
-	<br><br>
-	<div id="agent-block">
-	<button id="passenger-requests">See Passenger Requests</button>
-	<br><br>
+<!-- Personal profile -->
+	<div class="main_section">
+		<h3>Personal Profile</h3>
+		<div class="form-background">
+			<div class="info">
+				<div>
+					<div id="first-name"></div><br>
+					<div id="last-name"></div><br>
+					<div id="email"></div><br>
+					<div id="position"></div><br>
+					<div id="gender"></div><br>
+					<div id="birth-date"></div><br>
+					<div id="address"></div><br>
+				</div>
+				<div>
+					<div id="phone-number"></div><br>
+					<div id="bank-acc-num"></div><br>
+					<div id="salary"></div><br>
+					<div id="payday"></div><br>
+					<div id="manager-name"></div><br>
+					<div id="manager-email"></div>
+				</div>
+			</div>
+			<div class="buttons">
+				<button id="changePassword" onclick="window.location.href='change_password.html'">Change Password</button>
+				<div id="agent-block">
+					<button id="cancelled-tickets" onclick="window.location.href='../agent/cancelled_tickets.html'"> Requests to cancel</button>
+					<button id="edited-tickets" onclick="window.location.href='../agent/edited_tickets.html'">Requests to edit</button>
+					<button id="add_carriage">Add Carriage</button>
+					<button id="add_train">Add Train</button>
+					<button id="train_schedule">Train Schedules</button>
+					<br><br>
+				</div>
+				<div id="manager-block">
+					<button id="manage-agents">Manage Agents</button>
+					<button id="manage-routes">Manage Routes</button>
+					<button id="add_schedule">Add Schedules</button>
+					<button id="subordinate-employee">My Employees</button>
+					<button id="send_news">Send News</button>
+					<button id="manage-logs">Manage Logs</button>
+					<br><br>
+				</div>
+				<div id="admin-block">
+					<button id="manage-managers">Manage Managers</button>
+					<br><br>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div id="manager-block">
-	<button id="manage-agents">Manage Agents</button>
-	<br><br>
-	<button id="manage-routes">Manage Routes</button>
-	<br><br>
-	</div>
-	<div id="admin-block">
-	<button id="manage-managers">Manage Managers</button>
-	<br><br>
-	</div>
-	<div id="position"></div>
-	<div id="gender"></div>
-	<div id="birth-date"></div>
-	<div id="address"></div>
-	<div id="phone-number"></div>
-	<div id="bank-acc-num"></div>
-	<div id="salary"></div>
-	<div id="payday"></div>
-	<div id="manager-name"></div>
-	<div id="manager-email"></div>
+
 <!-- Contacts -->
 	<div class="footer">
 		<h3>Contact us</h3>

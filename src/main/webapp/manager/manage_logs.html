@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TrainDevelopers | Manage Logs</title>
+    <link rel = "stylesheet" type="text/css" href = "../css/manage_workers.css">
+    <link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+    <script src="../scripts/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    	var page;
+    	
+    	function validate_page(page){
+
+            if (page == "" || page == null ) {
+                alert("Please, choose a page number.");
+                return false;
+            } else if (page < 1) {
+                alert("Please, choose a page number bigger than zero.");
+                return false;
+            } return true;
+        }
+    	
+        function getSettings() {
+
+            $.get("../services/logs?page=0", function(r) {
+
+                console.log(r);
+                showSettings(r);
+            }).fail(function(r) {
+
+                alert("Error on get log settings");
+                console.log(r.responseText);
+            });
+        }
+
+        function showSettings(item) {
+	
+        	console.log(item);
+        	$("div.state").text("Logs enabled: " + item);
+        }
+        
+        function changeState(){
+        	
+        	$.post("../services/logs", function(r) {
+
+                showSettings(r);
+            }).fail(function(r) {
+
+                console.log("fail" + r.responseText + " change state");
+            });
+        }
+
+        function getLogs(){
+
+            page = document.getElementById('page').value;
+
+            if(validate_page(page)){
+
+            	$.get("../services/logs?page=" + page + "&type=log", function(r) {
+
+                    console.log(r);
+                    showLogs(r);
+                },'json').fail(function(r) {
+
+                    alert("Error on get logs");
+                    console.log(r.responseText);
+                });
+            }
+        }
+        
+        function getAuthLogs(){
+
+            page = document.getElementById('page').value;
+
+            if(validate_page(page)){
+
+            	$.get("../services/logs?page=" + page + "&type=auth", function(r) {
+
+                    console.log(r);
+                    showLogs(r);
+                },'json').fail(function(r) {
+
+                    alert("Error on get logs");
+                    console.log(r.responseText);
+                });
+            }
+        }
+        
+        function showLogs(items){
+        	
+        	$("#logs-table").find("tr:gt(0)").remove();
+
+			items.forEach(function (e) {
+
+				$("#logs-table").append("<tr align=\"center\"><td>" + e + "</td></tr>");
+			});
+        }
+
+        $(document).ready(function () {
+
+            getSettings();
+
+            $("#main-page").on('click', function () {
+                window.location.href = "../index.html";
+            });
+
+            $("#profile-button").on('click', function () {
+                window.location.href = "../worker/worker_profile.html";
+            });
+
+            $("#log-out-button").on('click', function (r) {
+                $.post("../services/logout", {}, function(r){
+                    console.log(r);
+                    window.location.href = "../index.html";
+                }).fail(function(r) {
+                    alert("Error log out");
+                });
+            });
+            
+            $("#change-state").on('click', function () {
+                changeState();
+            });
+            
+            $("#show-logs").on('click', function () {
+                getLogs();
+            });
+            
+            $("#show-authLogs").on('click', function () {
+                getAuthLogs();
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+    <ul>
+        <li id="main-page">Main Page</li>
+        <li id="profile-button">Go to profile</li>
+        <li id="log-out-button">Log Out</li>
+    </ul>
+</div>
+
+<div class="main_section">
+	<h3>Logs Management</h3>
+	<br>
+	<div class="state"></div>
+	<br>
+	<button id="change-state">Change logging state</button>
+	<br>
+	<button id="show-logs">Show general logs</button>
+	<br>
+	<button id="show-authLogs">Show authentication logs</button>
+	<br>
+	<label for="page">Page</label>
+	<input type="number" id="page" value=1 required>
+	<br>
+	<div class="blue_table">
+		<table id="logs-table">
+			<tr>
+				<th>Log</th>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!-- Contacts -->
+<div class="footer">
+    <h3>Contact us</h3>
+    <div class="contact-container">
+        <div><p>email: train.dev@nu.edu.kz</p></div>
+        <div><p>telephone: +77777777777</p></div>
+        <div><p>telephone: +77777777778</p></div>
+    </div>
+</div>
+
+</body>
+</html>

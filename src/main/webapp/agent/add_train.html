@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TrainDevelopers | Add Train</title>
+	<link rel = "stylesheet" type="text/css" href = "../css/add_train.css">
+	<link rel = "icon" href = "https://library.kissclipart.com/20180830/abq/kissclipart-train-clipart-train-rail-transport-rapid-transit-c4c301d377f15d73.png">
+	<script src="../scripts/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var capacity, type;
+
+		function validate_train(capacity, type){
+
+			if (capacity == "" || capacity == null ) {
+				alert("Please, select capcity for a new train.");
+				return false;
+			} else if (type == "" || type == null) {
+				alert("Please, choose a type for a new train.");
+				return false;
+			}
+
+			return true;
+		}
+
+		function addTrain(){
+
+			capacity = document.getElementById('capacity').value;
+			type = document.getElementById('type').value;
+
+			if(validate_train(capacity, type)){
+				
+				console.log(capacity, type);
+
+				$.post("../services/addTrain", {capacity: capacity, type: type}, function(r) {
+
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					console.log("fail" + r.responseText + " addTrain post");
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$("#add-train").on("click", function() {
+
+				addTrain();
+			});
+
+			$("#main-page").on('click', function () {
+				window.location.href = "../index.html";
+			});
+
+			$("#profile-button").on('click', function () {
+				window.location.href = "../worker/worker_profile.html";
+			});
+
+			$("#log-out-button").on('click', function (r) {
+				$.post("../services/logout", {}, function(r){
+					console.log(r);
+					window.location.href = "../index.html";
+				}).fail(function(r) {
+					alert("Error log out");
+				});
+			});
+		});
+
+	</script>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+	<h1>Train Developers</h1>
+</div>
+
+<!-- Menu bar -->
+<div class="nav">
+	<ul>
+		<li id="main-page">Main Page</li>
+		<li id="profile-button">Go to profile</li>
+		<li id="log-out-button">Log Out</li>
+	</ul>
+</div>
+
+<!-- Add Train -->
+<div class="main_section">
+	<h3>Add Train</h3>
+	<div class="form-background">
+		<table class="input-table" align="center">
+			<tr>
+				<td><label for="capacity">Capacity</label></td>
+				<td><input type="number" id="capacity" required class="white_input"></td>
+			</tr>
+			<tr>
+				<td><label for="type">Type</label></td>
+				<td><input type="text" id="type" required class="white_input"></td>
+			</tr>
+		</table>
+		<button id="add-train"> Add Train</button>
+	</div>
+</div>
+
+<!-- Contacts -->
+<div class="footer">
+	<h3>Contact us</h3>
+	<div class="contact-container">
+		<div><p>email: train.dev@nu.edu.kz</p></div>
+		<div><p>telephone: +77777777777</p></div>
+		<div><p>telephone: +77777777778</p></div>
+	</div>
+</div>
+</body>
+</html>

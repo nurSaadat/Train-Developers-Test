@@ -18,7 +18,7 @@
 	
 	function newsUpdate(newsList) {
 		newsList.forEach(function (e) {
-            $("#recent-news").append( "<div class=\"news-item\"><div class=\"title\"><p>" + e[0] + "</p></div><div class=\"date\"><p>" + e[2] + "</p></div><div class=\"text\"><p>" + e[1] + "</p></div></div>");
+            $("#recent-news").append( "<div class=\"news-item\"><div class=\"title\"><p>" + e[1] + "</p></div><div class=\"date\"><p>" + e[2] + "</p></div><div class=\"text\"><p>" + e[0] + "</p></div></div>");
         });
 	}
 
@@ -27,11 +27,14 @@
 			console.log(r);
 			if (r != "false") {
 				type = r;
-				$("#log-out-button").css("display", "inline-block");
-				$("#booking-box").css("display", "block");
+				$("#log-out-button").css("display", "inline-block");				
 				$("#sign-up").css("display", "none");
+				$("#booking-box").css("display", "block");
 				$("#log-in-form").css("display", "none");
 				$("#profile-button").css("display", "inline-block");
+			}
+			if (r != "false" && r != 'user') {
+				$("#user-boxes").css("display", "none");	
 			}
 		}).fail(function(r) {
 			alert("Error! Checkin");
@@ -114,7 +117,7 @@
 	</div>
 		
 <!-- Blocks -->			
-	<div class="wrapper">
+	<div class="wrapper" id="user-boxes">
 		<div class="box1">
 			<article class="item">
 				<header id="see_routes">
@@ -129,7 +132,7 @@
 				<article class="item" style="display:none" id="booking-box">
 					<header id="booking-link">	
 						<a><img src="css/res/book_ticket.jpg"/></a>
-						<h3>Book ticket</h3>
+						<h3>Book a ticket</h3>
 					</header>
 				</article>	
 				<form id="log-in-form">

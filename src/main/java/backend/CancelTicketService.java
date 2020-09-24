@@ -38,13 +38,16 @@ public class CancelTicketService {
     public Response getList(@Context HttpServletRequest req) throws ClassNotFoundException, SQLException {
 
         List<List<String>> tickets = new CopyOnWriteArrayList<>();
+        
+        HttpSession session = req.getSession(false);
+
+		String email = (String)session.getAttribute("email");
 
         MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
 
-        ResultSet rs = db.getData("select O.UserEmail, O.OrderID, T.TicketID,  SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, concat(P.FName,P.LName) as `Name`\n" +
-                "                from `User` U, `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA, `CancelledTicket` CT\n" +
-                "                where T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID and CT.OrderID = O.OrderID and CT.TicketID = T.TicketID\n" +
-                "                group by O.OrderID and T.TicketID;\n");
+        ResultSet rs = db.getData("select distinct O.UserEmail, O.OrderID, T.TicketID,  SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, P.FName as `Name`\n" +
+                "                from `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA, `Route` R, `CancelledTicket` CT\n" +
+                "                where T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID and CT.OrderID = O.OrderID and CT.TicketID = T.TicketID and O.UserEmail = '" + email + "' and R.RouteID = T.RouteID and R.RouteID = SA.RouteID and R.RouteID = SD.RouteID;");
 
         while (rs.next()) {
 
@@ -106,4 +109,45 @@ public class CancelTicketService {
 
         return Response.ok().build();
     }
+    
+    @Path("/confirm")
+    @GET
+    public Response getListAgent(@Context HttpServletRequest req) throws ClassNotFoundException, SQLException {
+
+        List<List<String>> tickets = new CopyOnWriteArrayList<>();
+
+        MySQLConnector db = new MySQLConnector(3306, "RailwayStation", "user", "Password123!");
+
+        ResultSet rs = db.getData("select distinct O.UserEmail, O.OrderID, T.TicketID,  SD.StationAbbr, T.DepartureDate, SD.DepartureTime, SA.StationAbbr as StationTo, T.ArrivingDate as ArrivalDate, SA.ArrivalTime, T.Price, T.TrainID, T.CarriageNumber, T.SeatNumber, P.DocumentID, P.FName as `Name`\n" +
+                "                from `Order` O, `Ticket` T, `Passenger` P, `Schedule` SD, `Schedule` SA, `CancelledTicket` CT, `Route` R\n" +
+                "                where T.OrderID = O.OrderID and P.TicketID = T.TicketID and P.OrderID = T.OrderID and T.ScheduleFromID = SD.ScheduleID and T.ScheduleToID = SA.ScheduleID and CT.OrderID = O.OrderID and CT.TicketID = T.TicketID and R.RouteID = SA.RouteID and R.RouteID = SD.RouteID and T.RouteID = R.RouteID;");
+
+        while (rs.next()) {
+
+            tickets.add(new CopyOnWriteArrayList<String>());
+            tickets.get(tickets.size() - 1).add(rs.getString("UserEmail"));
+            tickets.get(tickets.size() - 1).add(rs.getString("OrderID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("TicketID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("StationAbbr"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DepartureDate"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DepartureTime"));
+            tickets.get(tickets.size() - 1).add(rs.getString("StationTo"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ArrivalDate"));
+            tickets.get(tickets.size() - 1).add(rs.getString("ArrivalTime"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Price"));
+            tickets.get(tickets.size() - 1).add(rs.getString("TrainID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("CarriageNumber"));
+            tickets.get(tickets.size() - 1).add(rs.getString("SeatNumber"));
+            tickets.get(tickets.size() - 1).add(rs.getString("DocumentID"));
+            tickets.get(tickets.size() - 1).add(rs.getString("Name"));
+
+        }
+
+        db.closeConnection();
+
+        Gson gson = new Gson();
+        return Response.ok(gson.toJson(tickets)).build();
+
+    }
+    
 }
